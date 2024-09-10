@@ -1,0 +1,1 @@
+# IntercambiaLoteria_NextJs_Django_PostgreSql
