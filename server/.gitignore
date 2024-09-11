@@ -1,0 +1,23 @@
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+media
+
+# Python
+*.py[cod]
+*$py.class
+
+# IDE - VSCode
+.vscode/
+*.code-workspace
+
+# dotenv environment variables file
+.env
+
+# Operating System
+.DS_Store
+Thumbs.db

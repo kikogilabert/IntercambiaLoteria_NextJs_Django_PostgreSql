@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - myNetwork
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./server
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - myNetwork
+    command: python django_backend/manage.py runserver 0.0.0.0:8888
+    volumes:
+      - ./server/django_backend:/usr/src/app/django_backend
+    ports:
+      - "8888:8888"
+    environment:
+      - DJANGO_DB_HOST=${DB_HOST}
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin4_container
+    restart: always
+    networks:
+      - myNetwork
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - 5050:80
+
+  frontend:
+    build: ./client
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - myNetwork
+
+networks:
+  myNetwork:
+    driver: bridge
+        
+volumes:
+  postgres_data:
+
