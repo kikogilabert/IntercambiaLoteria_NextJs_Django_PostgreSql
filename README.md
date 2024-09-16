@@ -6,15 +6,25 @@
 
 ### Backend
 0.1 Install PostgresSQL
+
 0.2 Create a database in PostgresSQL
+
 0.3 Create a virtual environment
+
 0.4 Create a .env file in the django_server folder with the following variables:
+
 DB_NAME
+
 DB_USER
+
 DB_PASSWORD
+
 DB_HOST
+
 DB_PORT
+
 SECRET_KEY
+
 
 1. Install dependencies once in the virtual environment
 ```bash
@@ -32,7 +42,9 @@ python manage.py migrate
 ```
 
 Try the register with the example object:
-endpoint: http://localhost:8000/administracion/register/
+
+endpoint must be: http://localhost:8000/administracion/register/
+
 ```json
 {
     "num_receptor": 12345,
@@ -59,3 +71,11 @@ endpoint: http://localhost:8000/administracion/register/
 
 ### Frontend
 cd /client
+    
+```bash 
+npm install
+```
+    
+```bash
+npm run dev
+```
