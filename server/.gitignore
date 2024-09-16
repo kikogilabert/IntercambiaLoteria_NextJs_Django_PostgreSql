@@ -1,23 +1,25 @@
-# Django
-*.log
-*.pot
+# Ignore database files
+*.sqlite3
+
+# Ignore static files
+/static/
+
+# Ignore media files
+/media/
+
+# Ignore virtual environment
+/venv_backend/
+
+# Ignore IDE files
+.vscode/
+.idea/
+
+# Ignore compiled Python files
 *.pyc
 __pycache__/
-local_settings.py
-db.sqlite3
-media
 
-# Python
-*.py[cod]
-*$py.class
+# Ignore log files
+*.log
 
-# IDE - VSCode
-.vscode/
-*.code-workspace
-
-# dotenv environment variables file
+# Ignore environment variables file
 .env
-
-# Operating System
-.DS_Store
-Thumbs.db
