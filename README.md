@@ -13,29 +13,32 @@
 
 0.4 Create a .env file in the django_server folder with the following variables:
 
-DB_NAME
+-DB_NAME
 
-DB_USER
+-DB_USER
 
-DB_PASSWORD
+-DB_PASSWORD
 
-DB_HOST
+-DB_HOST
 
-DB_PORT
+-DB_PORT
 
-SECRET_KEY
+-SECRET_KEY
 
 
 1. Install dependencies once in the virtual environment
+
 ```bash
 pip install -r requirements.txt
 ```
 2. Run the server, make sure you are in the server folder
+
 ```bash
 python manage.py runserver
 ```
 
 3. Run the migrations for the database
+
 ```bash
 python manage.py makemigrations
 python manage.py migrate
