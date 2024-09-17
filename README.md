@@ -5,46 +5,67 @@
 1. Steps to run the project
 
 ### Backend
-0.1 Install PostgresSQL
+1. Install PostgresSQL 16.4 from [an External Link](https://www.postgresql.org/ftp/source/).
 
-0.2 Create a database in PostgresSQL
+2. Create a database in PostgresSQL
 
-0.3 Create a virtual environment
+```bash
+cd C:\Program Files\PostgreSQL\16\bin>
+psql -U postgres
+CREATE DATABASE intercambios_loteria;
+```
 
-0.4 Create a .env file in the django_server folder with the following variables:
+- Ckeck if database is created:
+```bash
+\l
+                                                                    List of databases
+         Name         |  Owner   | Encoding | Locale Provider |      Collate       |       Ctype        | ICU Locale | ICU Rules |   Access privileges
+----------------------+----------+----------+-----------------+--------------------+--------------------+------------+-----------+-----------------------
+ intercambios_loteria | postgres | UTF8     | libc            | Spanish_Spain.1252 | Spanish_Spain.1252 |            |           |
+```
 
--DB_NAME
+- Close postgress console:
+```bash
+\q
+```
 
--DB_USER
+3.  Create a virtual environment and activate it.
+```bash
+cd to/your/local/repo/path
+cd server
+python -m venv venv
+.\venv\Scripts\activate
+```
 
--DB_PASSWORD
-
--DB_HOST
-
--DB_PORT
-
--SECRET_KEY
-
-
-1. Install dependencies once in the virtual environment
-
+4. Install dependencies into the virtual environment:
 ```bash
 pip install -r requirements.txt
 ```
-2. Run the server, make sure you are in the server folder
 
+5. Create a .env file in the django_server folder with the following variables:
 ```bash
-python manage.py runserver
+-DB_NAME
+-DB_USER
+-DB_PASSWORD
+-DB_HOST
+-DB_PORT
+-SECRET_KEY
 ```
 
-3. Run the migrations for the database
+6. Run the migrations for the database.
 
 ```bash
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-Try the register with the example object:
+7. Run the server, make sure you are in the server folder
+
+```bash
+python manage.py runserver
+```
+
+8. Try the register with the example object:
 
 endpoint must be: http://localhost:8000/administracion/register/
 
@@ -73,12 +94,9 @@ endpoint must be: http://localhost:8000/administracion/register/
 
 
 ### Frontend
-cd /client
-    
-```bash 
-npm install
-```
-    
+
 ```bash
+cd client
+npm install
 npm run dev
 ```
