@@ -6,6 +6,23 @@ TIPOS_PROPIETARIOS = [
     ('PJ', 'Persona Juridica')
 ]
 
+class PropietarioManager(models.Manager):
+    def create_propietario(self, **extra_fields):
+        propietario = self.model(**extra_fields)
+        propietario.save(using=self._db)
+        return propietario
+
+class Propietario(models.Model):
+    dni = models.CharField(max_length=9, primary_key=True)
+    nombre = models.CharField(max_length=50)
+    telefono = models.CharField(max_length=15)
+    direccion = models.CharField(max_length=50)
+    tipo_propietario = models.CharField(max_length=25, choices=TIPOS_PROPIETARIOS, default='PF')
+
+    objects = PropietarioManager()
+
+    def __str__(self):
+        return self.dni
 
 class CustomUserManager(BaseUserManager):
     def create_administracion(self, email, password, **extra_fields):
@@ -19,25 +36,6 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_admin', True)
         return self.create_user(email, password, **extra_fields)
     
-    def create_propietario(self, **extra_fields):
-        user = Propietario(**extra_fields)
-        user.save(using=self._db)
-        return user
-
-class Propietario(models.Model):
-    dni = models.CharField(max_length=9, primary_key=True)
-    nombre = models.CharField(max_length=50)
-    telefono = models.CharField(max_length=15)
-    direccion = models.CharField(max_length=50)
-    tipo_propietario = models.CharField(max_length=25, choices=TIPOS_PROPIETARIOS, default='PF')
-    
-
-    objects = CustomUserManager()
-
-    def __str__(self):
-        return self.dni
-
-
 
 class Administracion(AbstractBaseUser):
     # ADMON ID FIELDS
