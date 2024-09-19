@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from .models import Administracion, Propietario
+from .models import Administracion, Usuario
 from django.core.validators import EmailValidator
 
-class PropietarioSerializer(serializers.ModelSerializer):
+class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Propietario
-        fields = ['dni', 'nombre', 'telefono', 'direccion', 'tipo_propietario' ]
+        model = Usuario
+        fields = ['dni', 'nombre', 'telefono', 'direccion', 'tipo' ]
 
     # def validate_dni(self, value):
     #     if len(value) != 9 or not value[-1].isalpha():

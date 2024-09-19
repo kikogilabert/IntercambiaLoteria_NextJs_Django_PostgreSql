@@ -82,7 +82,7 @@ endpoint must be: http://localhost:8000/administracion/register/
     "codigo_postal": "12345",
     "email": "prueba@example.com",
     "telefono": "123456789",
-    "propietario": {
+    "id_propietario": {
         "dni": "12345678A",
         "nombre": "Nombre Prueba",
         "telefono": "987654321",

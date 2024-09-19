@@ -1,25 +1,31 @@
+import uuid
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db import models
 
-TIPOS_PROPIETARIOS = [
+TIPOS = [
     ('PF', 'Persona Fisica'),
     ('PJ', 'Persona Juridica')
 ]
 
-class PropietarioManager(models.Manager):
-    def create_propietario(self, **extra_fields):
-        propietario = self.model(**extra_fields)
-        propietario.save(using=self._db)
-        return propietario
+class UsuarioManager(models.Manager):
+    def create_usuario(self, **extra_fields):
+        usuario = self.model(**extra_fields)
+        usuario.save(using=self._db)
+        return usuario
 
-class Propietario(models.Model):
-    dni = models.CharField(max_length=9, primary_key=True)
+class Usuario(models.Model):
+    id = models.AutoField(primary_key=True)
+    dni = models.CharField(max_length=9, unique=True)
     nombre = models.CharField(max_length=50)
-    telefono = models.CharField(max_length=15)
+    telefono = models.CharField(max_length=12)
     direccion = models.CharField(max_length=50)
-    tipo_propietario = models.CharField(max_length=25, choices=TIPOS_PROPIETARIOS, default='PF')
+    tipo = models.CharField(choices=TIPOS, default='PF')
+    email = models.EmailField(unique=True)
+    telefono = models.CharField(max_length=12)
 
-    objects = PropietarioManager()
+    id_administracion = models.ForeignKey('Administracion', on_delete=models.CASCADE, null=False)
+
+    objects = UsuarioManager()
 
     def __str__(self):
         return self.dni
@@ -34,7 +40,7 @@ class CustomUserManager(BaseUserManager):
 
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault('is_admin', True)
-        return self.create_user(email, password, **extra_fields)
+        return self.create_administracion(email, password, **extra_fields)
     
 
 class Administracion(AbstractBaseUser):
@@ -42,6 +48,8 @@ class Administracion(AbstractBaseUser):
     id_administracion = models.IntegerField(primary_key=True, unique=True)
     num_receptor= models.IntegerField(unique=True)
     nombre_comercial = models.CharField(max_length=50)
+    
+
     # ADMON ADDRESS
     direccion = models.CharField(max_length=50)
     localidad = models.CharField(max_length=20)
@@ -50,9 +58,7 @@ class Administracion(AbstractBaseUser):
     codigo_postal = models.IntegerField(null=True)
 
     # ADMON USER FIELDS
-    propietario = models.ForeignKey(Propietario, on_delete=models.CASCADE)
-    email = models.EmailField(unique=True)
-    telefono = models.CharField(max_length=12)
+    id_propietario = models.ForeignKey(Usuario,on_delete=models.CASCADE, null=True)
 
     # ADITIONAL ADMON STATUS FIELDS
     created_at = models.DateTimeField(auto_now_add=True)
@@ -64,7 +70,7 @@ class Administracion(AbstractBaseUser):
     USERNAME_FIELD = 'id_administracion'
     REQUIRED_FIELDS = [ 
                         'num_receptor',
-                        'propietario', 
+                        'id_propietario', 
                         'nombre_comercial',
                         'direccion',
                         'localidad', 

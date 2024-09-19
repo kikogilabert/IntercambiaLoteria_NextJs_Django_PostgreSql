@@ -6,5 +6,3 @@ class BoletoSerializer(serializers.ModelSerializer):
         model = Boleto
         fields = ['id', 'numero_boleto', 'series_boleto', 'num_series_disponibles', 'administracion']
         read_only_fields = ['id']
-
-        
