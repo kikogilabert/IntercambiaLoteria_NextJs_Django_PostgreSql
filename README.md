@@ -95,8 +95,14 @@ endpoint must be: http://localhost:8000/administracion/register/
 
 ### Frontend
 
+1. Install NodeJS 18.20 from from [an External Link](https://nodejs.org/en/download/prebuilt-installer/current).
+
+2. Once installed, change directory to client and run npm commands.
+
 ```bash
 cd client
 npm install
 npm run dev
 ```
+
+Check if is running: [http://localhost:3000/](http://localhost:3000/).
