@@ -41,14 +41,15 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'administracion',
-    'boleto',
+    'usuario',
+    'intercambios',
+    'django.contrib.admin',
     'rest_framework',
     'rest_framework.authtoken',
 ]
@@ -98,7 +99,7 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = 'administracion.Administracion'
+AUTH_USER_MODEL = 'usuario.Usuario'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
