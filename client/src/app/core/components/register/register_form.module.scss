@@ -1,0 +1,15 @@
+.bold{
+    font-weight: bold;
+}
+
+
+.nospinner div div div input[type="number"]::-webkit-inner-spin-button,
+.nospinner div div div input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.nospinner div div div input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}

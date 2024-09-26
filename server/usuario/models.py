@@ -58,18 +58,12 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 
     id = models.AutoField(primary_key=True)
     # Tipo de usuario -> PF: Persona Fisica, PJ: Persona Juridica.
-    tipo = models.CharField(
-        max_length=2, choices=TIPOS_PERSONA, default="PF"
-    )  # SELECT FROM LIST
+    tipo = models.CharField(max_length=2, choices=TIPOS_PERSONA, default="PF")  # SELECT FROM LIST
     dni = models.CharField(max_length=10, unique=True)
     nombre = models.CharField(max_length=50)
-    apellidos = models.CharField(
-        max_length=50, blank=True, null=True
-    )  # EMPTY IF TIPO=PJ
+    apellidos = models.CharField(max_length=50, blank=True, null=True)  # EMPTY IF TIPO=PJ
     telefono = models.CharField(max_length=12)
-
     email = models.EmailField(max_length=254, unique=True)
-
     id_administracion = models.OneToOneField("Administracion", on_delete=models.CASCADE, related_name="propietario", null=False)
 
     # ADITIONAL ADMON STATUS FIELDS
