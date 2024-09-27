@@ -3,11 +3,27 @@ from typing import Any, Dict
 
 from rest_framework import serializers
 
-from .models import Administracion, Usuario  # Assuming your models are in models.py
 from .constants import PROVINCIAS_CHOICES
+from .models import Administracion, Usuario  # Assuming your models are in models.py
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Usuario
+        fields = [
+            "id",
+            "tipo",
+            "dni",
+            "nombre",
+            "apellidos",
+            "telefono",
+            "email",
+            "id_administracion",
+            "password",
+        ]
+
+
+class UsuarioRegisterSerializer(serializers.ModelSerializer):
     # Define password fields for incoming requests
     password1 = serializers.CharField(write_only=True, required=True)
     password2 = serializers.CharField(write_only=True, required=True)
@@ -42,7 +58,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
         """
         if Usuario.objects.filter(dni=value).exists():
             raise serializers.ValidationError("This DNI is already in use.")
-        #if not re.match(r"^\d{7,10}$", value):
+        # if not re.match(r"^\d{7,10}$", value):
         if len(value) != 9:
             raise serializers.ValidationError("DNI must be with 9 digits.")
         return value
@@ -53,7 +69,9 @@ class UsuarioSerializer(serializers.ModelSerializer):
         Custom validation for phone number format.
         """
         if not re.match(r"^\+?\d{8,12}$", value):
-            raise serializers.ValidationError("Phone number must be between 8 and 12 digits.")
+            raise serializers.ValidationError(
+                "Phone number must be between 8 and 12 digits."
+            )
         return value
 
     # Validate that passwords match
@@ -66,7 +84,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {"apellidos": "Apellidos is required for Persona Física."}
             )
-        
+
         if data.get("tipo") == "PJ":
             data["apellidos"] = ""
 
@@ -108,6 +126,19 @@ class AdministracionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Administracion
         fields = [
+            "id" "nombre_comercial",
+            "numero_receptor",
+            "direccion",
+            "provincia",
+            "localidad",
+            "numero_administracion",
+        ]
+
+
+class AdministracionRegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Administracion
+        fields = [
             "nombre_comercial",
             "numero_receptor",
             "direccion",
@@ -119,9 +150,13 @@ class AdministracionSerializer(serializers.ModelSerializer):
     # Field-level validation for numero_receptor (should be unique)
     def validate_numero_receptor(self, value):
         if not value.isdigit():
-            raise serializers.ValidationError("The numero_receptor must contain only digits.")
+            raise serializers.ValidationError(
+                "The numero_receptor must contain only digits."
+            )
         if len(value) != 5:
-            raise serializers.ValidationError("The numero_receptor must be exactly 5 digits long.")
+            raise serializers.ValidationError(
+                "The numero_receptor must be exactly 5 digits long."
+            )
         if Administracion.objects.filter(numero_receptor=value).exists():
             raise serializers.ValidationError("This numero_receptor is already in use.")
         return value
@@ -129,12 +164,16 @@ class AdministracionSerializer(serializers.ModelSerializer):
     # Field-level validation for numero_administracion (custom length or pattern validation)
     def validate_numero_administracion(self, value):
         if not value.isdigit():
-            raise serializers.ValidationError("El numero_administracion debe contener solo dígitos.")
+            raise serializers.ValidationError(
+                "El numero_administracion debe contener solo dígitos."
+            )
         if len(value) > 5:
-            raise serializers.ValidationError("El numero_administracion debe tener como maximo 5 dígitos.")
+            raise serializers.ValidationError(
+                "El numero_administracion debe tener como maximo 5 dígitos."
+            )
 
         return value
-    
+
     # Cross-field validation
     def validate(self, data):
         # Example of validating a combination of fields
@@ -142,7 +181,7 @@ class AdministracionSerializer(serializers.ModelSerializer):
         localidad = data.get("localidad")
         direccion = data.get("direccion")
 
-        if not provincia :
+        if not provincia:
             raise serializers.ValidationError(
                 {"provincia": " Provincia is a required field."}
             )
@@ -153,12 +192,12 @@ class AdministracionSerializer(serializers.ModelSerializer):
                 {"provincia": " Provincia is not a valid value from select form."}
             )
 
-        if not localidad :
+        if not localidad:
             raise serializers.ValidationError(
                 {"localidad": " Localidad is required field."}
             )
 
-        if not direccion :
+        if not direccion:
             raise serializers.ValidationError(
                 {"direccion": " Dirección is required field."}
             )

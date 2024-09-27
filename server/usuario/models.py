@@ -1,13 +1,13 @@
-
 from typing import Any, Optional
 
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
-    PermissionsMixin
+    PermissionsMixin,
 )
 from django.db import models
-from .constants import TIPOS_PERSONA, PROVINCIAS_CHOICES
+
+from .constants import PROVINCIAS, TIPOS_PERSONA
 
 
 class UsuarioManager(BaseUserManager):
@@ -58,16 +58,26 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 
     id = models.AutoField(primary_key=True)
     # Tipo de usuario -> PF: Persona Fisica, PJ: Persona Juridica.
-    tipo = models.CharField(max_length=2, choices=TIPOS_PERSONA, default="PF")  # SELECT FROM LIST
+    tipo = models.CharField(
+        max_length=2, choices=TIPOS_PERSONA, default="PF"
+    )  # SELECT FROM LIST
     dni = models.CharField(max_length=10, unique=True)
     nombre = models.CharField(max_length=50)
-    apellidos = models.CharField(max_length=50, blank=True, null=True)  # EMPTY IF TIPO=PJ
+    apellidos = models.CharField(
+        max_length=50, blank=True, null=True
+    )  # EMPTY IF TIPO=PJ
     telefono = models.CharField(max_length=12)
     email = models.EmailField(max_length=254, unique=True)
-    id_administracion = models.OneToOneField("Administracion", on_delete=models.CASCADE, related_name="propietario", null=False)
+    id_administracion = models.OneToOneField(
+        "Administracion",
+        on_delete=models.CASCADE,
+        related_name="propietario",
+        null=False,
+    )
 
     # ADITIONAL ADMON STATUS FIELDS
     created_at = models.DateTimeField(auto_now_add=True)
+    # updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)  # Permite acceso al admin panel
 
@@ -94,12 +104,10 @@ class Administracion(models.Model):
     nombre_comercial = models.CharField(max_length=100)
     numero_receptor = models.CharField(max_length=5, unique=True)
     direccion = models.CharField(max_length=255)
-    provincia = models.CharField(max_length=100, choices=PROVINCIAS_CHOICES)
+    provincia = models.CharField(max_length=100, choices=PROVINCIAS)
     localidad = models.CharField(max_length=100)
     numero_administracion = models.CharField(max_length=5)
 
     def __str__(self) -> str:
         """Return a string representation of the administration (nombre_comercial)."""
         return self.nombre_comercial
-
-

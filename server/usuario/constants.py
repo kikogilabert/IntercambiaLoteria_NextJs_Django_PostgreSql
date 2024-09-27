@@ -1,7 +1,7 @@
 TIPOS_PERSONA = [("PF", "Persona Fisica"), ("PJ", "Persona Juridica")]
 
 PROVINCIAS = {
-    #"-- ANDORRA -- ": "ANDORRA",
+    # "-- ANDORRA -- ": "ANDORRA",
     "ALAVA/ARABA": "ALAVA",
     "ALBACETE": "ALBACETE",
     "ALICANTE/ALACANT": "ALICANTE",
@@ -39,7 +39,7 @@ PROVINCIAS = {
     "NAVARRA": "NAVARRA",
     "OURENSE": "OURENSE",
     "PALENCIA": "PALENCIA",
-    "LAS PALMAS ": "LAS_PALMAS",
+    "LAS PALMAS": "LAS_PALMAS",
     "PONTEVEDRA": "PONTEVEDRA",
     "LA RIOJA": "LA_RIOJA",
     "SALAMANCA": "SALAMANCA",
