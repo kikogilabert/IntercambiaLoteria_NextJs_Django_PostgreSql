@@ -25,7 +25,7 @@ urlpatterns = [
     # Login user
     path("login/", UsuarioLoginView.as_view(), name="user-login"),
     # Profile update (PUT for full, PATCH for partial)
-    path("profile/update", UsuarioUpdateView.as_view(), name="profile-update"),
+    path("profile/update/", UsuarioUpdateView.as_view(), name="profile-update"),
     # Deactivate profile (DELETE)
     path("profile/deactivate/", UsuarioUpdateView.as_view(), name="profile-deactivate"),
 ]

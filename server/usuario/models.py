@@ -94,7 +94,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self) -> str:
         """Return a string representation of the user (DNI)."""
-        return self.dni
+        return self.email
 
 
 class Administracion(models.Model):

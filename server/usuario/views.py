@@ -1,9 +1,7 @@
 from typing import Any, Dict, Optional
 
-from django.contrib.auth import authenticate
 from django.db import transaction
 from rest_framework import status
-from rest_framework.authtoken.models import Token
 from rest_framework.permissions import (
     AllowAny,
     IsAdminUser,
@@ -14,6 +12,7 @@ from rest_framework.views import APIView
 
 from .serializers import (
     AdministracionRegisterSerializer,
+    UsuarioLoginSerializer,
     UsuarioRegisterSerializer,
     UsuarioSerializer,
 )
@@ -75,19 +74,30 @@ class UsuarioRegisterView(APIView):
                 )
 
 
-# User Login View (uses token-based authentication)
+# User Login View using JWT
 class UsuarioLoginView(APIView):
-    def post(self, request):
-        email = request.data.get("email")
-        password = request.data.get("password")
-        user = authenticate(email=email, password=password)
+    permission_classes = [AllowAny]  # Allow anyone to access this view
 
-        if user:
-            token, created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key}, status=status.HTTP_200_OK)
-        return Response(
-            {"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST
-        )
+    def post(self, request):
+        serializer = UsuarioLoginSerializer(data=request.data)
+
+        if serializer.is_valid():
+            user = serializer.validated_data
+            tokens = serializer.get_tokens(user)
+
+            return Response(
+                {
+                    "refresh": tokens["refresh"],
+                    "access": tokens["access"],
+                    "user": {
+                        "id": user.id,
+                        "email": user.email,
+                    },
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # User Profile Update View
@@ -108,6 +118,7 @@ class UsuarioUpdateView(APIView):
 
     # PATCH method for partial updates
     def patch(self, request):
+        print(request)
         serializer = UsuarioSerializer(
             request.user, data=request.data, partial=True
         )  # Allow partial updates

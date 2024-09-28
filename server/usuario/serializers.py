@@ -2,6 +2,7 @@ import re
 from typing import Any, Dict
 
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from .constants import PROVINCIAS_CHOICES
 from .models import Administracion, Usuario  # Assuming your models are in models.py
@@ -207,3 +208,33 @@ class AdministracionRegisterSerializer(serializers.ModelSerializer):
     # Overriding the create method to ensure saving logic
     def create(self, validated_data):
         return Administracion.objects.create(**validated_data)
+
+
+from django.contrib.auth import authenticate, get_user_model
+
+# from django.contrib.auth.models import User
+
+# Get the custom user model
+User = get_user_model()
+
+
+class UsuarioLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
+
+    def validate(self, data):
+        email = data.get("email")
+        password = data.get("password")
+
+        # Authenticate user using email
+        user = authenticate(username=email, password=password)
+        if not user:
+            raise serializers.ValidationError("Invalid credentials")
+
+        return user
+
+    def get_tokens(self, user):
+        # Generate JWT token pair (access and refresh)
+        token_serializer = TokenObtainPairSerializer()
+        tokens = token_serializer.get_token(user)
+        return {"refresh": str(tokens), "access": str(tokens.access_token)}
