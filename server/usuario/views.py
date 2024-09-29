@@ -12,9 +12,11 @@ from rest_framework.views import APIView
 
 from .serializers import (
     AdministracionRegisterSerializer,
+    UsuarioLoggedSerializer,
     UsuarioLoginSerializer,
     UsuarioRegisterSerializer,
     UsuarioSerializer,
+    UsuarioUpdateSerializer
 )
 
 
@@ -87,17 +89,26 @@ class UsuarioLoginView(APIView):
 
             return Response(
                 {
-                    "refresh": tokens["refresh"],
-                    "access": tokens["access"],
-                    "user": {
-                        "id": user.id,
-                        "email": user.email,
-                    },
+                    "status": "success",
+                    "message": "Login successful.",
+                    "data": {
+                        "access_token": tokens["refresh"],
+                        "refresh_token": tokens["access"]
+                    }
                 },
                 status=status.HTTP_200_OK,
             )
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        print(serializer.errors)
+        print(type(serializer.errors))
+        return Response(
+                        {
+                            "status": "error",
+                            "error_code": serializer.errors[0],
+                            "message": serializer.errors[1],
+                        },
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
 
 
 # User Profile Update View
@@ -106,7 +117,7 @@ class UsuarioUpdateView(APIView):
 
     # PUT method to fully or partially update the user
     def put(self, request):
-        serializer = UsuarioSerializer(
+        serializer = UsuarioUpdateSerializer(
             request.user, data=request.data, partial=False
         )  # Allow partial updates
         if serializer.is_valid():
@@ -119,7 +130,7 @@ class UsuarioUpdateView(APIView):
     # PATCH method for partial updates
     def patch(self, request):
         print(request)
-        serializer = UsuarioSerializer(
+        serializer = UsuarioUpdateSerializer(
             request.user, data=request.data, partial=True
         )  # Allow partial updates
         if serializer.is_valid():
@@ -138,3 +149,19 @@ class UsuarioUpdateView(APIView):
         return Response(
             {"message": "User deactivated successfully"}, status=status.HTTP_200_OK
         )
+
+
+# User Profile Update View
+class UsuarioView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = UsuarioLoggedSerializer(
+            request.user, data=request.data, partial=False
+        )  # Allow partial updates
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {"message": "User updated successfully"}, status=status.HTTP_200_OK
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

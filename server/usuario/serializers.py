@@ -8,6 +8,33 @@ from .constants import PROVINCIAS_CHOICES
 from .models import Administracion, Usuario  # Assuming your models are in models.py
 
 
+class UsuarioLoggedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Usuario
+        fields = [
+            "tipo",
+            "dni",
+            "nombre",
+            "apellidos",
+            "telefono",
+            "email"
+        ]
+
+
+class UsuarioUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Usuario
+        fields = [
+            "tipo",
+            "dni",
+            "nombre",
+            "apellidos",
+            "telefono",
+            "email",
+            "password",
+        ]
+
+
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
@@ -229,8 +256,9 @@ class UsuarioLoginSerializer(serializers.Serializer):
         # Authenticate user using email
         user = authenticate(username=email, password=password)
         if not user:
-            raise serializers.ValidationError("Invalid credentials")
-
+            raise serializers.ValidationError(detail="Invalid credentials.", code="AUTH_INVALID_CREDENTIALS")
+        if not user.is_active:
+            raise serializers.ValidationError(("AUTH_ACCOUNT_DISABLED", "User is not actived."))
         return user
 
     def get_tokens(self, user):
