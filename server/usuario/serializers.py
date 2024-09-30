@@ -8,7 +8,7 @@ from .constants import PROVINCIAS_CHOICES
 from .models import Administracion, Usuario  # Assuming your models are in models.py
 
 
-class UsuarioLoggedSerializer(serializers.ModelSerializer):
+class ProfileGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         fields = [
@@ -22,7 +22,7 @@ class UsuarioLoggedSerializer(serializers.ModelSerializer):
         ]
 
 
-class UsuarioUpdateSerializer(serializers.ModelSerializer):
+class ProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         fields = [

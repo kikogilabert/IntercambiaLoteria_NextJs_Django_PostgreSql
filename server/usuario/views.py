@@ -13,8 +13,8 @@ from .serializers import (
     AdministracionRegisterSerializer,
     UsuarioLoginSerializer,
     UsuarioRegisterSerializer,
-    UsuarioUpdateSerializer,
-    UsuarioLoggedSerializer,
+    ProfileUpdateSerializer,
+    ProfileGetSerializer,
 )
 
 
@@ -115,26 +115,18 @@ class UsuarioLoginView(APIView):
 
 
 # User Profile Update View
-class UsuarioUpdateView(APIView):
-    permission_classes = [IsAuthenticated]
-
-
-
-# User Profile Update View
 class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
-    
 
     # Get the user profile
     def get(self,  request):
         user = request.user
-        serializer = UsuarioLoggedSerializer(user)
+        serializer = ProfileGetSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
-        
-        
+
     # PUT method to fully update the user
     def put(self, request):
-        serializer = UsuarioUpdateSerializer(
+        serializer = ProfileUpdateSerializer(
             request.user, data=request.data, partial=False
         )  # Allow partial updates
         if serializer.is_valid():
@@ -146,8 +138,7 @@ class ProfileView(APIView):
 
     # PATCH method for partial updates on the user
     def patch(self, request):
-        print(request)
-        serializer = UsuarioUpdateSerializer(
+        serializer = ProfileUpdateSerializer(
             request.user, data=request.data, partial=True
         )  # Allow partial updates
         if serializer.is_valid():
