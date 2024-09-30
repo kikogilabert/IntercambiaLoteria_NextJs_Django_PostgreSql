@@ -7,7 +7,7 @@ from django.contrib.auth.models import (
 )
 from django.db import models
 
-from .constants import PROVINCIAS, TIPOS_PERSONA
+from .constants import PROVINCIAS, TIPOS_PERSONA, PROVINCIAS_CHOICES
 
 
 class UsuarioManager(BaseUserManager):
@@ -104,7 +104,7 @@ class Administracion(models.Model):
     nombre_comercial = models.CharField(max_length=100)
     numero_receptor = models.CharField(max_length=5, unique=True)
     direccion = models.CharField(max_length=255)
-    provincia = models.CharField(max_length=100, choices=PROVINCIAS)
+    provincia = models.CharField(max_length=100, choices=PROVINCIAS_CHOICES)
     localidad = models.CharField(max_length=100)
     numero_administracion = models.CharField(max_length=5)
 

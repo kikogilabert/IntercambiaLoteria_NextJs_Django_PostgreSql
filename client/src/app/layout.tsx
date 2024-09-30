@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { NextUIProvider } from "@nextui-org/react";
 import HeaderComponent from "./core/components/statics/Header/HeaderComponent";
+import AuthProvider from "./core/context/auth.context";
 
 export const metadata: Metadata = {
   title: "ConectaLoteria",
@@ -16,11 +17,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="">
+        <AuthProvider>
           <NextUIProvider>
             <HeaderComponent />
           {children}
           {/* <FooterComponent /> */}
           </NextUIProvider>
+        </AuthProvider>
       </body>
     </html>
   );

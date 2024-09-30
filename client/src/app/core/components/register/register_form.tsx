@@ -1,79 +1,75 @@
 "use client"
 
 import { Button, Input, Select, SelectItem, SelectSection } from '@nextui-org/react';
+import { Eye, EyeOff } from 'lucide-react';
+
+
 import { useState } from 'react';
 import { PROVINCIAS_POR_COMUNIDAD, TIPO_PROPIETARIO } from '@core/constants/index';
-import { UsuarioInterface, AdministracionInterface } from '@core/interfaces/user.interface';
+
 import './register_form.module.scss'
 
 import { useForm } from "react-hook-form";
-import { z } from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
-
-
-type ProvinciaType = {
-    name: string;
-    value: string;
-}
-
+import { registerUser } from '@/core/api/auth';
+import { RegisterUserFormData, userRegisterType, administracionRegisterType } from '@core/interfaces/user.interface';
+import { adminSchema, userSchema } from '@core/components/register/registerSchema';
+import { useRouter } from 'next/navigation';
 export default function RegisterComponent() {
-    ////////////////////schemas/////////////////////////
-    const userSchema = z.object({
-        tipo: z.string().refine(value => ['PF', 'PJ'].includes(value), {
-            message: 'Tipo debe ser "Persona Fisica" o "Persona Juridica"',
-        }),
-        dni: z.string().length(9, { message: 'DNI debe tener 9 caracteres' }),
-        nombre: z.string({ message: 'Nombre es requerido' }).min(5, { message: 'Nombre debe tener al menos 5 caracteres' }).max(30, { message: 'Nombre debe tener menos de 30 caracteres' }),
-        apellidos: z.string().nullable(),
-        password: z.string({ message: 'Contraseña es requerida' }).min(8, { message: 'Contraseña debe tener al menos 8 caracteres' }).max(30, { message: 'Contraseña debe tener menos de 30 caracteres' }),
-        confirm_password: z.string({ message: 'Confirmar contraseña es requerida' }).min(8, { message: 'Confirmar contraseña debe tener al menos 8 caracteres' }).max(30, { message: 'Confirmar contraseña debe tener menos de 30 caracteres' }),
-        phoneNumber: z.string({ message: 'Número de teléfono es requerido' }).length(9, { message: 'Número de teléfono debe tener 9 caracteres' }),
-        email: z.string().email({ message: 'Email no es válido' }).nonempty({ message: 'Email es requerido' }),
-    });
-
-    const adminSchema = z.object({
-        nombreComercial: z.string({ message: 'Nombre de administrador es requerido' }).min(5, { message: 'Nombre de administrador debe tener al menos 5 caracteres' }).max(30, { message: 'Nombre de administrador debe tener menos de 30 caracteres' }),
-        numeroReceptor: z.string().length(5, { message: 'Número receptor debe tener 5 caracteres' }),
-        direccion: z.string({ message: 'Dirección es requerida' }).min(5, { message: 'Dirección debe tener al menos 5 caracteres' }).max(30, { message: 'Dirección debe tener menos de 30 caracteres' }),
-        provincia: z.string({ message: 'Provincia es requerida' }).min(5, { message: 'Provincia debe tener al menos 5 caracteres' }).max(30, { message: 'Provincia debe tener menos de 30 caracteres' }),
-        localidad: z.string({ message: 'Localidad es requerida' }).min(5, { message: 'Localidad debe tener al menos 5 caracteres' }).max(30, { message: 'Localidad debe tener menos de 30 caracteres' }),
-        numeroAdministracion: z.number().min(0, { message: 'Número de administración debe ser mayor a 0' }).max(2000, { message: 'Número de administración debe ser menor a 2000' }),
-    });
-
 
 
     //////////////////////////////// VARIABLES////////////////////////////////
-
-    const [usuario, setUsuario] = useState<UsuarioInterface | null>();
-    const [administracion, setAdministracion] = useState<AdministracionInterface | null>(null);
+    const router = useRouter();
+    const [usuario, setUsuario] = useState<userRegisterType | null>();
+    const [administracion, setAdministracion] = useState<administracionRegisterType | null>(null);
+    
     const [step, setStep] = useState(0);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword2, setShowPassword2] = useState(false);
     const [isButtonLoading, setIsButtonLoading] = useState(false)
 
 
     //////////////////////////////// FUNCTIONS////////////////////////////////
     const { register, handleSubmit,
         setValue,
+        getValues,
         setError,
         formState: { errors } } =
         useForm({
             resolver: zodResolver(step === 0 ? adminSchema : userSchema),
-            mode: 'onChange',
-            defaultValues: step === 0 ? { nombre_comercial: '', numero_receptor: '', direccion: '', provincia: '', localidad: '', numero_administracion: '' } :  { tipo: '', dni: '', nombre: '', apellidos: '', contraseña: '', confirmar_contraseña: '', telefono: '', email: '' } 
+            mode: 'onSubmit',
+            defaultValues: step === 0 ? { nombre_comercial: '', numero_receptor: '', direccion: '', provincia: '', localidad: '', numero_administracion: '' }
+                : { tipo: '', dni: '', nombre: '', apellidos: '', password1: '', password2: '', telefono: '', email: '' }
         });
-        console.log(errors);
-        
+    console.log(errors);
+
     //submit form function
     const onSubmit = (data: any) => {
+        setIsButtonLoading(true);
+        console.log(data);
+
         if (step === 0) {
             setAdministracion(data);
             setStep(1);
             setIsButtonLoading(false);
-        } else {
+        } if (step === 1) {
             setUsuario(data);
-            const finalData = { usuario: usuario, administracion: administracion };
             setIsButtonLoading(false);
-
+        }
+        if (usuario && administracion) {
+            const finalData: RegisterUserFormData = { usuario: usuario, administracion: administracion };
             console.log(finalData);
+            const response = registerUser(finalData)
+                .then((res) => {
+                    console.log(res);
+                    router.push('/iniciar-sesion');
+                }
+                ).catch((err) => {
+                    console.log(err);
+                    if (err.response.status === 400) {
+                        setError('email', { message: 'Email ya registrado' });
+                    }
+                })
         }
     };
 
@@ -87,31 +83,38 @@ export default function RegisterComponent() {
                     <h2 className='text-2xl font-bold'>Cuentanos sobre tu administracion...</h2>
                     <div className='flex flex-col gap-4 items-center justify-center max-w-[365px] w-full h-full'>
                         <Input
-                        {...register('nombre_comercial')}
-                        onChange={(e) => setValue('nombre_comercial', e.target.value)}
-                            isRequired type="text"
+                            {...register('nombre_comercial')}
+                            onChange={(e) => setValue('nombre_comercial', e.target.value)}
+                            isInvalid={errors.nombre_comercial ? true : false}
+                            errorMessage={errors.nombre_comercial?.message ? errors.nombre_comercial?.message : null}
+                            type="text"
                             label="Nombre Comercial" placeholder=''
                             size='sm'
                         />
                         <Input
                             {...register('numero_receptor')}
                             onChange={(e) => setValue('numero_receptor', e.target.value)}
+                            isInvalid={errors.numero_receptor ? true : false}
+                            errorMessage={errors.numero_receptor?.message ? errors.numero_receptor?.message : null}
                             isRequired type="number"
                             label="Número receptor"
                             maxLength={5}
-                            minLength={5} placeholder='' size='sm'
+                            placeholder='' size='sm'
                         />
-                        <Input 
+                        <Input
                             {...register('direccion')}
                             onChange={(e) => setValue('direccion', e.target.value)}
                             isRequired type="text"
                             label="Dirección" placeholder=''
-                            size='sm' 
+                            size='sm'
+                            isInvalid={errors.direccion ? true : false}
+                            errorMessage={errors.direccion?.message ? errors.direccion?.message : null}
                         />
                         <Select
                             {...register('provincia')}
                             onChange={(e) => setValue('provincia', e.target.value)}
-                            isRequired
+                            isInvalid={errors.provincia ? true : false}
+                            errorMessage={errors.provincia?.message ? errors.provincia?.message : null}
                             label="Provincia"
                             placeholder="Selecciona una provincia"
                             size='sm'
@@ -120,28 +123,32 @@ export default function RegisterComponent() {
                             }}
                         >
                             {PROVINCIAS_POR_COMUNIDAD.map((comunidad) => (
-                            <SelectSection title={comunidad.comunidad} key={comunidad.comunidad}>
-                                {comunidad.provincias.map((provincia) => (
-                                <SelectItem key={provincia.value}>
-                                    {provincia.name}
-                                </SelectItem>
-                                ))}
-                            </SelectSection>
+                                <SelectSection title={comunidad.comunidad} key={comunidad.comunidad}>
+                                    {comunidad.provincias.map((provincia) => (
+                                        <SelectItem key={provincia.value}>
+                                            {provincia.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectSection>
                             ))}
                         </Select>
-                        <Input 
-                            {...register('localidad')} 
+
+                        <Input
+                            {...register('localidad')}
                             onChange={(e) => setValue('localidad', e.target.value)}
+                            isInvalid={errors.localidad ? true : false}
+                            errorMessage={errors.localidad?.message ? errors.localidad?.message : null}
                             isRequired type="text"
                             label="Localidad" placeholder=''
                             size='sm'
                         />
-                        <Input 
+                        <Input
                             {...register('numero_administracion')}
                             onChange={(e) => setValue('numero_administracion', e.target.value)}
-                            isRequired type="number" 
-                            label="Número Administración" min={0} 
-                            max={5000} placeholder='' size='sm' 
+                            isInvalid={errors.numero_administracion ? true : false}
+                            errorMessage={errors.numero_administracion?.message ? errors.numero_administracion?.message : null}
+                            isRequired type="number"
+                            label="Número Administración" placeholder='' size='sm'
                         />
                     </div>
                     <div className='flex flex-row gap-[8px] justify-center items-center w-full'>
@@ -159,7 +166,8 @@ export default function RegisterComponent() {
                         <Select
                             {...register('tipo')}
                             onChange={(e) => setValue('tipo', e.target.value)}
-
+                            isInvalid={errors.tipo ? true : false}
+                            errorMessage={errors.tipo?.message ? errors.tipo?.message : null}
                             isRequired size='sm'
                             label="Tipo de Propietario"
                             placeholder=''
@@ -173,15 +181,74 @@ export default function RegisterComponent() {
                                 </SelectItem>
                             ))}
                         </Select>
-                        <Input isRequired size='sm' type="text" label="DNI" placeholder='' />
+                        <Input
+                            {...register('dni')}
+                            onChange={(e) => setValue('dni', e.target.value)}
+                            isInvalid={errors.dni ? true : false}
+                            errorMessage={errors.dni?.message ? errors.dni?.message : null}
+                            isRequired size='sm'
+                            type="text" label="DNI"
+                            placeholder=''
+                        />
                         <div className='flex flex-row gap-[8px] max-w-full'>
-                            <Input {...register('nombre')} onChange={(e) => setValue('nombre', e.target.value)} isRequired size='sm' type="text" label="Nombre" placeholder='' />
-                            <Input isRequired size='sm'  {...register('apellidos')}  onChange={(e) => setValue('apellidos', e.target.value)} type="text" label="Apellidos" placeholder='' />
+                            <Input
+                                {...register('nombre')}
+                                onChange={(e) => setValue('nombre', e.target.value)}
+                                isInvalid={errors.nombre ? true : false}
+                                errorMessage={errors.nombre?.message ? errors.nombre?.message : null}
+                                isRequired size='sm' type="text"
+                                label="Nombre" placeholder=''
+                            />
+                            <Input
+                                isRequired={getValues('tipo') === 'Persona Fisica' ? true : false} size='sm'
+                                {...register('apellidos')}
+                                onChange={(e) => setValue('apellidos', e.target.value)}
+                                isInvalid={errors.apellidos ? true : false}
+                                errorMessage={errors.apellidos?.message ? errors.apellidos?.message : null}
+                                type="text" label="Apellidos"
+                                placeholder=''
+                            />
                         </div>
-                        <Input isRequired size='sm' type="tel" label="Telefono" {...register('telefono')}  onChange={(e) => setValue('telefono', e.target.value)} placeholder='' />
-                        <Input isRequired size='sm' type="email" label="Email" placeholder='' {...register('email')}  onChange={(e) => setValue('email', e.target.value)} />
-                        <Input isRequired size='sm' type="text" label="Contraseña" placeholder=''  {...register('contraseña')}  onChange={(e) => setValue('contraseña', e.target.value)} />
-                        <Input isRequired size='sm' type="text" label="Confirma contraseña" placeholder=''  {...register('confirmar_contraseña')}  onChange={(e) => setValue('confirmar_contraseña', e.target.value)} />
+                        <Input
+                            isRequired size='sm' type="tel"
+                            label="Telefono" {...register('telefono')}
+                            onChange={(e) => setValue('telefono', e.target.value)}
+                            isInvalid={errors.telefono ? true : false}
+                            errorMessage={errors.telefono?.message ? errors.telefono?.message : null}
+                            placeholder=''
+                        />
+                        <Input
+                            isRequired size='sm' type="email"
+                            label="Email" placeholder='' {...register('email')}
+                            onChange={(e) => setValue('email', e.target.value)}
+                            isInvalid={errors.email ? true : false}
+                            errorMessage={errors.email?.message ? errors.email?.message : null}
+                        />
+                        <Input
+                            isRequired size='sm' type={showPassword ? 'text' : 'password'}
+                            label="Contraseña" placeholder=''  {...register('password1')}
+                            onChange={(e) => setValue('password1', e.target.value)}
+                            isInvalid={errors.password1 ? true : false}
+                            errorMessage={errors.password1?.message ? errors.password1?.message : null}
+                            endContent={ 
+                                showPassword ? 
+                                <EyeOff onClick={() => setShowPassword(false)} className="cursor-pointer" /> : 
+                                <Eye onClick={() => setShowPassword(true)} className="cursor-pointer" />
+                            }
+                        />
+                        <Input
+                            isRequired size='sm' type={showPassword ? 'text' : 'password'}
+                            label="Confirmar contraseña" placeholder=''
+                            {...register('password2')}
+                            onChange={(e) => setValue('password2', e.target.value)}
+                            isInvalid={errors.password2 ? true : false}
+                            errorMessage={errors.password2?.message ? errors.password2?.message : null}
+                            endContent={ 
+                                showPassword2 ? 
+                                <EyeOff onClick={() => setShowPassword2(false)} className="cursor-pointer" /> : 
+                                <Eye onClick={() => setShowPassword2(true)} className="cursor-pointer" />
+                            }
+                        />
                     </div>
                     <div className='flex'>
                         <Button className='flex w-full max-w-xs' type='submit' color="primary" variant="ghost" isLoading={isButtonLoading}>

@@ -17,7 +17,8 @@ class UsuarioLoggedSerializer(serializers.ModelSerializer):
             "nombre",
             "apellidos",
             "telefono",
-            "email"
+            "email",
+            "id_administracion",
         ]
 
 
@@ -214,7 +215,7 @@ class AdministracionRegisterSerializer(serializers.ModelSerializer):
                 {"provincia": " Provincia is a required field."}
             )
 
-        provincias_keys = [choice[1] for choice in PROVINCIAS_CHOICES]
+        provincias_keys = [choice[0] for choice in PROVINCIAS_CHOICES]
         if provincia not in provincias_keys:
             raise serializers.ValidationError(
                 {"provincia": " Provincia is not a valid value from select form."}
@@ -255,10 +256,9 @@ class UsuarioLoginSerializer(serializers.Serializer):
 
         # Authenticate user using email
         user = authenticate(username=email, password=password)
-        if not user:
-            raise serializers.ValidationError(detail="Invalid credentials.", code="AUTH_INVALID_CREDENTIALS")
-        if not user.is_active:
-            raise serializers.ValidationError(("AUTH_ACCOUNT_DISABLED", "User is not actived."))
+
+        if not user: #This could also be if user IS NOT ACTIVE
+            raise serializers.ValidationError(detail="Invalid form credentials.", code="AUTH_INVALID_CREDENTIALS")
         return user
 
     def get_tokens(self, user):

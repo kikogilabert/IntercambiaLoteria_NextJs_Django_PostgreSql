@@ -17,7 +17,7 @@ Including another URLconf
 
 from django.urls import path
 
-from .views import UsuarioLoginView, UsuarioRegisterView, UsuarioUpdateView
+from .views import ProfileView, UsuarioLoginView, UsuarioRegisterView, UsuarioUpdateView
 
 urlpatterns = [
     # Register a new user
@@ -28,4 +28,6 @@ urlpatterns = [
     path("profile/update/", UsuarioUpdateView.as_view(), name="profile-update"),
     # Deactivate profile (DELETE)
     path("profile/deactivate/", UsuarioUpdateView.as_view(), name="profile-deactivate"),
+    # Get profile data
+    path('profile/', ProfileView.as_view(), name='profile'),
 ]

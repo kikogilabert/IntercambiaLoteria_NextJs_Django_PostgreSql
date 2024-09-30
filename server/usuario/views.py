@@ -4,7 +4,6 @@ from django.db import transaction
 from rest_framework import status
 from rest_framework.permissions import (
     AllowAny,
-    IsAdminUser,
     IsAuthenticated,
 )
 from rest_framework.response import Response
@@ -12,16 +11,18 @@ from rest_framework.views import APIView
 
 from .serializers import (
     AdministracionRegisterSerializer,
-    UsuarioLoggedSerializer,
     UsuarioLoginSerializer,
     UsuarioRegisterSerializer,
-    UsuarioSerializer,
-    UsuarioUpdateSerializer
+    UsuarioUpdateSerializer,
+    UsuarioLoggedSerializer,
 )
 
 
 # User Registration View
 class UsuarioRegisterView(APIView):
+
+    permission_classes = [AllowAny]
+
     def post(self, request):
         # Check if administracion data exist.
         administracion_data = request.data.get("administracion")
@@ -90,32 +91,48 @@ class UsuarioLoginView(APIView):
             return Response(
                 {
                     "status": "success",
-                    "message": "Login successful.",
+                    "message": "User logged in successfully",
                     "data": {
-                        "access_token": tokens["refresh"],
-                        "refresh_token": tokens["access"]
+                        "access_token": tokens["access"],
+                        "refresh_token": tokens["refresh"]
                     }
                 },
                 status=status.HTTP_200_OK,
             )
         
-        print(serializer.errors)
-        print(type(serializer.errors))
+        error_field = list(serializer.errors.keys())[0]
+        error_detail = serializer.errors[error_field][0]
+        error_message = str(error_detail)
+        error_code = error_detail.code
         return Response(
-                        {
-                            "status": "error",
-                            "error_code": serializer.errors[0],
-                            "message": serializer.errors[1],
-                        },
-                        status=status.HTTP_400_BAD_REQUEST,
-                    )
+            {
+                "status": "error",
+                "error_code": error_code,
+                "message": error_message,
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
 
 # User Profile Update View
 class UsuarioUpdateView(APIView):
     permission_classes = [IsAuthenticated]
 
-    # PUT method to fully or partially update the user
+
+
+# User Profile Update View
+class ProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+
+    # Get the user profile
+    def get(self,  request):
+        user = request.user
+        serializer = UsuarioLoggedSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        
+    # PUT method to fully update the user
     def put(self, request):
         serializer = UsuarioUpdateSerializer(
             request.user, data=request.data, partial=False
@@ -127,7 +144,7 @@ class UsuarioUpdateView(APIView):
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # PATCH method for partial updates
+    # PATCH method for partial updates on the user
     def patch(self, request):
         print(request)
         serializer = UsuarioUpdateSerializer(
@@ -149,19 +166,3 @@ class UsuarioUpdateView(APIView):
         return Response(
             {"message": "User deactivated successfully"}, status=status.HTTP_200_OK
         )
-
-
-# User Profile Update View
-class UsuarioView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        serializer = UsuarioLoggedSerializer(
-            request.user, data=request.data, partial=False
-        )  # Allow partial updates
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"message": "User updated successfully"}, status=status.HTTP_200_OK
-            )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

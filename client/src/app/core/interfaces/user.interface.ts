@@ -3,22 +3,20 @@ export enum UsuarioTypeEnum {
     PJ = 'PJ' //PERSONA JURIDICA
 }
 
-
-export interface UsuarioInterface {
-    tipo: UsuarioTypeEnum;
+export type userRegisterType = {
+    tipo: string;
     dni: string;
     nombre: string;
     apellidos: string;
+    password1: string;
+    password2: string;
     telefono: string;
     email: string;
-    id_administracion: number;
-    password: string;
-    confirm_password: string;
     ServerError?: any;
+
 }
 
-export interface AdministracionInterface{
-
+export type administracionRegisterType = {
     nombre_comercial: string;
     numero_receptor: string;
     direccion: string;
@@ -26,4 +24,33 @@ export interface AdministracionInterface{
     localidad: string;
     numero_administracion: string;
     ServerError?: any;
+}
+
+export type RegisterUserFormData = {
+usuario: userRegisterType;
+administracion: administracionRegisterType;
+}
+
+export type userLoginType = {
+    email: string;
+    contraseña: string;
+    ServerError?: any;
+}
+
+export type userLoginResponse = {
+    state: string;  
+    error_code?: string;
+    access_token: string;
+    refresh_token: string;
+}
+
+
+export type UserProfileData = {
+    tipo: UsuarioTypeEnum
+    nombre: string;
+    apellidos: string;
+    email: string;
+    telefono: string;
+    dni: string;
+    id_administracion: Number;
 }
