@@ -1,68 +1,95 @@
 from django.db import models
 
-# Create your models here.
-from typing import Any, Optional
+from .constants import TIPOS_SOLICITUD, TIPOS_CONDICION, ESTADO_SOLICITUD, ESTADO_RESPUESTA
 
-from django.contrib.auth.models import (
-    AbstractBaseUser,
-    BaseUserManager,
-    PermissionsMixin,
-)
-from django.db import models
-from .constants import TIPOS_SOLICITUD
+from ..usuario.models import Administracion
 
-# class Solicitud(models.Model):
-#     """Custom user model representing a user in the system."""
+class Solicitud(models.Model):
+    """Custom model representing a Solicitud in the system."""
 
-#     id = models.AutoField(primary_key=True)
-#     # Tipo de usuario -> PF: Persona Fisica, PJ: Persona Juridica.
-#     tipo = models.CharField(
-#         max_length=2, choices=TIPOS_SOLICITUD)
-#     id_administracion = models.OneToOneField(
-#         "Administracion",
-#         on_delete=models.CASCADE,
-#         related_name="propietario",
-#         null=False,
-#     )
+    id = models.AutoField(primary_key=True)
+    tipo = models.IntegerField(choices=TIPOS_SOLICITUD)
+    administracion = models.ForeignKey(Administracion, on_delete=models.CASCADE, related_name='solicitudes', null=False)
+    numero = models.CharField(max_length=5)
+    num_series = models.CharField(max_length=3)
+    sorteo = models.CharField(max_length=3)
 
-#     numero = models.CharField(max_length=10, unique=True)
-#     num_series = models.CharField(max_length=50)
-#     soteo = models.CharField(max_length=50, blank=True, null=True)
-#     condicion = models.CharField(max_length=12)
-#     num_cond = models.EmailField(max_length=254, unique=True)
-#     num_series_cond = models.EmailField(max_length=254, unique=True)
-#     sorteo_cond = models.EmailField(max_length=254, unique=True)
-#     estado = models.EmailField(max_length=254, unique=True)
+    # Condicion
+    #condicion = models.JSONField()
+    condicion = models.IntegerField(choices=TIPOS_CONDICION)
+    num_cond = models.CharField(max_length=5)
+    num_series_cond = models.CharField(max_length=3)
+    sorteo_cond = models.CharField(max_length=3)
     
-#     # ADITIONAL ADMON STATUS FIELDS
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
+    # ADITIONAL ADMON STATUS FIELDS
+    estado = models.IntegerField(choices=ESTADO_SOLICITUD)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    # Required for Django user model
+    REQUIRED_FIELDS: list[str] = [
+        "tipo",
+        "administracion",
+        "numero",
+        "num_series",
+        "sorteo",
+        "condicion",
+        "num_cond",
+        "num_series_cond",
+        "sorteo_cond",
+    ]  # Fields required when creating a user
+
+    def __str__(self) -> str:
+        """Return a id of Solicitud"""
+        return str(self.id)
 
 
-#     # Required for Django user model
-#     REQUIRED_FIELDS: list[str] = [
-#         "tipo",
-#         "dni",
-#         "nombre",
-#         "telefono",
-#     ]  # Fields required when creating a user
+class SolicitudRespuesta(models.Model):
+    """Custom model representing a SolicitudRespuesta in the system."""
 
-#     def __str__(self) -> str:
-#         """Return a string representation of the user (DNI)."""
-#         return self.id
+    id = models.AutoField(primary_key=True)
+    solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE, related_name='respuestas')
+    administracion = models.ForeignKey(Administracion, on_delete=models.CASCADE, related_name='respuestas', null=False)
+    
+    numero = models.CharField(max_length=5)
+    num_series = models.CharField(max_length=3)
+    sorteo = models.CharField(max_length=3)
+
+    estado = models.IntegerField(choices=ESTADO_RESPUESTA)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
-# class Administracion(models.Model):
-#     """Model representing an administration entity."""
+    # Required for Django user model
+    REQUIRED_FIELDS: list[str] = [
+        "tipo",
+        "solicitud",
+        "administracion",
+        "numero",
+        "num_series",
+        "sorteo",
+    ]  # Fields required when creating a user
 
-#     id = models.AutoField(primary_key=True)
-#     nombre_comercial = models.CharField(max_length=100)
-#     numero_receptor = models.CharField(max_length=5, unique=True)
-#     direccion = models.CharField(max_length=255)
-#     provincia = models.CharField(max_length=100, choices=PROVINCIAS)
-#     localidad = models.CharField(max_length=100)
-#     numero_administracion = models.CharField(max_length=5)
+    def __str__(self) -> str:
+        """Return a id of Solicitud"""
+        return str(self.id)
 
-#     def __str__(self) -> str:
-#         """Return a string representation of the administration (nombre_comercial)."""
-#         return self.nombre_comercial
+
+class Intercambio(models.Model):
+    # Keys of intercambio.
+    id = models.AutoField(primary_key=True)
+    administracion1 = models.ForeignKey(Administracion, on_delete=models.CASCADE, related_name='intercambios_enviados')
+    administracion2 = models.ForeignKey(Administracion, on_delete=models.CASCADE, related_name='intercambios_recibidos')
+    solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE, related_name='intercambios')
+    solicitud_respuesta = models.ForeignKey(SolicitudRespuesta, on_delete=models.CASCADE, related_name='intercambios')
+    
+    # Numbers
+    numeros_adm1 = models.JSONField()
+    numeros_adm2 = models.JSONField()
+
+    # Date
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Intercambio {self.id} between {self.administracion1} and {self.administracion2}"
