@@ -2,7 +2,7 @@ from django.db import models
 
 from .constants import TIPOS_SOLICITUD, TIPOS_CONDICION, ESTADO_SOLICITUD, ESTADO_RESPUESTA
 
-from ..usuario.models import Administracion
+from usuario.models import Administracion
 
 class Solicitud(models.Model):
     """Custom model representing a Solicitud in the system."""

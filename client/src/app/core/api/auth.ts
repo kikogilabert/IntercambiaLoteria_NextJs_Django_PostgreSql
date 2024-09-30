@@ -38,67 +38,38 @@ export async function registerUser(formData: RegisterUserFormData) {
 }
 
 export async function loginUser(formData: userLoginType) {
-    const url: string = `http://localhost:8888/usuario/login/`;
-    try {
-        console.log('loginData: ', formData)
+    const loginUrl: string = `http://localhost:8888/usuario/login/`;
+    const profileUrl: string = `http://localhost:8888/usuario/profile/`;
 
-        const response = await axios.post(url, {
+    try {
+        // Primera petición para obtener el token
+        const loginResponse = await axios.post(loginUrl, {
             "email": formData.email,
             "password": formData.contraseña
         });
-        if(response.data.status === 'success' && response.data.data.access_token) {
-            let token = response.data.data.access_token;
+
+        if(loginResponse.data.status === 'success' && loginResponse.data.data.access_token) {
+            let token = loginResponse.data.data.access_token;
             CustomStorage.setItem(StorageVariables.UserToken, token);
-            console.log('token: ', token);
-           await getUserLoggedProfile(token).then(
-                (res) => {
-                    console.log('UserData: ', res);
-                    CustomStorage.setItem(StorageVariables.UserData, res);
-                }
-            ).catch(
-                (error) => {
-                    console.log(error);
-                    
-                }
-            )
-         
-            return response.data;
-        }
-        else  {
-            console.log('error');
+
+            // Segunda petición para obtener los datos del usuario
+            const profileResponse = await axios.get(profileUrl, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            console.log('profileResponse', profileResponse.data);
+                
+            if(profileResponse !== null) {
+                let userData = profileResponse.data;
+                CustomStorage.setItem(StorageVariables.UserData, userData);
+                return userData;
+            } else {
+                throw new Error('Failed to fetch user profile');
+            }
+        } else {
+            throw new Error('Login failed');
         }
     } catch (error: any ) {
-        console.log('error: ', error);
-        // if(error.response.status === 400){
-        //     throw error.response;
-        // } else {
-        //     throw `Error en la solicitud: ${error.message}`;
-        // }
+        console.error(error);
+        throw error;
     }
-}
-
-
-export async function getUserLoggedProfile(token: string): Promise<UserProfileData> {
-    return new Promise(
-        (resolve, reject) => {
-            const url = 'http://localhost:8888/usuario/profile/'
-            if (token !== null) {
-                axios.get(url, { "headers": { "Authorization": `Bearer ${token}` } }).then(
-                    res => {
-                        if (res && "data" in res) {
-                            console.log('respuesta de getUserLoggedProfile: ', res.data);
-                            resolve(res.data)
-                        } else {
-                            reject(res)
-                        }
-                    },
-                    error => {
-                        reject(error)
-                    }
-                )
-            } else {
-                reject('could not get user profile, wrong token')
-            }
-        }
-    )
 }

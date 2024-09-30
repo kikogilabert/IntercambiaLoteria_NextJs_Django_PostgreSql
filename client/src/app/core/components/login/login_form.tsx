@@ -7,17 +7,19 @@ import { z } from 'zod';
 import { Eye, EyeOff } from 'lucide-react';
 import { loginUser } from '@/core/api/auth';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/core/context/auth.context';
 
 export default function LoginForm() {
     const router = useRouter();
+    const auth = useAuth();
     const [isButtonLoading, setIsButtonLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
-    const onSubmit = (data: any) => {
+    const onSubmit = async (data: any) => {
         console.log('before sendind', data);
-        loginUser(data).then(
-            (response) => {
-                console.log(response.data);
-             
+        await loginUser(data).then(
+          async (response) => {
+                // console.log(response);
+                auth.setLogin(response);
                 setIsButtonLoading(false);
                 router.push('/');
             }
