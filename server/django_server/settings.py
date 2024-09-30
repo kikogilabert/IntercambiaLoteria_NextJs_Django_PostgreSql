@@ -34,26 +34,30 @@ SECRET_KEY =  os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'http://localhost:3000']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'administracion',
-    'boleto',
+    'corsheaders',
+    'usuario',
+    'intercambios',
+    'django.contrib.admin',
     'rest_framework',
+    'rest_framework_simplejwt',
     'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -98,7 +102,7 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = 'administracion.Administracion'
+AUTH_USER_MODEL = 'usuario.Usuario'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -140,3 +144,24 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Access token valid for 5 minutes
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),    # Refresh token valid for 1 day
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': False,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+}
+

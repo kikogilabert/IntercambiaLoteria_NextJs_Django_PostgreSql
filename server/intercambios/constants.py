@@ -1,0 +1,2 @@
+
+TIPOS_SOLICITUD = [()]
