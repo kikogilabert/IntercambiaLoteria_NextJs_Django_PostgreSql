@@ -1,8 +1,18 @@
+TIPOS_SOLICITUD = [(0, "ENVIAR"), (1, "RECIBIR")]
 
-TIPOS_SOLICITUD = [(0, 'ENVIAR'), (1, 'RECIBIR')]
+TIPOS_CONDICION = [(0, "CESION"), (1, "INDIFERENTE"), (2, "EXPLICITA")]
 
-TIPOS_CONDICION = [(0, 'CESION'), (1, 'INDIFERENTE'), (2, 'EXPLICITA')]
+ESTADO_SOLICITUD = [
+    ("abierta", "ABIERTA"),
+    ("aceptada", "ACEPTADA"),
+    ("completada", "COMPLETADA"),
+    ("cancelada", "CANCELADA"),
+]
 
-ESTADO_SOLICITUD = [(0, 'ABIERTA'), (1, 'ACEPTADA'), (2, 'COMPLETADA'), (3, 'CANCELADA')] 
-
-ESTADO_RESPUESTA = [(0, 'ABIERTA'), (1, 'ACEPTADA'), (2, 'COMPLETADA'), (3, 'CANCELADA'),  (4, 'RECHAZADA')]
+ESTADO_RESPUESTA = [
+    ("abierta", "ABIERTA"),
+    ("aceptada", "ACEPTADA"),
+    ("completada", "COMPLETADA"),
+    ("cancelada", "CANCELADA"),
+    ("rechazada", "RECHAZADA"),
+]
