@@ -1,13 +1,8 @@
 from rest_framework import serializers
 from usuario.models import Administracion
 
-from .models import (
-    Intercambio,
-    LoteriaIntercambio,
-    Solicitud,
-    SolicitudRespuesta,
-    Sorteo,
-)
+from .models import (Intercambio, LoteriaIntercambio, Solicitud,
+                     SolicitudRespuesta, Sorteo)
 
 
 class SorteoSerializer(serializers.ModelSerializer):

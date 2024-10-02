@@ -1,20 +1,15 @@
 # core/views.py
 
+from core.utils import ResponseStruct
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 
-from core.utils import ResponseStruct
-
 from .models import ComunidadAutonoma, Pais, Provincia
-from .serializers import (
-    ComunidadAutonomaSerializer,
-    ComunidadAutonomaSimpleSerializer,
-    PaisSerializer,
-    PaisSimpleSerializer,
-    ProvinciaSerializer,
-    ProvinciaSimpleSerializer,
-)
+from .serializers import (ComunidadAutonomaSerializer,
+                          ComunidadAutonomaSimpleSerializer, PaisSerializer,
+                          PaisSimpleSerializer, ProvinciaSerializer,
+                          ProvinciaSimpleSerializer)
 
 
 # Pais views

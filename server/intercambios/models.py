@@ -2,12 +2,8 @@ from django.db import models
 from django_fsm import FSMField, transition
 from usuario.models import Administracion
 
-from .constants import (
-    ESTADO_RESPUESTA,
-    ESTADO_SOLICITUD,
-    TIPOS_CONDICION,
-    TIPOS_SOLICITUD,
-)
+from .constants import (ESTADO_RESPUESTA, ESTADO_SOLICITUD, TIPOS_CONDICION,
+                        TIPOS_SOLICITUD)
 
 
 class Sorteo(models.Model):

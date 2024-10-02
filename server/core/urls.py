@@ -2,15 +2,9 @@
 
 from django.urls import path
 
-from .views import (
-    ComunidadAutonomaDetailView,
-    ComunidadAutonomaListView,
-    PaisDetailView,
-    PaisListView,
-    ProvinciaDetailView,
-    ProvinciaFromPaisView,
-    ProvinciaListView,
-)
+from .views import (ComunidadAutonomaDetailView, ComunidadAutonomaListView,
+                    PaisDetailView, PaisListView, ProvinciaDetailView,
+                    ProvinciaFromPaisView, ProvinciaListView)
 
 urlpatterns = [
     # Pais URLs

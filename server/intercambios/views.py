@@ -1,17 +1,12 @@
 from core.utils import ResponseStruct
 from django.shortcuts import get_object_or_404
 from rest_framework import status as st
-from rest_framework.permissions import (
-    IsAuthenticated,
-)
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
 from .models import LoteriaIntercambio, Solicitud, SolicitudRespuesta
-from .serializers import (
-    IntercambioSerializer,
-    SolicitudRespuestaSerializer,
-    SolicitudSerializer,
-)
+from .serializers import (IntercambioSerializer, SolicitudRespuestaSerializer,
+                          SolicitudSerializer)
 
 
 class SolicitudAPIView(APIView):

@@ -1,13 +1,10 @@
 from typing import Any, Optional
 
-from django.contrib.auth.models import (
-    AbstractBaseUser,
-    BaseUserManager,
-    PermissionsMixin,
-)
+from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
+                                        PermissionsMixin)
 from django.db import models
 
-from .constants import PROVINCIAS, TIPOS_PERSONA, PROVINCIAS_CHOICES
+from .constants import PROVINCIAS_CHOICES, TIPOS_PERSONA
 
 
 class UsuarioManager(BaseUserManager):

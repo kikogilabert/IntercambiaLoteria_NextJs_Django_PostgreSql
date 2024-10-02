@@ -1,6 +1,7 @@
 
-from rest_framework.views import exception_handler
 from core.utils import ResponseStruct
+from rest_framework.views import exception_handler
+
 
 def custom_exception_handler(exc, context):
     """Custom handler for API exceptions."""

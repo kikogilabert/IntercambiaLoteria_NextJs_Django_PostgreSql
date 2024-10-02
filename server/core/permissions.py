@@ -2,6 +2,7 @@
 
 from rest_framework.permissions import BasePermission
 
+
 class IsAdminOrReadOnly(BasePermission):
     """
     Custom permission to only allow admins to edit, but allow others to read.
