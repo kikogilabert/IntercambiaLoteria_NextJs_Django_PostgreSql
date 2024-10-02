@@ -40,7 +40,15 @@ python -m venv venv
 4. Install dependencies into the virtual environment:
 ```bash
 pip install -r requirements.txt
+pre-commit install
+
 ```
+
+Test if pre-commit is working correctly:
+```bash
+pre-commit run --all-files
+```
+
 
 5. Create a .env file in the django_server folder with the following variables:
 ```bash
