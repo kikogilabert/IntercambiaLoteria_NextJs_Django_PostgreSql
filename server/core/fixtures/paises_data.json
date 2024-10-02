@@ -1,0 +1,779 @@
+[
+    {
+        "model": "core.pais",
+        "pk": 1,
+        "fields": {
+            "nombre": "ESPAÑA",
+            "codigo": "ES"
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 1,
+        "fields": {
+            "nombre": "ANDALUCÍA",
+            "codigo": "AN",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 1,
+        "fields": {
+            "nombre": "SEVILLA",
+            "codigo": "SE",
+            "comunidad_autonoma": 1,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 2,
+        "fields": {
+            "nombre": "MÁLAGA",
+            "codigo": "MA",
+            "comunidad_autonoma": 1,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 3,
+        "fields": {
+            "nombre": "GRANADA",
+            "codigo": "GR",
+            "comunidad_autonoma": 1,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 4,
+        "fields": {
+            "nombre": "CÁDIZ",
+            "codigo": "CA",
+            "comunidad_autonoma": 1,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 5,
+        "fields": {
+            "nombre": "CÓRDOBA",
+            "codigo": "CO",
+            "comunidad_autonoma": 1,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 6,
+        "fields": {
+            "nombre": "HUELVA",
+            "codigo": "H",
+            "comunidad_autonoma": 1,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 7,
+        "fields": {
+            "nombre": "JAÉN",
+            "codigo": "J",
+            "comunidad_autonoma": 1,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 8,
+        "fields": {
+            "nombre": "ALMERÍA",
+            "codigo": "AL",
+            "comunidad_autonoma": 1,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 2,
+        "fields": {
+            "nombre": "ARAGÓN",
+            "codigo": "AR",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 9,
+        "fields": {
+            "nombre": "ZARAGOZA",
+            "codigo": "Z",
+            "comunidad_autonoma": 2,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 10,
+        "fields": {
+            "nombre": "HUESCA",
+            "codigo": "HU",
+            "comunidad_autonoma": 2,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 11,
+        "fields": {
+            "nombre": "TERUEL",
+            "codigo": "TE",
+            "comunidad_autonoma": 2,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 3,
+        "fields": {
+            "nombre": "PRINCIPADO DE ASTURIAS",
+            "codigo": "AS",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 12,
+        "fields": {
+            "nombre": "ASTURIAS",
+            "codigo": "O",
+            "comunidad_autonoma": 3,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 4,
+        "fields": {
+            "nombre": "ISLAS BALEARES",
+            "codigo": "IB",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 13,
+        "fields": {
+            "nombre": "ISLAS BALEARES",
+            "codigo": "PM",
+            "comunidad_autonoma": 4,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 5,
+        "fields": {
+            "nombre": "CANARIAS",
+            "codigo": "CN",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 14,
+        "fields": {
+            "nombre": "LAS PALMAS",
+            "codigo": "GC",
+            "comunidad_autonoma": 5,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 15,
+        "fields": {
+            "nombre": "SANTA CRUZ DE TENERIFE",
+            "codigo": "TF",
+            "comunidad_autonoma": 5,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 6,
+        "fields": {
+            "nombre": "CANTABRIA",
+            "codigo": "CB",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 16,
+        "fields": {
+            "nombre": "CANTABRIA",
+            "codigo": "S",
+            "comunidad_autonoma": 6,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 7,
+        "fields": {
+            "nombre": "CASTILLA Y LEÓN",
+            "codigo": "CL",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 17,
+        "fields": {
+            "nombre": "ÁVILA",
+            "codigo": "AV",
+            "comunidad_autonoma": 7,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 18,
+        "fields": {
+            "nombre": "BURGOS",
+            "codigo": "BU",
+            "comunidad_autonoma": 7,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 19,
+        "fields": {
+            "nombre": "LEÓN",
+            "codigo": "LE",
+            "comunidad_autonoma": 7,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 20,
+        "fields": {
+            "nombre": "PALENCIA",
+            "codigo": "P",
+            "comunidad_autonoma": 7,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 21,
+        "fields": {
+            "nombre": "SALAMANCA",
+            "codigo": "SA",
+            "comunidad_autonoma": 7,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 22,
+        "fields": {
+            "nombre": "SEGOVIA",
+            "codigo": "SG",
+            "comunidad_autonoma": 7,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 23,
+        "fields": {
+            "nombre": "SORIA",
+            "codigo": "SO",
+            "comunidad_autonoma": 7,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 24,
+        "fields": {
+            "nombre": "VALLADOLID",
+            "codigo": "VA",
+            "comunidad_autonoma": 7,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 25,
+        "fields": {
+            "nombre": "ZAMORA",
+            "codigo": "ZA",
+            "comunidad_autonoma": 7,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 8,
+        "fields": {
+            "nombre": "CASTILLA-LA MANCHA",
+            "codigo": "CM",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 26,
+        "fields": {
+            "nombre": "ALBACETE",
+            "codigo": "AB",
+            "comunidad_autonoma": 8,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 27,
+        "fields": {
+            "nombre": "CIUDAD REAL",
+            "codigo": "CR",
+            "comunidad_autonoma": 8,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 28,
+        "fields": {
+            "nombre": "CUENCA",
+            "codigo": "CU",
+            "comunidad_autonoma": 8,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 29,
+        "fields": {
+            "nombre": "GUADALAJARA",
+            "codigo": "GU",
+            "comunidad_autonoma": 8,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 30,
+        "fields": {
+            "nombre": "TOLEDO",
+            "codigo": "TO",
+            "comunidad_autonoma": 8,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 9,
+        "fields": {
+            "nombre": "CATALUÑA",
+            "codigo": "CT",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 31,
+        "fields": {
+            "nombre": "BARCELONA",
+            "codigo": "B",
+            "comunidad_autonoma": 9,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 32,
+        "fields": {
+            "nombre": "GIRONA",
+            "codigo": "GI",
+            "comunidad_autonoma": 9,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 33,
+        "fields": {
+            "nombre": "LLEIDA",
+            "codigo": "L",
+            "comunidad_autonoma": 9,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 34,
+        "fields": {
+            "nombre": "TARRAGONA",
+            "codigo": "T",
+            "comunidad_autonoma": 9,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 10,
+        "fields": {
+            "nombre": "EXTREMADURA",
+            "codigo": "EX",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 35,
+        "fields": {
+            "nombre": "BADAJOZ",
+            "codigo": "BA",
+            "comunidad_autonoma": 10,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 36,
+        "fields": {
+            "nombre": "CÁCERES",
+            "codigo": "CC",
+            "comunidad_autonoma": 10,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 11,
+        "fields": {
+            "nombre": "GALICIA",
+            "codigo": "GA",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 37,
+        "fields": {
+            "nombre": "A CORUÑA",
+            "codigo": "C",
+            "comunidad_autonoma": 11,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 38,
+        "fields": {
+            "nombre": "LUGO",
+            "codigo": "LU",
+            "comunidad_autonoma": 11,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 39,
+        "fields": {
+            "nombre": "OURENSE",
+            "codigo": "OR",
+            "comunidad_autonoma": 11,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 40,
+        "fields": {
+            "nombre": "PONTEVEDRA",
+            "codigo": "PO",
+            "comunidad_autonoma": 11,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 12,
+        "fields": {
+            "nombre": "COMUNIDAD DE MADRID",
+            "codigo": "MD",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 41,
+        "fields": {
+            "nombre": "MADRID",
+            "codigo": "M",
+            "comunidad_autonoma": 12,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 13,
+        "fields": {
+            "nombre": "REGIÓN DE MURCIA",
+            "codigo": "MC",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 42,
+        "fields": {
+            "nombre": "MURCIA",
+            "codigo": "MU",
+            "comunidad_autonoma": 13,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 14,
+        "fields": {
+            "nombre": "COMUNIDAD FORAL DE NAVARRA",
+            "codigo": "NC",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 43,
+        "fields": {
+            "nombre": "NAVARRA",
+            "codigo": "NA",
+            "comunidad_autonoma": 14,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 15,
+        "fields": {
+            "nombre": "LA RIOJA",
+            "codigo": "RI",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 44,
+        "fields": {
+            "nombre": "LA RIOJA",
+            "codigo": "LO",
+            "comunidad_autonoma": 15,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 16,
+        "fields": {
+            "nombre": "COMUNIDAD VALENCIANA",
+            "codigo": "VC",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 45,
+        "fields": {
+            "nombre": "VALENCIA",
+            "codigo": "V",
+            "comunidad_autonoma": 16,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 46,
+        "fields": {
+            "nombre": "CASTELLÓN",
+            "codigo": "CS",
+            "comunidad_autonoma": 16,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 47,
+        "fields": {
+            "nombre": "ALICANTE",
+            "codigo": "A",
+            "comunidad_autonoma": 16,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 17,
+        "fields": {
+            "nombre": "PAÍS VASCO",
+            "codigo": "PV",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 48,
+        "fields": {
+            "nombre": "ÁLAVA",
+            "codigo": "VI",
+            "comunidad_autonoma": 17,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 49,
+        "fields": {
+            "nombre": "GUIPÚZCOA",
+            "codigo": "SS",
+            "comunidad_autonoma": 17,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 50,
+        "fields": {
+            "nombre": "VIZCAYA",
+            "codigo": "BI",
+            "comunidad_autonoma": 17,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 18,
+        "fields": {
+            "nombre": "CEUTA",
+            "codigo": "CE",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 51,
+        "fields": {
+            "nombre": "CEUTA",
+            "codigo": "CE",
+            "comunidad_autonoma": 18,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.comunidadautonoma",
+        "pk": 19,
+        "fields": {
+            "nombre": "MELILLA",
+            "codigo": "ML",
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 52,
+        "fields": {
+            "nombre": "MELILLA",
+            "codigo": "ML",
+            "comunidad_autonoma": 19,
+            "pais": 1
+        }
+    },
+    {
+        "model": "core.pais",
+        "pk": 2,
+        "fields": {
+            "nombre": "ANDORRA",
+            "codigo": "AD"
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 53,
+        "fields": {
+            "nombre": "ANDORRA LA VELLA",
+            "codigo": "07",
+            "comunidad_autonoma": null,
+            "pais": 2
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 54,
+        "fields": {
+            "nombre": "ESCALDES-ENGORDANY",
+            "codigo": "08",
+            "comunidad_autonoma": null,
+            "pais": 2
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 55,
+        "fields": {
+            "nombre": "ENCAMP",
+            "codigo": "01",
+            "comunidad_autonoma": null,
+            "pais": 2
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 56,
+        "fields": {
+            "nombre": "SANT JULIÀ DE LÒRIA",
+            "codigo": "06",
+            "comunidad_autonoma": null,
+            "pais": 2
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 57,
+        "fields": {
+            "nombre": "LA MASSANA",
+            "codigo": "04",
+            "comunidad_autonoma": null,
+            "pais": 2
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 58,
+        "fields": {
+            "nombre": "ORDINO",
+            "codigo": "05",
+            "comunidad_autonoma": null,
+            "pais": 2
+        }
+    },
+    {
+        "model": "core.provincia",
+        "pk": 59,
+        "fields": {
+            "nombre": "CANILLO",
+            "codigo": "02",
+            "comunidad_autonoma": null,
+            "pais": 2
+        }
+    }
+]
