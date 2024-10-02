@@ -57,6 +57,7 @@ pip install -r requirements.txt
 ```bash
 python manage.py makemigrations
 python manage.py migrate
+python manage.py loaddata core/fixtures/paises_data.json
 ```
 
 7. Run the server, make sure you are in the server folder

@@ -1,5 +1,6 @@
-from dataclasses import dataclass
 import os
+from dataclasses import dataclass
+
 from typing import Any, Optional
 
 from rest_framework import status as st
@@ -30,9 +31,9 @@ class ResponseStruct:
     error_code : Optional[int], optional
         An HTTP status code (e.g., 200, 404), typically used for error handling, default is None.
     """
-
-    status: str  # Either "success" or "error"
+    
     message: str  # A descriptive message
+    status: str = "success"  # Either "success" or "error"
     data: Optional[Any] = None  # Data payload
     error_code: Optional[int] = None  # Error code, typically HTTP status codes
 
@@ -86,9 +87,8 @@ class ResponseStruct:
             "data": self.data,
             "error_code": self.error_code,
             "error_code_type": self.get_status_type(),
-            "error_code_name": self.get_status_name(self.error_code)
-            if self.error_code
-            else None,
+            "error_code_name": self.get_status_name() if self.error_code else None,
+
         }
 
     def to_response(self, status_code: int = st.HTTP_200_OK) -> Response:
@@ -112,3 +112,4 @@ class ResponseStruct:
 def get_env_variable(var_name, default_value=None):
     """Get the environment variable or return a default value."""
     return os.getenv(var_name, default_value)
+
