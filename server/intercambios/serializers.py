@@ -2,9 +2,10 @@ from django.db import transaction
 from rest_framework import serializers
 from usuario.models import Administracion
 
-from .constants import ESTADO_ABIERTA, ESTADO_ACEPTADA
-from .models import (Intercambio, LoteriaIntercambio, Solicitud,
-                     SolicitudRespuesta, Sorteo)
+from .constants import (ESTADO_ABIERTA, ESTADO_ACEPTADA, TiposCondicion,
+                        TiposSolicitud)
+from .models import (Intercambio, LoteriaIntercambio, Respuesta, Solicitud,
+                     Sorteo)
 
 
 class SorteoSerializer(serializers.ModelSerializer):
@@ -56,21 +57,21 @@ class SolicitudSerializer(serializers.ModelSerializer):
             )
 
         # Validar solicitud tipo 'enviar'
-        if tipo_solicitud == 0:
-            if condicion == 0:  # Cesion
+        if tipo_solicitud == TiposSolicitud.ENVIAR.value:
+            if condicion == TiposCondicion.CESION.value:
                 data["num_cond"] = None
                 data["num_series_cond"] = None
                 data["sorteo_cond"] = None
-            elif condicion == 1:  # Indiferente
+            elif condicion == TiposCondicion.INDIFERENTE.value:
                 data["num_cond"] = "XXXXX"
                 data["num_series_cond"] = None
                 data["sorteo_cond"] = sorteo
-            elif condicion == 2:  # Explícita
+            elif condicion == TiposCondicion.EXPLICITA.value:
                 data["num_series_cond"] = None
                 data["sorteo_cond"] = sorteo
 
         # Validar solicitud tipo 'recibir'
-        elif tipo_solicitud == 1:
+        elif tipo_solicitud == TiposSolicitud.RECIBIR.value:
             if condicion == 0:  # Cesion
                 data["num_cond"] = None
                 data["num_series_cond"] = None
@@ -93,9 +94,9 @@ class SolicitudSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 
-class SolicitudRespuestaSerializer(serializers.ModelSerializer):
+class RespuestaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = SolicitudRespuesta
+        model = Respuesta
         fields = [
             "id",
             "solicitud",
@@ -167,15 +168,15 @@ class IntercambioSerializer(serializers.ModelSerializer):
         # Verify that both parties have accepted
         if solicitud.estado != ESTADO_ABIERTA or solicitud_respuesta.estado != ESTADO_ACEPTADA:
             raise serializers.ValidationError(
-                "Both Solicitud and SolicitudRespuesta must be 'aceptada' before creating an intercambio."
+                "Both Solicitud and Respuesta must be 'aceptada' before creating an intercambio."
             )
 
-        # Check for existing Intercambio between the same Solicitud and SolicitudRespuesta
+        # Check for existing Intercambio between the same Solicitud and Respuesta
         if Intercambio.objects.filter(
             solicitud=solicitud, solicitud_respuesta=solicitud_respuesta
         ).exists():
             raise serializers.ValidationError(
-                "An intercambio between this Solicitud and SolicitudRespuesta already exists."
+                "An intercambio between this Solicitud and Respuesta already exists."
             )
 
         return data
@@ -186,7 +187,7 @@ class IntercambioSerializer(serializers.ModelSerializer):
 
         # Determine the tipo_solicitud and prepare data for origen and destino
         tipo_solicitud = solicitud.tipo
-        if tipo_solicitud == 0:  # Enviar
+        if tipo_solicitud == TiposSolicitud.ENVIAR.value:
             origen_data = {
                 "administracion": solicitud.administracion,
                 "numero": solicitud.numero,
@@ -199,7 +200,7 @@ class IntercambioSerializer(serializers.ModelSerializer):
                 "num_series": solicitud_respuesta.num_series,
                 "sorteo": solicitud_respuesta.sorteo,
             }
-        elif tipo_solicitud == 1:  # Recibir
+        elif tipo_solicitud == TiposSolicitud.RECIBIR.value:  # Recibir
             origen_data = {
                 "administracion": solicitud.administracion,
                 "numero": solicitud.num_cond,
@@ -232,7 +233,6 @@ class IntercambioSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("Intercambio could not be completed due to invalid states.")
 
             return intercambio
-
 
 
 class LoteriaIntercambioSerializer(serializers.ModelSerializer):

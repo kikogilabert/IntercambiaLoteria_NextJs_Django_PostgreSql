@@ -89,7 +89,7 @@ class ResponseStruct:
             "error_code_name": self.get_status_name() if self.error_code else None,
         }
 
-    def to_response(self, status_code: int = st.HTTP_200_OK) -> Response:
+    def to_response(self) -> Response:
         """
         Creates a Django Rest Framework (DRF) Response object.
 
@@ -103,8 +103,7 @@ class ResponseStruct:
         rest_framework.response.Response
             A DRF Response object containing the response data and status code.
         """
-        self.error_code = status_code  # Set error_code if not already set
-        return Response(self.to_dict(), status=status_code)
+        return Response(self.to_dict(), status=self.error_code)
 
 
 def get_env_variable(var_name, default_value=None):
@@ -113,6 +112,7 @@ def get_env_variable(var_name, default_value=None):
 
 
 def get_error_response(message, data = None, error_code=st.HTTP_400_BAD_REQUEST):
+    print(error_code)
     return ResponseStruct(
         status="error",
         message=message,

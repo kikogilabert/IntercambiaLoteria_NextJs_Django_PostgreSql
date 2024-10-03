@@ -3,8 +3,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
-from .models import SolicitudRespuesta
-from .serializers import (IntercambioSerializer, SolicitudRespuestaSerializer,
+from .models import Respuesta
+from .serializers import (IntercambioSerializer, RespuestaSerializer,
                           SolicitudSerializer)
 
 
@@ -15,30 +15,30 @@ class SolicitudAPIView(APIView):
         serializer = SolicitudSerializer(
             data=request.data, context={"request": request}
         )
-        if serializer.is_valid():
-            serializer.save()
-            return get_success_response("Solicitud created successfully.")
-        else:
+        if not serializer.is_valid():
             return get_error_response("Solicitud creation failed.")
+        
+        serializer.save()
+        return get_success_response("Solicitud created successfully.")
 
 
-class SolicitudRespuestaAPIView(APIView):
+class RespuestaAPIView(APIView):
     permission_classes = [IsAuthenticated]  # Solo para usuarios autenticados
 
     def post(self, request, *args, **kwargs):
-        serializer = SolicitudRespuestaSerializer(
+        serializer = RespuestaSerializer(
             data=request.data, context={"request": request}
         )
-        if serializer.is_valid():
-            serializer.save()
-            return get_success_response("SolicitudRespuesta created successfully.")
-        else:
-            return get_error_response("SolicitudRespuesta creation failed.")
+        if not serializer.is_valid():
+            return get_error_response("Respuesta creation failed.")
+        
+        serializer.save()
+        return get_success_response("Respuesta created successfully.")
 
     def get(self, request, *args, **kwargs):
         solicitud_respuesta_id = kwargs.get("pk")
         solicitud_respuesta = get_object_or_404(
-            SolicitudRespuesta, pk=solicitud_respuesta_id
+            Respuesta, pk=solicitud_respuesta_id
         )
 
         # Verify that the user has permission to view this solicitud
@@ -47,8 +47,8 @@ class SolicitudRespuestaAPIView(APIView):
                 "You do not have permission to access this resource."
             )
 
-        SolicitudRespuestaSerializer(solicitud_respuesta)
-        return get_success_response("SolicitudRespuesta fetched successfully.")
+        RespuestaSerializer(solicitud_respuesta)
+        return get_success_response("Respuesta fetched successfully.")
 
 
 class IntercambioAPIView(APIView):
@@ -56,10 +56,10 @@ class IntercambioAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = IntercambioSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return get_success_response(
-                "Intercambio created and completed successfully."
-            )
-        else:
+        if not serializer.is_valid():
             return get_error_response("Intercambio creation failed.")
+
+        serializer.save()
+        return get_success_response(
+            "Intercambio created and completed successfully."
+        )

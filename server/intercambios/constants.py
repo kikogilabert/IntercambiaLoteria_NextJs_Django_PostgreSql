@@ -1,6 +1,19 @@
-TIPOS_SOLICITUD = [(0, "ENVIAR"), (1, "RECIBIR")]
+from enum import IntEnum
 
-TIPOS_CONDICION = [(0, "CESION"), (1, "INDIFERENTE"), (2, "EXPLICITA")]
+
+class TiposSolicitud(IntEnum):
+    ENVIAR = 0
+    RECIBIR = 1
+
+class TiposCondicion(IntEnum):
+    CESION = 0
+    INDIFERENTE = 1
+    EXPLICITA = 2
+
+# Example usage
+TIPOS_SOLICITUD = [(tipo.value, tipo.name) for tipo in TiposSolicitud]
+TIPOS_CONDICION = [(condicion.value, condicion.name) for condicion in TiposCondicion]
+
 
 # State Choices
 ESTADO_ABIERTA = "ABIERTA"

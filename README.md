@@ -66,6 +66,7 @@ pre-commit run --all-files
 python manage.py makemigrations
 python manage.py migrate
 python manage.py loaddata core/fixtures/paises_data.json
+python manage.py import_sorteos intercambios/management/commands/2024_sorteos.csv
 ```
 
 7. Run the server, make sure you are in the server folder

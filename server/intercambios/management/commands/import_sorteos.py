@@ -96,7 +96,7 @@ class Command(BaseCommand):
         if not numero_str:
             raise ValueError(f"Número de sorteo vacío en la fila {row_number}.")
         year = fecha.year
-        codigo = f"{numero_str.strip()}/{year}"
+        codigo = f"{numero_str.strip()}/{str(year)[-2:]}"
         if len(codigo.split("/")) != 2:
             raise ValueError(f"Código inválido en la fila {row_number}: '{codigo}'.")
         return codigo

@@ -81,8 +81,8 @@ class Solicitud(models.Model):
             )
 
 
-class SolicitudRespuesta(models.Model):
-    """Custom model representing a SolicitudRespuesta in the system."""
+class Respuesta(models.Model):
+    """Custom model representing a Respuesta in the system."""
 
     id = models.AutoField(primary_key=True)
     solicitud = models.ForeignKey(
@@ -106,7 +106,7 @@ class SolicitudRespuesta(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
-        return f"SolicitudRespuesta {self.id} - {self.administracion} - Número: {self.numero} - Sorteo: {self.sorteo.codigo}"
+        return f"Respuesta {self.id} - {self.administracion} - Número: {self.numero} - Sorteo: {self.sorteo.codigo}"
 
     # Methods for state transitions
     @transaction.atomic
@@ -157,7 +157,7 @@ class Intercambio(models.Model):
         Solicitud, on_delete=models.CASCADE, related_name="intercambios"
     )
     solicitud_respuesta = models.ForeignKey(
-        SolicitudRespuesta, on_delete=models.CASCADE, related_name="intercambios"
+        Respuesta, on_delete=models.CASCADE, related_name="intercambios"
     )
     origen = models.ForeignKey(
         "LoteriaIntercambio",
@@ -190,7 +190,7 @@ class Intercambio(models.Model):
                     self.solicitud_respuesta.completar()
 
                     # Cancelar otras respuestas vinculadas a la solicitud
-                    responses_to_cancel = SolicitudRespuesta.objects.filter(
+                    responses_to_cancel = Respuesta.objects.filter(
                         solicitud=self.solicitud
                     ).exclude(pk=self.solicitud_respuesta.pk).exclude(
                         estado__in=[ESTADO_COMPLETADA, ESTADO_CANCELADA, ESTADO_RECHAZADA]

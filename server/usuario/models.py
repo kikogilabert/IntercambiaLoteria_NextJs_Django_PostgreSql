@@ -65,7 +65,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     )  # EMPTY IF TIPO=PJ
     telefono = models.CharField(max_length=12)
     email = models.EmailField(max_length=254, unique=True)
-    id_administracion = models.OneToOneField(
+    administracion = models.OneToOneField(
         "Administracion",
         on_delete=models.CASCADE,
         related_name="propietario",
