@@ -30,7 +30,7 @@ class ResponseStruct:
     error_code : Optional[int], optional
         An HTTP status code (e.g., 200, 404), typically used for error handling, default is None.
     """
-    
+
     message: str  # A descriptive message
     status: str = "success"  # Either "success" or "error"
     data: Optional[Any] = None  # Data payload
@@ -87,7 +87,6 @@ class ResponseStruct:
             "error_code": self.error_code,
             "error_code_type": self.get_status_type(),
             "error_code_name": self.get_status_name() if self.error_code else None,
-
         }
 
     def to_response(self, status_code: int = st.HTTP_200_OK) -> Response:
@@ -112,3 +111,20 @@ def get_env_variable(var_name, default_value=None):
     """Get the environment variable or return a default value."""
     return os.getenv(var_name, default_value)
 
+
+def get_error_response(message, data = None, error_code=st.HTTP_400_BAD_REQUEST):
+    return ResponseStruct(
+        status="error",
+        message=message,
+        error_code=error_code,
+        data=data,
+    ).to_response()
+
+
+def get_success_response(message, data = None, error_code=st.HTTP_200_OK):
+    return ResponseStruct(
+        status="success",
+        message=message,
+        error_code=error_code,
+        data=data,
+    ).to_response()

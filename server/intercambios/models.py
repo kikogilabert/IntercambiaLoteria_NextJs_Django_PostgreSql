@@ -1,15 +1,15 @@
-from django.db import models
-from django_fsm import FSMField, transition
+from django.db import models, transaction
 from usuario.models import Administracion
 
-from .constants import (ESTADO_RESPUESTA, ESTADO_SOLICITUD, TIPOS_CONDICION,
-                        TIPOS_SOLICITUD)
+from .constants import (ESTADO_ABIERTA, ESTADO_ACEPTADA, ESTADO_CANCELADA,
+                        ESTADO_COMPLETADA, ESTADO_RECHAZADA, ESTADOS_RESPUESTA,
+                        ESTADOS_SOLICITUD, TIPOS_CONDICION, TIPOS_SOLICITUD)
 
 
 class Sorteo(models.Model):
     codigo = models.CharField(
-        max_length=10, unique=True
-    )  # Código del sorteo, con longitud máxima de 10
+        max_length=6, unique=True
+    )  # Código del sorteo, con longitud máxima de 6 NNN/AA.
     fecha = models.DateField()  # Fecha del sorteo
     precio = models.DecimalField(
         max_digits=10, decimal_places=2
@@ -30,7 +30,7 @@ class Solicitud(models.Model):
     numero = models.CharField(
         max_length=5
     )  # tipo='enviar': Numero exacto | tipo='recibir': numero exacto o condicion.
-    num_series = models.CharField(max_length=3)
+    num_series = models.IntegerField()
     sorteo = models.ForeignKey(
         Sorteo, on_delete=models.CASCADE, related_name="solicitudes"
     )
@@ -38,7 +38,7 @@ class Solicitud(models.Model):
     # Condicion
     condicion = models.IntegerField(choices=TIPOS_CONDICION)
     num_cond = models.CharField(max_length=5, null=True, blank=True)
-    num_series_cond = models.CharField(max_length=3, null=True, blank=True)
+    num_series_cond = models.IntegerField(null=True, blank=True)
     sorteo_cond = models.ForeignKey(
         Sorteo,
         on_delete=models.CASCADE,
@@ -47,29 +47,38 @@ class Solicitud(models.Model):
         blank=True,
     )
 
+    # Estado
+    estado = models.CharField(
+        max_length=20, default=ESTADO_ABIERTA, choices=ESTADOS_SOLICITUD
+    )
+
     # ADITIONAL ADMON STATUS FIELDS
-    estado = FSMField(default="abierta", choices=ESTADO_SOLICITUD)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         return f"Solicitud {self.id} - {self.administracion} - Número: {self.numero} - Sorteo: {self.sorteo.codigo}"
 
-    @transition(field=estado, source="abierta", target="aceptada")
-    def aceptar(self):
-        """Aceptar la solicitud."""
-        # Aquí puedes agregar lógica adicional si es necesario
-        pass
-
-    @transition(field=estado, source="aceptada", target="completada")
+    # Methods for state transitions
+    @transaction.atomic
     def completar(self):
-        """Completar la solicitud después del intercambio."""
-        pass
+        if self.estado == ESTADO_ABIERTA:
+            self.estado = ESTADO_COMPLETADA
+            self.save()
+        else:
+            raise ValueError(
+                "Solicitud can only be completed if it's in 'abierta' state."
+            )
 
-    @transition(field=estado, source="*", target="cancelada")
+    @transaction.atomic
     def cancelar(self):
-        """Cancelar la solicitud en cualquier estado."""
-        pass
+        if self.estado == ESTADO_ABIERTA:
+            self.estado = ESTADO_CANCELADA
+            self.save()
+        else:
+            raise ValueError(
+                "Solicitud can only be cancelled if it's in 'abierta' state."
+            )
 
 
 class SolicitudRespuesta(models.Model):
@@ -84,37 +93,61 @@ class SolicitudRespuesta(models.Model):
     )
 
     numero = models.CharField(max_length=5)
-    num_series = models.CharField(max_length=3)
+    num_series = models.IntegerField()
     sorteo = models.ForeignKey(
         Sorteo, on_delete=models.CASCADE, related_name="respuestas"
     )
 
-    estado = FSMField(default="abierta", choices=ESTADO_RESPUESTA)
+    estado = models.CharField(
+        max_length=20, default=ESTADO_ABIERTA, choices=ESTADOS_RESPUESTA
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         return f"SolicitudRespuesta {self.id} - {self.administracion} - Número: {self.numero} - Sorteo: {self.sorteo.codigo}"
 
-    @transition(field=estado, source="pendiente", target="aceptada")
+    # Methods for state transitions
+    @transaction.atomic
     def aceptar(self):
-        """Aceptar la solicitud respuesta."""
-        pass
+        if self.estado == ESTADO_ABIERTA:
+            self.estado = ESTADO_ACEPTADA
+            self.save()
+        else:
+            raise ValueError(
+                "Respuesta can only be accepted if it's in 'abierta' state."
+            )
 
-    @transition(field=estado, source="aceptada", target="completada")
-    def completar(self):
-        """Completar la solicitud respuesta cuando el intercambio esté hecho."""
-        pass
-
-    @transition(field=estado, source="pendiente", target="rechazada")
+    @transaction.atomic
     def rechazar(self):
-        """Rechazar una solicitud respuesta ya aceptada."""
-        pass
+        if self.estado == ESTADO_ABIERTA:
+            self.estado = ESTADO_RECHAZADA
+            self.save()
+        else:
+            raise ValueError(
+                "Respuesta can only be rejected if it's in 'abierta' state."
+            )
 
-    @transition(field=estado, source="*", target="cancelada")
+    @transaction.atomic
+    def completar(self):
+        if self.estado == ESTADO_ACEPTADA:
+            self.estado = ESTADO_COMPLETADA
+            self.save()
+        else:
+            raise ValueError(
+                "Respuesta can only be completed if it's in 'aceptada' state."
+            )
+
+    @transaction.atomic
     def cancelar(self):
-        """Cancelar la solicitud respuesta en cualquier estado."""
-        pass
+        if self.estado in [ESTADO_ABIERTA, ESTADO_ACEPTADA]:
+            self.estado = ESTADO_CANCELADA
+            self.save()
+        else:
+            raise ValueError(
+                "Respuesta can only be cancelled if it's in 'abierta' or 'aceptada' state."
+            )
 
 
 class Intercambio(models.Model):
@@ -146,33 +179,32 @@ class Intercambio(models.Model):
 
     def realizar_intercambio(self):
         """Método para completar un intercambio, cambiando el estado de las solicitudes involucradas."""
-        if (
-            self.solicitud.estado == "aceptada"
-            and self.solicitud_respuesta.estado == "aceptada"
-        ):
-            self.solicitud.completar()
-            self.solicitud.save()
-            self.solicitud_respuesta.completar()
-            self.solicitud_respuesta.save()
+        
+        with transaction.atomic():
+            try:
+                if (
+                    self.solicitud.estado == ESTADO_ABIERTA
+                    and self.solicitud_respuesta.estado == ESTADO_ACEPTADA
+                ):
+                    self.solicitud.completar()
+                    self.solicitud_respuesta.completar()
 
-            # Cancelar otras respuestas vinculadas a la solicitud
-            otras_respuestas = SolicitudRespuesta.objects.filter(
-                solicitud=self.solicitud
-            ).exclude(pk=self.solicitud_respuesta.pk)
+                    # Cancelar otras respuestas vinculadas a la solicitud
+                    responses_to_cancel = SolicitudRespuesta.objects.filter(
+                        solicitud=self.solicitud
+                    ).exclude(pk=self.solicitud_respuesta.pk).exclude(
+                        estado__in=[ESTADO_COMPLETADA, ESTADO_CANCELADA, ESTADO_RECHAZADA]
+                    )
 
-            for respuesta in otras_respuestas:
-                if respuesta.estado not in ["completada", "cancelada", "rechazada"]:
-                    respuesta.cancelar()
-                    respuesta.save()
+                    for respuesta in responses_to_cancel:
+                        respuesta.cancelar()
 
-            # SolicitudRespuesta.objects.filter(
-            #     solicitud=self.solicitud
-            # ).exclude(pk=self.solicitud_respuesta.pk).exclude(
-            #     estado__in=['completada', 'cancelada', 'rechazada']
-            # ).update(estado='cancelada')
 
-            return True
-        return False
+                    return True
+                return False
+            except ValueError:
+                # Handle exception or log error
+                return False
 
 
 class LoteriaIntercambio(models.Model):

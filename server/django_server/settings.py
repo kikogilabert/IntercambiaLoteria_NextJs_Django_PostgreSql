@@ -43,7 +43,6 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'http://localhost:3000']
 # Application definition
 
 INSTALLED_APPS = [
-    
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

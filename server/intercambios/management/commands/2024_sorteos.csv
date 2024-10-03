@@ -1,0 +1,104 @@
+codigo,fecha,dia,precio,denominacion
+1,04/01/24,Jueves,3,Lotería del Jueves
+2,06/01/24,Sábado,20,Extraordinario del Niño
+3,11/01/24,Jueves,3,Lotería del Jueves
+4,13/01/24,Sábado,15,Extraordinario de Invierno
+5,18/01/24,Jueves,3,Lotería del Jueves
+6,21/01/24,Sábado,12,Extraordinario Enero
+7,25/01/24,Jueves,3,Lotería del Jueves
+8,27/01/24,Sábado,6,Lotería Nacional
+9,01/02/24,Jueves,3,Lotería del Jueves
+10,03/02/24,Sábado,6,Lotería Nacional
+11,08/02/24,Jueves,3,Lotería del Jueves
+12,10/02/24,Lunes,6,Lotería Nacional
+13,15/02/24,Jueves,3,Lotería del Jueves
+14,17/02/24,Sábado,15,Ext. de "San Valentín"
+15,22/02/24,Jueves,3,Lotería del Jueves
+16,24/02/24,Sábado,6,Lotería Nacional
+17,29/02/24,Jueves,3,Lotería del Jueves
+18,02/03/24,Sábado,6,Lotería Nacional
+19,07/03/24,Jueves,3,Lotería del Jueves
+20,09/03/24,Sábado,6,Lotería Nacional
+21,14/03/24,Jueves,3,Lotería del Jueves
+22,16/03/24,Sábado,6,Lotería Nacional
+23,21/03/24,Jueves,3,Lotería del Jueves
+24,23/03/24,Sábado,15,Ext. Día del Padre
+25,28/03/24,Jueves,3,Lotería del Jueves
+26,30/03/24,Sábado,6,Lotería Nacional
+27,04/04/24,Jueves,3,Lotería del Jueves
+28,06/04/24,Sábado,15,Ext. AECC
+29,11/04/24,Jueves,3,Lotería del Jueves
+30,13/04/24,Sábado,6,Lotería Nacional
+31,18/04/24,Jueves,3,Lotería del Jueves
+32,20/04/24,Sábado,6,Lotería Nacional
+33,25/04/24,Jueves,3,Lotería del Jueves
+34,27/04/24,Sábado,6,Lotería Nacional
+35,02/05/24,Jueves,3,Lotería del Jueves
+36,05/05/24,Domingo,15,Ext. Día de la Madre
+37,09/05/24,Jueves,3,Lotería del Jueves
+38,11/05/24,Sábado,6,Lotería Nacional
+39,16/05/24,Jueves,3,Lotería del Jueves
+40,18/05/24,Sábado,6,Lotería Nacional
+41,23/05/24,Jueves,3,Lotería del Jueves
+42,25/05/24,Sábado,6,Lotería Nacional
+43,30/05/24,Jueves,3,Lotería del Jueves
+44,01/06/24,Sábado,15,Ext. Cruz Roja
+45,06/06/24,Jueves,3,Lotería del Jueves
+46,08/06/24,Sábado,6,Lotería Nacional
+47,13/06/24,Jueves,3,Lotería del Jueves
+48,15/06/24,Sábado,6,Lotería Nacional
+49,20/06/24,Jueves,3,Lotería del Jueves
+50,22/06/24,Sábado,6,Lotería Nacional
+51,27/06/24,Jueves,3,Lotería del Jueves
+52,29/06/24,Sábado,6,Lotería Nacional
+53,04/07/24,Jueves,3,Lotería del Jueves
+54,06/07/24,Sábado,20,Extraordinario de Vacaciones
+55,11/07/24,Jueves,3,Lotería del Jueves
+56,13/07/24,Sábado,15,Extraordinario de Julio
+57,18/07/24,Jueves,3,Lotería del Jueves
+58,20/07/24,Sábado,6,Lotería Nacional
+59,25/07/24,Jueves,3,Lotería del Jueves
+60,27/07/24,Sábado,6,Lotería Nacional
+61,01/08/24,Jueves,3,Lotería del Jueves
+62,03/08/24,Sábado,15,Extraordinario de Agosto
+63,08/08/24,Jueves,3,Lotería del Jueves
+64,10/08/24,Sábado,6,Lotería Nacional
+65,15/08/24,Jueves,3,Lotería del Jueves
+66,17/08/24,Sábado,6,Lotería Nacional
+67,22/08/24,Jueves,3,Lotería del Jueves
+68,24/08/24,Sábado,6,Lotería Nacional
+69,29/08/24,Jueves,3,Lotería del Jueves
+70,31/08/24,Sábado,6,Lotería Nacional
+71,05/09/24,Jueves,3,Lotería del Jueves
+72,07/09/24,Sábado,15,Extraordinario de Septiembre
+73,12/09/24,Jueves,3,Lotería del Jueves
+74,14/09/24,Sábado,6,Lotería Nacional
+75,19/09/24,Jueves,3,Lotería del Jueves
+76,21/09/24,Sábado,6,Lotería Nacional
+77,26/09/24,Jueves,3,Lotería del Jueves
+78,28/09/24,Sábado,6,Lotería Nacional
+79,03/10/24,Jueves,3,Lotería del Jueves
+80,05/10/24,Sábado,6,Lotería Nacional
+81,10/10/24,Jueves,3,Lotería del Jueves
+82,12/10/24,Sábado,15,Extraordinario Día de la Hispanidad
+83,17/10/24,Jueves,3,Lotería del Jueves
+84,19/10/24,Sábado,6,Lotería Nacional
+85,24/10/24,Jueves,3,Lotería del Jueves
+86,26/10/24,Sábado,6,Lotería Nacional
+87,31/10/24,Jueves,3,Lotería del Jueves
+88,02/11/24,Sábado,6,Lotería Nacional
+89,07/11/24,Jueves,3,Lotería del Jueves
+90,09/11/24,Sábado,15,Extraordinario de la Cultura
+91,14/11/24,Jueves,3,Lotería del Jueves
+92,16/11/24,Sábado,6,Lotería Nacional
+93,21/11/24,Jueves,3,Lotería del Jueves
+94,23/11/24,Sábado,6,Lotería Nacional
+95,28/11/24,Jueves,3,Lotería del Jueves
+96,30/11/24,Sábado,6,Lotería Nacional
+97,05/12/24,Jueves,3,Lotería del Jueves
+98,07/12/24,Sábado,15,Extraordinario Día de la Constitución
+99,12/12/24,Jueves,3,Lotería del Jueves
+100,14/12/24,Sábado,6,Lotería Nacional
+101,19/12/24,Jueves,3,Lotería del Jueves
+102,22/12/24,Domingo,20,Extraordinario de Navidad
+103,26/12/24,Jueves,3,Lotería del Jueves

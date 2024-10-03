@@ -2,17 +2,26 @@ TIPOS_SOLICITUD = [(0, "ENVIAR"), (1, "RECIBIR")]
 
 TIPOS_CONDICION = [(0, "CESION"), (1, "INDIFERENTE"), (2, "EXPLICITA")]
 
-ESTADO_SOLICITUD = [
-    ("abierta", "ABIERTA"),
-    ("aceptada", "ACEPTADA"),
-    ("completada", "COMPLETADA"),
-    ("cancelada", "CANCELADA"),
+# State Choices
+ESTADO_ABIERTA = "ABIERTA"
+ESTADO_ACEPTADA = "ACEPTADA"
+ESTADO_COMPLETADA = "COMPLETADA"
+ESTADO_CANCELADA = "CANCELADA"
+ESTADO_RECHAZADA = "RECHAZADA"
+ESTADO_PENDIENTE = "PENDIENTE"
+
+
+ESTADOS_SOLICITUD = [
+    (ESTADO_ABIERTA, "Abierta"),
+    (ESTADO_COMPLETADA, "Completada"),
+    (ESTADO_CANCELADA, "Cancelada"),
 ]
 
-ESTADO_RESPUESTA = [
-    ("abierta", "ABIERTA"),
-    ("aceptada", "ACEPTADA"),
-    ("completada", "COMPLETADA"),
-    ("cancelada", "CANCELADA"),
-    ("rechazada", "RECHAZADA"),
+
+ESTADOS_RESPUESTA = [
+    (ESTADO_ABIERTA, "Abierta"),
+    (ESTADO_ACEPTADA, "Aceptada"),
+    (ESTADO_COMPLETADA, "Completada"),
+    (ESTADO_RECHAZADA, "Rechazada"),
+    (ESTADO_CANCELADA, "Cancelada"),
 ]
