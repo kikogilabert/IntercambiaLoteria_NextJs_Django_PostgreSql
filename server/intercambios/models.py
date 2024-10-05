@@ -1,3 +1,4 @@
+from core.models import Sorteo, StateManager
 from django.db import models, transaction
 from usuario.models import Administracion
 
@@ -6,20 +7,7 @@ from .constants import (ESTADO_ABIERTA, ESTADO_ACEPTADA, ESTADO_CANCELADA,
                         ESTADOS_SOLICITUD, TIPOS_CONDICION, TIPOS_SOLICITUD)
 
 
-class Sorteo(models.Model):
-    codigo = models.CharField(
-        max_length=6, unique=True
-    )  # Código del sorteo, con longitud máxima de 6 NNN/AA.
-    fecha = models.DateField()  # Fecha del sorteo
-    precio = models.DecimalField(
-        max_digits=10, decimal_places=2
-    )  # Precio con hasta 10 dígitos y 2 decimales
-
-    def __str__(self):
-        return f"Sorteo {self.codigo} - Fecha: {self.fecha} - Precio: {self.precio}"
-
-
-class Solicitud(models.Model):
+class Solicitud(StateManager):
     """Custom model representing a Solicitud in the system."""
 
     id = models.AutoField(primary_key=True)
@@ -59,29 +47,8 @@ class Solicitud(models.Model):
     def __str__(self) -> str:
         return f"Solicitud {self.id} - {self.administracion} - Número: {self.numero} - Sorteo: {self.sorteo.codigo}"
 
-    # Methods for state transitions
-    @transaction.atomic
-    def completar(self):
-        if self.estado == ESTADO_ABIERTA:
-            self.estado = ESTADO_COMPLETADA
-            self.save()
-        else:
-            raise ValueError(
-                "Solicitud can only be completed if it's in 'abierta' state."
-            )
 
-    @transaction.atomic
-    def cancelar(self):
-        if self.estado == ESTADO_ABIERTA:
-            self.estado = ESTADO_CANCELADA
-            self.save()
-        else:
-            raise ValueError(
-                "Solicitud can only be cancelled if it's in 'abierta' state."
-            )
-
-
-class Respuesta(models.Model):
+class Respuesta(StateManager):
     """Custom model representing a Respuesta in the system."""
 
     id = models.AutoField(primary_key=True)
@@ -107,47 +74,6 @@ class Respuesta(models.Model):
 
     def __str__(self) -> str:
         return f"Respuesta {self.id} - {self.administracion} - Número: {self.numero} - Sorteo: {self.sorteo.codigo}"
-
-    # Methods for state transitions
-    @transaction.atomic
-    def aceptar(self):
-        if self.estado == ESTADO_ABIERTA:
-            self.estado = ESTADO_ACEPTADA
-            self.save()
-        else:
-            raise ValueError(
-                "Respuesta can only be accepted if it's in 'abierta' state."
-            )
-
-    @transaction.atomic
-    def rechazar(self):
-        if self.estado == ESTADO_ABIERTA:
-            self.estado = ESTADO_RECHAZADA
-            self.save()
-        else:
-            raise ValueError(
-                "Respuesta can only be rejected if it's in 'abierta' state."
-            )
-
-    @transaction.atomic
-    def completar(self):
-        if self.estado == ESTADO_ACEPTADA:
-            self.estado = ESTADO_COMPLETADA
-            self.save()
-        else:
-            raise ValueError(
-                "Respuesta can only be completed if it's in 'aceptada' state."
-            )
-
-    @transaction.atomic
-    def cancelar(self):
-        if self.estado in [ESTADO_ABIERTA, ESTADO_ACEPTADA]:
-            self.estado = ESTADO_CANCELADA
-            self.save()
-        else:
-            raise ValueError(
-                "Respuesta can only be cancelled if it's in 'abierta' or 'aceptada' state."
-            )
 
 
 class Intercambio(models.Model):
@@ -179,7 +105,7 @@ class Intercambio(models.Model):
 
     def realizar_intercambio(self):
         """Método para completar un intercambio, cambiando el estado de las solicitudes involucradas."""
-        
+
         with transaction.atomic():
             try:
                 if (
@@ -190,15 +116,20 @@ class Intercambio(models.Model):
                     self.solicitud_respuesta.completar()
 
                     # Cancelar otras respuestas vinculadas a la solicitud
-                    responses_to_cancel = Respuesta.objects.filter(
-                        solicitud=self.solicitud
-                    ).exclude(pk=self.solicitud_respuesta.pk).exclude(
-                        estado__in=[ESTADO_COMPLETADA, ESTADO_CANCELADA, ESTADO_RECHAZADA]
+                    responses_to_cancel = (
+                        Respuesta.objects.filter(solicitud=self.solicitud)
+                        .exclude(pk=self.solicitud_respuesta.pk)
+                        .exclude(
+                            estado__in=[
+                                ESTADO_COMPLETADA,
+                                ESTADO_CANCELADA,
+                                ESTADO_RECHAZADA,
+                            ]
+                        )
                     )
 
                     for respuesta in responses_to_cancel:
                         respuesta.cancelar()
-
 
                     return True
                 return False

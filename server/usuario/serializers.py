@@ -20,7 +20,7 @@ class ProfileGetSerializer(serializers.ModelSerializer):
             "apellidos",
             "telefono",
             "email",
-            "id_administracion",
+            "administracion",
         ]
 
 
@@ -49,7 +49,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
             "apellidos",
             "telefono",
             "email",
-            "id_administracion",
+            "administracion",
             "password",
         ]
 
@@ -68,7 +68,7 @@ class UsuarioRegisterSerializer(serializers.ModelSerializer):
             "apellidos",
             "telefono",
             "email",
-            "id_administracion",
+            "administracion",
             "password1",  # Include in fields to accept from frontend
             "password2",  # Include in fields to accept from frontend
         ]
@@ -157,7 +157,7 @@ class AdministracionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Administracion
         fields = [
-            "id" "nombre_comercial",
+            "nombre_comercial",
             "numero_receptor",
             "direccion",
             "provincia",

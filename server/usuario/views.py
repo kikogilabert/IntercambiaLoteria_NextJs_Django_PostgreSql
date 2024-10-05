@@ -44,7 +44,7 @@ class UsuarioRegisterView(APIView):
                 )  # Save the administracion
 
                 # Now we have administracion.id, add it to usuario_data
-                usuario_data["id_administracion"] = administracion.id
+                usuario_data["administracion"] = administracion.id
             else:
                 return Response(
                     administracion_serializer.errors, status=status.HTTP_400_BAD_REQUEST

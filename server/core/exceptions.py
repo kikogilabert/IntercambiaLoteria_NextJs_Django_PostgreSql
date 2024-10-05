@@ -3,6 +3,12 @@ from core.utils import ResponseStruct
 from rest_framework.views import exception_handler
 
 
+class InvalidStateTransition(Exception):
+    """Excepción personalizada para manejar intentos no válidos de cambio de estado."""
+    def __init__(self, message):
+        super().__init__(message)
+
+
 def custom_exception_handler(exc, context):
     """Custom handler for API exceptions."""
     response = exception_handler(exc, context)
