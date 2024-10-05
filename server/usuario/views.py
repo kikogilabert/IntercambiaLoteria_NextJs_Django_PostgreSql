@@ -1,21 +1,13 @@
-from typing import Any, Dict, Optional
 
 from django.db import transaction
 from rest_framework import status
-from rest_framework.permissions import (
-    AllowAny,
-    IsAuthenticated,
-)
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializers import (
-    AdministracionRegisterSerializer,
-    UsuarioLoginSerializer,
-    UsuarioRegisterSerializer,
-    ProfileUpdateSerializer,
-    ProfileGetSerializer,
-)
+from .serializers import (AdministracionRegisterSerializer,
+                          ProfileGetSerializer, ProfileUpdateSerializer,
+                          UsuarioLoginSerializer, UsuarioRegisterSerializer)
 
 
 # User Registration View
@@ -52,7 +44,7 @@ class UsuarioRegisterView(APIView):
                 )  # Save the administracion
 
                 # Now we have administracion.id, add it to usuario_data
-                usuario_data["id_administracion"] = administracion.id
+                usuario_data["administracion"] = administracion.id
             else:
                 return Response(
                     administracion_serializer.errors, status=status.HTTP_400_BAD_REQUEST

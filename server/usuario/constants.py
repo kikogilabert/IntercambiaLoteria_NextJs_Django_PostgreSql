@@ -56,4 +56,10 @@ PROVINCIAS = {
     "ZARAGOZA": "ZARAGOZA",
 }
 
-PROVINCIAS_CHOICES = [(value, key) for key, value in PROVINCIAS.items()]
+PROVINCIAS_CHOICES = [(key, value) for key, value in PROVINCIAS.items()]
+
+# from core.models import Provincia
+
+# def get_province_choices_by_country(country):
+#     provinces = Provincia.objects.filter(pais=country).values_list('id', 'nombre')
+#     return list(provinces)

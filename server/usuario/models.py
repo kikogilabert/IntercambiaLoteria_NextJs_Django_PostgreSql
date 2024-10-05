@@ -1,13 +1,10 @@
 from typing import Any, Optional
 
-from django.contrib.auth.models import (
-    AbstractBaseUser,
-    BaseUserManager,
-    PermissionsMixin,
-)
+from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
+                                        PermissionsMixin)
 from django.db import models
 
-from .constants import PROVINCIAS, TIPOS_PERSONA, PROVINCIAS_CHOICES
+from .constants import PROVINCIAS_CHOICES, TIPOS_PERSONA
 
 
 class UsuarioManager(BaseUserManager):
@@ -68,7 +65,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     )  # EMPTY IF TIPO=PJ
     telefono = models.CharField(max_length=12)
     email = models.EmailField(max_length=254, unique=True)
-    id_administracion = models.OneToOneField(
+    administracion = models.OneToOneField(
         "Administracion",
         on_delete=models.CASCADE,
         related_name="propietario",

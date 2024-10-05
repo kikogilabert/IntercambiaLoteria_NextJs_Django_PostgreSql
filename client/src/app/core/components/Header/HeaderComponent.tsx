@@ -141,7 +141,7 @@ export default function HeaderComponent() {
                 <p className="font-semibold">Signed in as</p>
                 <p className="font-bold">{userData?.email}</p>
               </DropdownItem>
-              <DropdownItem key="user_profile" href='/perfil'>Mi Perfil</DropdownItem>
+              <DropdownItem key="user_profile" href='/profile'>Mi Perfil</DropdownItem>
               <DropdownItem key="administracion">Mi administracion</DropdownItem>
               <DropdownItem key="intercambios">Mis intercambios</DropdownItem>
               <DropdownItem key="configurations">Ajustes</DropdownItem>

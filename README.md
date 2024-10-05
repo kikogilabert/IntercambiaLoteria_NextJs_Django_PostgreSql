@@ -10,9 +10,14 @@
 2. Create a database in PostgresSQL
 
 ```bash
-cd C:\Program Files\PostgreSQL\16\bin>
+cd C:\Program Files\PostgreSQL\16\bin
 psql -U postgres
-CREATE DATABASE intercambios_loteria;
+CREATE DATABASE conecta_loteria;
+```
+
+- Delete database:
+```bash
+DROP DATABASE conecta_loteria;
 ```
 
 - Ckeck if database is created:
@@ -21,7 +26,7 @@ CREATE DATABASE intercambios_loteria;
                                                                     List of databases
          Name         |  Owner   | Encoding | Locale Provider |      Collate       |       Ctype        | ICU Locale | ICU Rules |   Access privileges
 ----------------------+----------+----------+-----------------+--------------------+--------------------+------------+-----------+-----------------------
- intercambios_loteria | postgres | UTF8     | libc            | Spanish_Spain.1252 | Spanish_Spain.1252 |            |           |
+ conecta_loteria | postgres | UTF8     | libc            | Spanish_Spain.1252 | Spanish_Spain.1252 |            |           |
 ```
 
 - Close postgress console:
@@ -40,7 +45,15 @@ python -m venv venv
 4. Install dependencies into the virtual environment:
 ```bash
 pip install -r requirements.txt
+pre-commit install
+
 ```
+
+Test if pre-commit is working correctly:
+```bash
+pre-commit run --all-files
+```
+
 
 5. Create a .env file in the django_server folder with the following variables:
 ```bash
@@ -57,39 +70,14 @@ pip install -r requirements.txt
 ```bash
 python manage.py makemigrations
 python manage.py migrate
+python manage.py loaddata core/fixtures/paises_data.json
+python manage.py import_sorteos core/management/commands/2024_sorteos.csv
 ```
 
 7. Run the server, make sure you are in the server folder
 
 ```bash
 python manage.py runserver
-```
-
-8. Try the register with the example object:
-
-endpoint must be: http://localhost:8000/administracion/register/
-
-```json
-{
-    "num_receptor": 12345,
-    "id_administracion": "22",
-    "nombre_comercial": "Comercial Prueba",
-    "password":"tilitili",
-    "direccion": "Calle Prueba, 123",
-    "localidad": "Localidad Prueba",
-    "provincia": "Provincia Prueba",
-    "numero_admon": 123,
-    "codigo_postal": "12345",
-    "email": "prueba@example.com",
-    "telefono": "123456789",
-    "id_propietario": {
-        "dni": "12345678A",
-        "nombre": "Nombre Prueba",
-        "telefono": "987654321",
-        "direccion": "Calle Prueba, 456",
-        "tipo_propietario": "PF"
-    }
-}
 ```
 
 

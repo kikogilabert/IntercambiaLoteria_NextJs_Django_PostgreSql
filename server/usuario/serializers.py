@@ -1,11 +1,13 @@
 import re
 from typing import Any, Dict
 
+from django.contrib.auth import authenticate, get_user_model
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from .constants import PROVINCIAS_CHOICES
-from .models import Administracion, Usuario  # Assuming your models are in models.py
+from .models import Administracion  # Assuming your models are in models.py
+from .models import Usuario
 
 
 class ProfileGetSerializer(serializers.ModelSerializer):
@@ -18,7 +20,7 @@ class ProfileGetSerializer(serializers.ModelSerializer):
             "apellidos",
             "telefono",
             "email",
-            "id_administracion",
+            "administracion",
         ]
 
 
@@ -47,7 +49,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
             "apellidos",
             "telefono",
             "email",
-            "id_administracion",
+            "administracion",
             "password",
         ]
 
@@ -66,7 +68,7 @@ class UsuarioRegisterSerializer(serializers.ModelSerializer):
             "apellidos",
             "telefono",
             "email",
-            "id_administracion",
+            "administracion",
             "password1",  # Include in fields to accept from frontend
             "password2",  # Include in fields to accept from frontend
         ]
@@ -155,7 +157,7 @@ class AdministracionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Administracion
         fields = [
-            "id" "nombre_comercial",
+            "nombre_comercial",
             "numero_receptor",
             "direccion",
             "provincia",
@@ -238,7 +240,6 @@ class AdministracionRegisterSerializer(serializers.ModelSerializer):
         return Administracion.objects.create(**validated_data)
 
 
-from django.contrib.auth import authenticate, get_user_model
 
 # from django.contrib.auth.models import User
 

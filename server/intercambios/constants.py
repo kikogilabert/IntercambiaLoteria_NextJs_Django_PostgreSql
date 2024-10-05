@@ -1,8 +1,40 @@
+from enum import IntEnum
 
-TIPOS_SOLICITUD = [(0, 'ENVIAR'), (1, 'RECIBIR')]
 
-TIPOS_CONDICION = [(0, 'CESION'), (1, 'INDIFERENTE'), (2, 'EXPLICITA')]
+class TiposSolicitud(IntEnum):
+    ENVIAR = 0
+    RECIBIR = 1
 
-ESTADO_SOLICITUD = [(0, 'ABIERTA'), (1, 'COMPLETADA'), (2, 'CANCELADA')] 
+class TiposCondicion(IntEnum):
+    CESION = 0
+    INDIFERENTE = 1
+    EXPLICITA = 2
 
-ESTADO_RESPUESTA = [(0, 'ABIERTA'), (1, 'COMPLETADA'), (2, 'CANCELADA')]
+# Example usage
+TIPOS_SOLICITUD = [(tipo.value, tipo.name) for tipo in TiposSolicitud]
+TIPOS_CONDICION = [(condicion.value, condicion.name) for condicion in TiposCondicion]
+
+
+# State Choices
+ESTADO_ABIERTA = "ABIERTA"
+ESTADO_ACEPTADA = "ACEPTADA"
+ESTADO_COMPLETADA = "COMPLETADA"
+ESTADO_CANCELADA = "CANCELADA"
+ESTADO_RECHAZADA = "RECHAZADA"
+ESTADO_PENDIENTE = "PENDIENTE"
+
+
+ESTADOS_SOLICITUD = [
+    (ESTADO_ABIERTA, "Abierta"),
+    (ESTADO_COMPLETADA, "Completada"),
+    (ESTADO_CANCELADA, "Cancelada"),
+]
+
+
+ESTADOS_RESPUESTA = [
+    (ESTADO_ABIERTA, "Abierta"),
+    (ESTADO_ACEPTADA, "Aceptada"),
+    (ESTADO_COMPLETADA, "Completada"),
+    (ESTADO_RECHAZADA, "Rechazada"),
+    (ESTADO_CANCELADA, "Cancelada"),
+]

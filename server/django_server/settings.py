@@ -10,17 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from pathlib import Path
 import os
+from datetime import timedelta
+from pathlib import Path
+
+from django.core.management.utils import get_random_secret_key
 from dotenv import load_dotenv
 
 load_dotenv()
-################ descomentar para ver las variables de entorno en la consola al iniciar el servidor ######################
-# print("DB_NAME:", os.getenv('DB_NAME'))
-# print("DB_USER:", os.getenv('DB_USER'))
-# print("DB_PASSWORD:", os.getenv('DB_PASSWORD'))
-# print("DB_HOST:", os.getenv('DB_HOST'))
-# print("DB_PORT:", os.getenv('DB_PORT'))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,7 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY =  os.getenv('SECRET_KEY')
+SECRET_KEY =  os.getenv('DJANGO_SECRET_KEY')
+SIGNING_KEY = os.getenv("JWT_SIGNING_KEY", get_random_secret_key())
+#SIGNING_KEY =  os.getenv('JWT_SIGNING_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,21 +38,26 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'http://localhost:3000']
 
 
 # Application definition
-
 INSTALLED_APPS = [
-    
+    # Django's built-in apps
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',
-    'usuario',
-    'intercambios',
     'django.contrib.admin',
+
+    # Third-party apps
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'rest_framework.authtoken',
+    'corsheaders',
+
+    # My local apps
+    'core',
+    'usuario',
+    'intercambios',
 ]
 
 MIDDLEWARE = [
@@ -154,14 +158,14 @@ REST_FRAMEWORK = {
     ],
 }
 
-from datetime import timedelta
-
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Access token valid for 5 minutes
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Access token valid for 60 minutes
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),    # Refresh token valid for 1 day
-    'ROTATE_REFRESH_TOKENS': False,
-    'BLACKLIST_AFTER_ROTATION': False,
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
     'ALGORITHM': 'HS256',
-    'SIGNING_KEY': SECRET_KEY,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'SIGNING_KEY': SIGNING_KEY,
+    'TOKEN_OBTAIN_SERIALIZER': 'rest_framework_simplejwt.serializers.TokenObtainPairSerializer',
 }
 
