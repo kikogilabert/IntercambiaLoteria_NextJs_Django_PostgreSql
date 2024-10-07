@@ -5,9 +5,15 @@ repos:
     hooks:
       - id: check-yaml
         args: ["--allow-multiple-documents"]
+        files: ^server/
       - id: end-of-file-fixer
+        files: ^server/
       - id: trailing-whitespace
+        files: ^server/
       - id: check-added-large-files
+        files: ^server/
+      - id: check-json
+        files: ^server/
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.6.8  # Use the latest stable version of ruff
@@ -25,3 +31,4 @@ repos:
         language: system
         pass_filenames: false
         args: [server/manage.py, check]
+

@@ -5,9 +5,13 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializers import (AdministracionRegisterSerializer,
-                          ProfileGetSerializer, ProfileUpdateSerializer,
-                          UsuarioLoginSerializer, UsuarioRegisterSerializer)
+from .serializers import (
+    AdministracionRegisterSerializer,
+    ProfileGetSerializer,
+    ProfileUpdateSerializer,
+    UsuarioLoginSerializer,
+    UsuarioRegisterSerializer,
+)
 
 
 # User Registration View
@@ -91,7 +95,7 @@ class UsuarioLoginView(APIView):
                 },
                 status=status.HTTP_200_OK,
             )
-        
+
         error_field = list(serializer.errors.keys())[0]
         error_detail = serializer.errors[error_field][0]
         error_message = str(error_detail)
