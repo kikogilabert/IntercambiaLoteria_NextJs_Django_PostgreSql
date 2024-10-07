@@ -3,777 +3,857 @@
         "model": "core.pais",
         "pk": 1,
         "fields": {
-            "nombre": "ESPAÑA",
-            "codigo": "ES"
+            "nombre": "españa",
+            "codigo": "ES",
+            "nombre_front": "España"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 1,
         "fields": {
-            "nombre": "ANDALUCÍA",
+            "nombre": "andalucia",
             "codigo": "AN",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Andalucía"
         }
     },
     {
         "model": "core.provincia",
         "pk": 1,
         "fields": {
-            "nombre": "SEVILLA",
+            "nombre": "sevilla",
             "codigo": "SE",
             "comunidad_autonoma": 1,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Sevilla"
         }
     },
     {
         "model": "core.provincia",
         "pk": 2,
         "fields": {
-            "nombre": "MÁLAGA",
+            "nombre": "malaga",
             "codigo": "MA",
             "comunidad_autonoma": 1,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Málaga"
         }
     },
     {
         "model": "core.provincia",
         "pk": 3,
         "fields": {
-            "nombre": "GRANADA",
+            "nombre": "granada",
             "codigo": "GR",
             "comunidad_autonoma": 1,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Granada"
         }
     },
     {
         "model": "core.provincia",
         "pk": 4,
         "fields": {
-            "nombre": "CÁDIZ",
+            "nombre": "cadiz",
             "codigo": "CA",
             "comunidad_autonoma": 1,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Cádiz"
         }
     },
     {
         "model": "core.provincia",
         "pk": 5,
         "fields": {
-            "nombre": "CÓRDOBA",
+            "nombre": "cordoba",
             "codigo": "CO",
             "comunidad_autonoma": 1,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Córdoba"
         }
     },
     {
         "model": "core.provincia",
         "pk": 6,
         "fields": {
-            "nombre": "HUELVA",
+            "nombre": "huelva",
             "codigo": "H",
             "comunidad_autonoma": 1,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Huelva"
         }
     },
     {
         "model": "core.provincia",
         "pk": 7,
         "fields": {
-            "nombre": "JAÉN",
+            "nombre": "jaen",
             "codigo": "J",
             "comunidad_autonoma": 1,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Jaen"
         }
     },
     {
         "model": "core.provincia",
         "pk": 8,
         "fields": {
-            "nombre": "ALMERÍA",
+            "nombre": "almeria",
             "codigo": "AL",
             "comunidad_autonoma": 1,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Almería"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 2,
         "fields": {
-            "nombre": "ARAGÓN",
+            "nombre": "aragon",
             "codigo": "AR",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Aragón"
         }
     },
     {
         "model": "core.provincia",
         "pk": 9,
         "fields": {
-            "nombre": "ZARAGOZA",
+            "nombre": "zaragoza",
             "codigo": "Z",
             "comunidad_autonoma": 2,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Zaragoza"
         }
     },
     {
         "model": "core.provincia",
         "pk": 10,
         "fields": {
-            "nombre": "HUESCA",
+            "nombre": "huesca",
             "codigo": "HU",
             "comunidad_autonoma": 2,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Huesca"
         }
     },
     {
         "model": "core.provincia",
         "pk": 11,
         "fields": {
-            "nombre": "TERUEL",
+            "nombre": "teruel",
             "codigo": "TE",
             "comunidad_autonoma": 2,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Teruel"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 3,
         "fields": {
-            "nombre": "PRINCIPADO DE ASTURIAS",
+            "nombre": "principado_de_asturias",
             "codigo": "AS",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Principado de Asturias"
         }
     },
     {
         "model": "core.provincia",
         "pk": 12,
         "fields": {
-            "nombre": "ASTURIAS",
+            "nombre": "asturias",
             "codigo": "O",
             "comunidad_autonoma": 3,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Asturias"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 4,
         "fields": {
-            "nombre": "ISLAS BALEARES",
+            "nombre": "islas_baleares",
             "codigo": "IB",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Islas Baleares"
         }
     },
     {
         "model": "core.provincia",
         "pk": 13,
         "fields": {
-            "nombre": "ISLAS BALEARES",
+            "nombre": "baleares",
             "codigo": "PM",
             "comunidad_autonoma": 4,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Baleares"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 5,
         "fields": {
-            "nombre": "CANARIAS",
+            "nombre": "canarias",
             "codigo": "CN",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Canarias"
         }
     },
     {
         "model": "core.provincia",
         "pk": 14,
         "fields": {
-            "nombre": "LAS PALMAS",
+            "nombre": "las_palmas",
             "codigo": "GC",
             "comunidad_autonoma": 5,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Las Palmas"
         }
     },
     {
         "model": "core.provincia",
         "pk": 15,
         "fields": {
-            "nombre": "SANTA CRUZ DE TENERIFE",
+            "nombre": "santa_cruz_de_tenerife",
             "codigo": "TF",
             "comunidad_autonoma": 5,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Santa Cruz de Tenerife"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 6,
         "fields": {
-            "nombre": "CANTABRIA",
+            "nombre": "cantabria",
             "codigo": "CB",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Cantabria"
         }
     },
     {
         "model": "core.provincia",
         "pk": 16,
         "fields": {
-            "nombre": "CANTABRIA",
+            "nombre": "cantabria",
             "codigo": "S",
             "comunidad_autonoma": 6,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Cantabria"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 7,
         "fields": {
-            "nombre": "CASTILLA Y LEÓN",
+            "nombre": "castilla_y_leon",
             "codigo": "CL",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Castilla y León"
         }
     },
     {
         "model": "core.provincia",
         "pk": 17,
         "fields": {
-            "nombre": "ÁVILA",
+            "nombre": "avila",
             "codigo": "AV",
             "comunidad_autonoma": 7,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Ávila"
         }
     },
     {
         "model": "core.provincia",
         "pk": 18,
         "fields": {
-            "nombre": "BURGOS",
+            "nombre": "burgos",
             "codigo": "BU",
             "comunidad_autonoma": 7,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Burgos"
         }
     },
     {
         "model": "core.provincia",
         "pk": 19,
         "fields": {
-            "nombre": "LEÓN",
+            "nombre": "leon",
             "codigo": "LE",
             "comunidad_autonoma": 7,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "León"
         }
     },
     {
         "model": "core.provincia",
         "pk": 20,
         "fields": {
-            "nombre": "PALENCIA",
+            "nombre": "palencia",
             "codigo": "P",
             "comunidad_autonoma": 7,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Palencia"
         }
     },
     {
         "model": "core.provincia",
         "pk": 21,
         "fields": {
-            "nombre": "SALAMANCA",
+            "nombre": "salamanca",
             "codigo": "SA",
             "comunidad_autonoma": 7,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Salamanca"
         }
     },
     {
         "model": "core.provincia",
         "pk": 22,
         "fields": {
-            "nombre": "SEGOVIA",
+            "nombre": "segovia",
             "codigo": "SG",
             "comunidad_autonoma": 7,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Segovia"
         }
     },
     {
         "model": "core.provincia",
         "pk": 23,
         "fields": {
-            "nombre": "SORIA",
+            "nombre": "soria",
             "codigo": "SO",
             "comunidad_autonoma": 7,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Soria"
         }
     },
     {
         "model": "core.provincia",
         "pk": 24,
         "fields": {
-            "nombre": "VALLADOLID",
+            "nombre": "valladolid",
             "codigo": "VA",
             "comunidad_autonoma": 7,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Valladolid"
         }
     },
     {
         "model": "core.provincia",
         "pk": 25,
         "fields": {
-            "nombre": "ZAMORA",
+            "nombre": "zamora",
             "codigo": "ZA",
             "comunidad_autonoma": 7,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Zamora"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 8,
         "fields": {
-            "nombre": "CASTILLA-LA MANCHA",
+            "nombre": "castilla_la_mancha",
             "codigo": "CM",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Castilla-La Mancha"
         }
     },
     {
         "model": "core.provincia",
         "pk": 26,
         "fields": {
-            "nombre": "ALBACETE",
+            "nombre": "albacete",
             "codigo": "AB",
             "comunidad_autonoma": 8,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Albacete"
         }
     },
     {
         "model": "core.provincia",
         "pk": 27,
         "fields": {
-            "nombre": "CIUDAD REAL",
+            "nombre": "ciudad_real",
             "codigo": "CR",
             "comunidad_autonoma": 8,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Ciudad Real"
         }
     },
     {
         "model": "core.provincia",
         "pk": 28,
         "fields": {
-            "nombre": "CUENCA",
+            "nombre": "cuenca",
             "codigo": "CU",
             "comunidad_autonoma": 8,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Cuenca"
         }
     },
     {
         "model": "core.provincia",
         "pk": 29,
         "fields": {
-            "nombre": "GUADALAJARA",
+            "nombre": "guadalajara",
             "codigo": "GU",
             "comunidad_autonoma": 8,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Guadalajara"
         }
     },
     {
         "model": "core.provincia",
         "pk": 30,
         "fields": {
-            "nombre": "TOLEDO",
+            "nombre": "toledo",
             "codigo": "TO",
             "comunidad_autonoma": 8,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Toledo"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 9,
         "fields": {
-            "nombre": "CATALUÑA",
+            "nombre": "cataluña",
             "codigo": "CT",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Cataluña"
         }
     },
     {
         "model": "core.provincia",
         "pk": 31,
         "fields": {
-            "nombre": "BARCELONA",
+            "nombre": "barcelona",
             "codigo": "B",
             "comunidad_autonoma": 9,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Barcelona"
         }
     },
     {
         "model": "core.provincia",
         "pk": 32,
         "fields": {
-            "nombre": "GIRONA",
+            "nombre": "girona",
             "codigo": "GI",
             "comunidad_autonoma": 9,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Girona"
         }
     },
     {
         "model": "core.provincia",
         "pk": 33,
         "fields": {
-            "nombre": "LLEIDA",
+            "nombre": "lleida",
             "codigo": "L",
             "comunidad_autonoma": 9,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Lleida"
         }
     },
     {
         "model": "core.provincia",
         "pk": 34,
         "fields": {
-            "nombre": "TARRAGONA",
+            "nombre": "tarragona",
             "codigo": "T",
             "comunidad_autonoma": 9,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Tarragona"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 10,
         "fields": {
-            "nombre": "EXTREMADURA",
+            "nombre": "extremadura",
             "codigo": "EX",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Extremadura"
         }
     },
     {
         "model": "core.provincia",
         "pk": 35,
         "fields": {
-            "nombre": "BADAJOZ",
+            "nombre": "badajoz",
             "codigo": "BA",
             "comunidad_autonoma": 10,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Badajoz"
         }
     },
     {
         "model": "core.provincia",
         "pk": 36,
         "fields": {
-            "nombre": "CÁCERES",
+            "nombre": "caceres",
             "codigo": "CC",
             "comunidad_autonoma": 10,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Cáceres"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 11,
         "fields": {
-            "nombre": "GALICIA",
+            "nombre": "galicia",
             "codigo": "GA",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Galicia"
         }
     },
     {
         "model": "core.provincia",
         "pk": 37,
         "fields": {
-            "nombre": "A CORUÑA",
+            "nombre": "a_coruña",
             "codigo": "C",
             "comunidad_autonoma": 11,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "A Coruña"
         }
     },
     {
         "model": "core.provincia",
         "pk": 38,
         "fields": {
-            "nombre": "LUGO",
+            "nombre": "lugo",
             "codigo": "LU",
             "comunidad_autonoma": 11,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Lugo"
         }
     },
     {
         "model": "core.provincia",
         "pk": 39,
         "fields": {
-            "nombre": "OURENSE",
+            "nombre": "ourense",
             "codigo": "OR",
             "comunidad_autonoma": 11,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Ourense"
         }
     },
     {
         "model": "core.provincia",
         "pk": 40,
         "fields": {
-            "nombre": "PONTEVEDRA",
+            "nombre": "pontevedra",
             "codigo": "PO",
             "comunidad_autonoma": 11,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Pontevedra"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 12,
         "fields": {
-            "nombre": "COMUNIDAD DE MADRID",
+            "nombre": "comunidad_de_madrid",
             "codigo": "MD",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Comunidad de Madrid"
         }
     },
     {
         "model": "core.provincia",
         "pk": 41,
         "fields": {
-            "nombre": "MADRID",
+            "nombre": "madrid",
             "codigo": "M",
             "comunidad_autonoma": 12,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Madrid"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 13,
         "fields": {
-            "nombre": "REGIÓN DE MURCIA",
+            "nombre": "region_de_murcia",
             "codigo": "MC",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Región de Murcia"
         }
     },
     {
         "model": "core.provincia",
         "pk": 42,
         "fields": {
-            "nombre": "MURCIA",
+            "nombre": "murcia",
             "codigo": "MU",
             "comunidad_autonoma": 13,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Murcia"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 14,
         "fields": {
-            "nombre": "COMUNIDAD FORAL DE NAVARRA",
+            "nombre": "comunidad_foral_de_navarra",
             "codigo": "NC",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Comunidad Foral de Navarra"
         }
     },
     {
         "model": "core.provincia",
         "pk": 43,
         "fields": {
-            "nombre": "NAVARRA",
+            "nombre": "navarra",
             "codigo": "NA",
             "comunidad_autonoma": 14,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Navarra"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 15,
         "fields": {
-            "nombre": "LA RIOJA",
+            "nombre": "la_rioja",
             "codigo": "RI",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "La Rioja"
         }
     },
     {
         "model": "core.provincia",
         "pk": 44,
         "fields": {
-            "nombre": "LA RIOJA",
+            "nombre": "la_rioja",
             "codigo": "LO",
             "comunidad_autonoma": 15,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "La Rioja"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 16,
         "fields": {
-            "nombre": "COMUNIDAD VALENCIANA",
+            "nombre": "comunidad_valenciana",
             "codigo": "VC",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Comunitat Valenciana"
         }
     },
     {
         "model": "core.provincia",
         "pk": 45,
         "fields": {
-            "nombre": "VALENCIA",
+            "nombre": "valencia",
             "codigo": "V",
             "comunidad_autonoma": 16,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Valencia/València"
         }
     },
     {
         "model": "core.provincia",
         "pk": 46,
         "fields": {
-            "nombre": "CASTELLÓN",
+            "nombre": "castellon",
             "codigo": "CS",
             "comunidad_autonoma": 16,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Castellón/Castelló"
         }
     },
     {
         "model": "core.provincia",
         "pk": 47,
         "fields": {
-            "nombre": "ALICANTE",
+            "nombre": "alicante",
             "codigo": "A",
             "comunidad_autonoma": 16,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Alicante/Alacant"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 17,
         "fields": {
-            "nombre": "PAÍS VASCO",
+            "nombre": "pais_vasco",
             "codigo": "PV",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Pais Vasco/Euskadi"
         }
     },
     {
         "model": "core.provincia",
         "pk": 48,
         "fields": {
-            "nombre": "ÁLAVA",
+            "nombre": "alava",
             "codigo": "VI",
             "comunidad_autonoma": 17,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Alava/Araba"
         }
     },
     {
         "model": "core.provincia",
         "pk": 49,
         "fields": {
-            "nombre": "GUIPÚZCOA",
+            "nombre": "guipuzcoa",
             "codigo": "SS",
             "comunidad_autonoma": 17,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Gipuzkoa"
         }
     },
     {
         "model": "core.provincia",
         "pk": 50,
         "fields": {
-            "nombre": "VIZCAYA",
+            "nombre": "vizcaya",
             "codigo": "BI",
             "comunidad_autonoma": 17,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Vizcaya/Bizkaia"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 18,
         "fields": {
-            "nombre": "CEUTA",
+            "nombre": "ceuta",
             "codigo": "CE",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Ceuta"
         }
     },
     {
         "model": "core.provincia",
         "pk": 51,
         "fields": {
-            "nombre": "CEUTA",
+            "nombre": "ceuta",
             "codigo": "CE",
             "comunidad_autonoma": 18,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Ceuta"
         }
     },
     {
         "model": "core.comunidadautonoma",
         "pk": 19,
         "fields": {
-            "nombre": "MELILLA",
+            "nombre": "melilla",
             "codigo": "ML",
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Melilla"
         }
     },
     {
         "model": "core.provincia",
         "pk": 52,
         "fields": {
-            "nombre": "MELILLA",
+            "nombre": "melilla",
             "codigo": "ML",
             "comunidad_autonoma": 19,
-            "pais": 1
+            "pais": 1,
+            "nombre_front": "Melilla"
         }
     },
     {
         "model": "core.pais",
         "pk": 2,
         "fields": {
-            "nombre": "ANDORRA",
-            "codigo": "AD"
+            "nombre": "andorra",
+            "codigo": "AD",
+            "nombre_front": "Andorra"
         }
     },
     {
         "model": "core.provincia",
         "pk": 53,
         "fields": {
-            "nombre": "ANDORRA LA VELLA",
+            "nombre": "andorra_la_vella",
             "codigo": "07",
             "comunidad_autonoma": null,
-            "pais": 2
+            "pais": 2,
+            "nombre_front": "Andorra La Vella"
         }
     },
     {
         "model": "core.provincia",
         "pk": 54,
         "fields": {
-            "nombre": "ESCALDES-ENGORDANY",
+            "nombre": "escaldes_engordany",
             "codigo": "08",
             "comunidad_autonoma": null,
-            "pais": 2
+            "pais": 2,
+            "nombre_front": "Escaldes-Engordany"
         }
     },
     {
         "model": "core.provincia",
         "pk": 55,
         "fields": {
-            "nombre": "ENCAMP",
+            "nombre": "encamp",
             "codigo": "01",
             "comunidad_autonoma": null,
-            "pais": 2
+            "pais": 2,
+            "nombre_front": "Encamp"
         }
     },
     {
         "model": "core.provincia",
         "pk": 56,
         "fields": {
-            "nombre": "SANT JULIÀ DE LÒRIA",
+            "nombre": "sant_julia_de_loria",
             "codigo": "06",
             "comunidad_autonoma": null,
-            "pais": 2
+            "pais": 2,
+            "nombre_front": "Sant Julià de Lòria"
         }
     },
     {
         "model": "core.provincia",
         "pk": 57,
         "fields": {
-            "nombre": "LA MASSANA",
+            "nombre": "la_massana",
             "codigo": "04",
             "comunidad_autonoma": null,
-            "pais": 2
+            "pais": 2,
+            "nombre_front": "La Massana"
         }
     },
     {
         "model": "core.provincia",
         "pk": 58,
         "fields": {
-            "nombre": "ORDINO",
+            "nombre": "ordino",
             "codigo": "05",
             "comunidad_autonoma": null,
-            "pais": 2
+            "pais": 2,
+            "nombre_front": "Ordino"
         }
     },
     {
         "model": "core.provincia",
         "pk": 59,
         "fields": {
-            "nombre": "CANILLO",
+            "nombre": "canillo",
             "codigo": "02",
             "comunidad_autonoma": null,
-            "pais": 2
+            "pais": 2,
+            "nombre_front": "Canillo"
         }
     }
 ]

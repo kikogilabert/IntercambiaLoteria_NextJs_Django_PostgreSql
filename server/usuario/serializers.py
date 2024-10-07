@@ -4,12 +4,12 @@ from typing import Any, Dict
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework import serializers
 
-from .constants import PROVINCIAS_CHOICES
-from .models import (
+from usuario.models import (
     Administracion,  # Assuming your models are in models.py
     Usuario,
 )
 
+from core.constants import PROVINCIAS_CHOICES
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
@@ -208,34 +208,33 @@ class AdministracionRegisterSerializer(serializers.ModelSerializer):
 
         return value
 
+    # Field-level validation for provincia
+    def validate_provincia(self, value):
+        if not value:
+            raise serializers.ValidationError("Provincia is a required field.")
+
+        # Comprobar si la provincia es válida según PROVINCIAS_CHOICES
+        provincias_keys = [choice[0] for choice in PROVINCIAS_CHOICES]
+        if value not in provincias_keys:
+            raise serializers.ValidationError("Provincia is not a valid value from the select form.")
+
+        return value
+
+    # Field-level validation for localidad
+    def validate_localidad(self, value):
+        if not value:
+            raise serializers.ValidationError("Localidad is a required field.")
+        return value
+
+    # Field-level validation for direccion
+    def validate_direccion(self, value):
+        if not value:
+            raise serializers.ValidationError("Dirección is a required field.")
+        return value
+
     # Cross-field validation
     def validate(self, data):
-        # Example of validating a combination of fields
-        provincia = data.get("provincia")
-        localidad = data.get("localidad")
-        direccion = data.get("direccion")
-
-        if not provincia:
-            raise serializers.ValidationError(
-                {"provincia": " Provincia is a required field."}
-            )
-
-        provincias_keys = [choice[0] for choice in PROVINCIAS_CHOICES]
-        if provincia not in provincias_keys:
-            raise serializers.ValidationError(
-                {"provincia": " Provincia is not a valid value from select form."}
-            )
-
-        if not localidad:
-            raise serializers.ValidationError(
-                {"localidad": " Localidad is required field."}
-            )
-
-        if not direccion:
-            raise serializers.ValidationError(
-                {"direccion": " Dirección is required field."}
-            )
-
+        # Aquí puedes añadir validaciones que dependen de múltiples campos si es necesario
         return data
 
     # Overriding the create method to ensure saving logic

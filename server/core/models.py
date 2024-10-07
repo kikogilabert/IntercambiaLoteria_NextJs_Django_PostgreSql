@@ -5,6 +5,7 @@ from core.exceptions import InvalidStateTransition
 
 class Pais(models.Model):
     nombre = models.CharField(max_length=100)
+    nombre_front = models.CharField(max_length=100)
     codigo = models.CharField(max_length=2, unique=True)  # Código ISO del país, por ejemplo 'ES' para España
 
     def __str__(self):
@@ -13,6 +14,7 @@ class Pais(models.Model):
 
 class ComunidadAutonoma(models.Model):
     nombre = models.CharField(max_length=100)
+    nombre_front = models.CharField(max_length=100)
     codigo = models.CharField(max_length=2, unique=True)  # Código de cada comunidad autónoma
     pais = models.ForeignKey(Pais, on_delete=models.CASCADE, related_name="comunidades_autonomas")
 
@@ -22,6 +24,7 @@ class ComunidadAutonoma(models.Model):
 
 class Provincia(models.Model):
     nombre = models.CharField(max_length=100)
+    nombre_front = models.CharField(max_length=100)
     codigo = models.CharField(max_length=2, unique=True)  # Código de cada provincia
     comunidad_autonoma = models.ForeignKey(
         ComunidadAutonoma, null=True, blank=True, on_delete=models.CASCADE, related_name="provincias"
