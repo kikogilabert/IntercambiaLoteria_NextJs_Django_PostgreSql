@@ -1,8 +1,9 @@
 import csv
-import re
 from datetime import datetime
+import re
 
 from django.core.management.base import BaseCommand
+
 from intercambios.models import Sorteo
 
 
@@ -87,10 +88,10 @@ class Command(BaseCommand):
         try:
             # Assuming the date format is 'DD/MM/YYYY'
             return datetime.strptime(fecha_str.strip(), "%d/%m/%y").date()
-        except ValueError:
+        except ValueError as err:
             raise ValueError(
                 f"Formato de fecha inválido en la fila {row_number}: '{fecha_str}'."
-            )
+            ) from err
 
     def construct_codigo(self, numero_str, fecha, row_number):
         if not numero_str:
@@ -108,7 +109,7 @@ class Command(BaseCommand):
         precio_clean = re.sub(r"[^\d,\.]", "", precio_str).replace(",", ".")
         try:
             return float(precio_clean)
-        except ValueError:
+        except ValueError as err:
             raise ValueError(
                 f"Precio inválido en la fila {row_number}: '{precio_str}'."
-            )
+            ) from err

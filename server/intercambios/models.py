@@ -1,10 +1,19 @@
-from core.models import Sorteo, StateManager
 from django.db import models, transaction
-from usuario.models import Administracion
 
-from .constants import (ESTADO_ABIERTA, ESTADO_ACEPTADA, ESTADO_CANCELADA,
-                        ESTADO_COMPLETADA, ESTADO_RECHAZADA, ESTADOS_RESPUESTA,
-                        ESTADOS_SOLICITUD, TIPOS_CONDICION, TIPOS_SOLICITUD)
+from .constants import (
+    ESTADO_ABIERTA,
+    ESTADO_ACEPTADA,
+    ESTADO_CANCELADA,
+    ESTADO_COMPLETADA,
+    ESTADO_RECHAZADA,
+    ESTADOS_RESPUESTA,
+    ESTADOS_SOLICITUD,
+    TIPOS_CONDICION,
+    TIPOS_SOLICITUD,
+)
+
+from core.models import Sorteo, StateManager
+from usuario.models import Administracion
 
 
 class Solicitud(StateManager):

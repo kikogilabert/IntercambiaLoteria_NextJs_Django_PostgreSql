@@ -1,16 +1,21 @@
 # core/views.py
 
-from core.exceptions import InvalidStateTransition
-from core.utils import ResponseStruct, get_error_response, get_success_response
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 
+from core.exceptions import InvalidStateTransition
+from core.utils import ResponseStruct, get_error_response, get_success_response
+
 from .models import ComunidadAutonoma, Pais, Provincia
-from .serializers import (ComunidadAutonomaSerializer,
-                          ComunidadAutonomaSimpleSerializer, PaisSerializer,
-                          PaisSimpleSerializer, ProvinciaSerializer,
-                          ProvinciaSimpleSerializer)
+from .serializers import (
+    ComunidadAutonomaSerializer,
+    ComunidadAutonomaSimpleSerializer,
+    PaisSerializer,
+    PaisSimpleSerializer,
+    ProvinciaSerializer,
+    ProvinciaSimpleSerializer,
+)
 
 
 # Pais views
@@ -135,7 +140,7 @@ class ChangeStateAPIView(APIView):
         Método que debe ser sobreescrito para devolver los estados válidos para la transición.
         """
         raise NotImplementedError("Subclases deben definir el método 'get_valid_transitions'")
-    
+
     def get(self, request, pk, *args, **kwargs):
         # Obtenemos el modelo y la instancia
         model_class = self.get_model_class()
@@ -149,10 +154,10 @@ class ChangeStateAPIView(APIView):
         obj = get_object_or_404(model_class, pk=pk)
 
         valid_states = self.get_valid_transitions()
-        nuevo_estado = request.data.get('nuevo_estado')
+        nuevo_estado = request.data.get("nuevo_estado")
         if not nuevo_estado:
             return get_error_response("No se proporcionó un estado nuevo.", error_code=400)
-        
+
         if nuevo_estado not in valid_states:
             return get_error_response("Nuevo estado no es correcto.", error_code=400)
 

@@ -9,6 +9,6 @@ class IsAdminOrReadOnly(BasePermission):
     """
 
     def has_permission(self, request, view):
-        if request.method in ('GET', 'HEAD', 'OPTIONS'):
+        if request.method in ("GET", "HEAD", "OPTIONS"):
             return True  # Safe methods for everyone
         return request.user.is_staff  # Only admins can make changes

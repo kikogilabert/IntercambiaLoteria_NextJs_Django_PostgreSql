@@ -29,5 +29,5 @@ urlpatterns = [
     # Deactivate profile (DELETE)
     path("profile/deactivate/", ProfileView.as_view(), name="profile-deactivate"),
     # Get profile data (GET)
-    path('profile/', ProfileView.as_view(), name='profile-get'),
+    path("profile/", ProfileView.as_view(), name="profile-get"),
 ]
