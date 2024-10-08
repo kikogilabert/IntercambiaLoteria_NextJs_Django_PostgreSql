@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "rest_framework.authtoken",
     "corsheaders",
+    "simple_history",
 
     # My local apps
     "core",
@@ -131,14 +132,21 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+# Configuración del idioma y localización para España
+LANGUAGE_CODE = "es-es"
 
+# Configuración de la zona horaria a la hora de España
+TIME_ZONE = "Europe/Madrid"
+
+# Activa el uso de internacionalización (traducción de cadenas de texto)
 USE_I18N = True
 
-USE_TZ = True
+# Activa el uso de localización (formateo de fechas, números y otros valores según el idioma y la configuración regional)
+USE_L10N = True
 
+# Activa el soporte para zonas horarias para manejar automáticamente el horario de verano/invierno
+USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -157,6 +165,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+    #'DATETIME_FORMAT': '%Y-%m-%dT%H:%M:%S%z',  # Formato ISO 8601
 }
 
 SIMPLE_JWT = {

@@ -13,6 +13,7 @@ from .constants import (
 )
 
 from core.models import Sorteo, StateManager
+from simple_history.models import HistoricalRecords
 from usuario.models import Administracion
 
 
@@ -49,7 +50,9 @@ class Solicitud(StateManager):
         max_length=20, default=ESTADO_ABIERTA, choices=ESTADOS_SOLICITUD
     )
 
-    # ADITIONAL ADMON STATUS FIELDS
+    # Add historical record of changes.
+    history = HistoricalRecords()
+    # Datatime of creation or update.
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -78,6 +81,9 @@ class Respuesta(StateManager):
         max_length=20, default=ESTADO_ABIERTA, choices=ESTADOS_RESPUESTA
     )
 
+    # Add historical record of changes.
+    history = HistoricalRecords()
+    # Datatime of creation or update.
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -105,7 +111,9 @@ class Intercambio(models.Model):
         related_name="recibidas_en_intercambio",
     )
 
-    # Date
+    # Add historical record of changes.
+    history = HistoricalRecords()
+    # Datatime of creation or update.
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

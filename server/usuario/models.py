@@ -6,6 +6,7 @@ from django.db import models
 from usuario.constants import TIPOS_PERSONA
 
 from core.models import Provincia
+from simple_history.models import HistoricalRecords
 
 
 class UsuarioManager(BaseUserManager):
@@ -62,9 +63,11 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
         "Administracion", on_delete=models.CASCADE, related_name="propietario", null=False
     )
 
-    # ADITIONAL ADMON STATUS FIELDS
+    # Add historical record of changes.
+    history = HistoricalRecords()
+    # Datatime of creation or update.
     created_at = models.DateTimeField(auto_now_add=True)
-    # updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)  # Permite acceso al admin panel
 
@@ -90,6 +93,12 @@ class Administracion(models.Model):
     localidad = models.CharField(max_length=100)
     codigo_postal = models.CharField(max_length=5)
     numero_administracion = models.CharField(max_length=5)
+
+    # Add historical record of changes.
+    history = HistoricalRecords()
+    # Datatime of creation or update.
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         """Return a string representation of the administration (nombre_comercial)."""
