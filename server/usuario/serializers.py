@@ -165,6 +165,7 @@ class AdministracionSerializer(serializers.ModelSerializer):
             "direccion",
             "provincia",
             "localidad",
+            "codigo_postal",
             "numero_administracion",
         ]
 
@@ -178,6 +179,7 @@ class AdministracionRegisterSerializer(serializers.ModelSerializer):
             "direccion",
             "provincia",
             "localidad",
+            "codigo_postal",
             "numero_administracion",
         ]
 
@@ -205,7 +207,6 @@ class AdministracionRegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 "El numero_administracion debe tener como maximo 5 dígitos."
             )
-
         return value
 
     # Field-level validation for provincia
@@ -215,7 +216,7 @@ class AdministracionRegisterSerializer(serializers.ModelSerializer):
 
         # Comprobar si la provincia es válida según PROVINCIAS_CHOICES
         provincias_keys = [choice[0] for choice in PROVINCIAS_CHOICES]
-        if value not in provincias_keys:
+        if value.id not in provincias_keys:
             raise serializers.ValidationError("Provincia is not a valid value from the select form.")
 
         return value
@@ -224,6 +225,19 @@ class AdministracionRegisterSerializer(serializers.ModelSerializer):
     def validate_localidad(self, value):
         if not value:
             raise serializers.ValidationError("Localidad is a required field.")
+        return value
+
+    # Field-level validation for numero_administracion (custom length or pattern validation)
+    def validate_codigo_postal(self, value):
+        if not value.isdigit():
+            raise serializers.ValidationError(
+                "El codigo_postal debe contener solo dígitos."
+            )
+        if len(value) != 5:
+            raise serializers.ValidationError(
+                "El codigo_postal debe tener como maximo 5 dígitos."
+            )
+
         return value
 
     # Field-level validation for direccion

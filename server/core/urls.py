@@ -10,6 +10,7 @@ from .views import (
                     ProvinciaDetailView,
                     ProvinciaFromPaisView,
                     ProvinciaListView,
+                    ProvinciasRegister,
 )
 
 urlpatterns = [
@@ -24,7 +25,10 @@ urlpatterns = [
     # Provincia URLs
     path("provincias/", ProvinciaListView.as_view(), name="provincia-list"),  # List all provincias
     path("provincias/<int:pk>/", ProvinciaDetailView.as_view(), name="provincia-detail"),  # Get a specific provincias by ID
+    #Get list of provincias for frontend.
+    path("provincias/register/", ProvinciasRegister.as_view(), name="provincias-register"),
 
     # Get provincias by country (pais_id)
     path("paises/<int:pais_id>/provincias/", ProvinciaFromPaisView.as_view(), name="provincias-from-pais"),
+
 ]

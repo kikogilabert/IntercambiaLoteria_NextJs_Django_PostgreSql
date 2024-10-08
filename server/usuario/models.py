@@ -88,6 +88,7 @@ class Administracion(models.Model):
     direccion = models.CharField(max_length=255)
     provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE)
     localidad = models.CharField(max_length=100)
+    codigo_postal = models.CharField(max_length=5)
     numero_administracion = models.CharField(max_length=5)
 
     def __str__(self) -> str:
