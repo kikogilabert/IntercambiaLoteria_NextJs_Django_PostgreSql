@@ -26,9 +26,7 @@ class PaisListView(APIView):
         paises = Pais.objects.all()
         serializer = PaisSimpleSerializer(paises, many=True)
 
-        return ResponseStruct(
-            message="List of countries fetched successfully", data=serializer.data
-        ).to_response()
+        return ResponseStruct(message="List of countries fetched successfully", data=serializer.data).to_response()
 
 
 class PaisDetailView(APIView):
@@ -39,8 +37,7 @@ class PaisDetailView(APIView):
         serializer = PaisSerializer(pais)
 
         return ResponseStruct(
-            message="List of countries with details fetched successfully",
-            data=serializer.data,
+            message="List of countries with details fetched successfully", data=serializer.data
         ).to_response()
 
 
@@ -52,9 +49,7 @@ class ComunidadAutonomaListView(APIView):
         comunidades = ComunidadAutonoma.objects.all()
         serializer = ComunidadAutonomaSimpleSerializer(comunidades, many=True)
 
-        return ResponseStruct(
-            message="List of Community fetched successfully", data=serializer.data
-        ).to_response()
+        return ResponseStruct(message="List of Community fetched successfully", data=serializer.data).to_response()
 
 
 class ComunidadAutonomaDetailView(APIView):
@@ -65,8 +60,7 @@ class ComunidadAutonomaDetailView(APIView):
         serializer = ComunidadAutonomaSerializer(comunidad)
 
         return ResponseStruct(
-            message="List of Community with details fetched successfully",
-            data=serializer.data,
+            message="List of Community with details fetched successfully", data=serializer.data
         ).to_response()
 
 
@@ -78,9 +72,7 @@ class ProvinciaListView(APIView):
         provincias = Provincia.objects.all()
         serializer = ProvinciaSimpleSerializer(provincias, many=True)
 
-        return ResponseStruct(
-            message="List of Province fetched successfully", data=serializer.data
-        ).to_response()
+        return ResponseStruct(message="List of Province fetched successfully", data=serializer.data).to_response()
 
 
 class ProvinciaDetailView(APIView):
@@ -91,8 +83,7 @@ class ProvinciaDetailView(APIView):
         serializer = ProvinciaSerializer(provincia)
 
         return ResponseStruct(
-            message="List of Province with details fetched successfully",
-            data=serializer.data,
+            message="List of Province with details fetched successfully", data=serializer.data
         ).to_response()
 
 
@@ -115,9 +106,49 @@ class ProvinciaFromPaisView(APIView):
 
         # Return the response
         return ResponseStruct(
-            message=f"Provinces for country {pais.nombre} fetched successfully",
-            data=serializer.data,
+            message=f"Provinces for country {pais.nombre} fetched successfully", data=serializer.data
         ).to_response()
+
+
+class ProvinciasRegister(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        try:
+            # Verificar si existen los países con ID 1 y 2
+            if not Pais.objects.filter(id=1).exists() and not Pais.objects.filter(id=2).exists():
+                return get_error_response(message="No se encontraron los países especificados.", error_code=404)
+
+            # Obtener las comunidades autónomas y provincias para los países especificados
+            comunidades = ComunidadAutonoma.objects.filter(pais__id=1).values("id", "nombre_front")
+            provincias = Provincia.objects.filter(pais__id__in=[1, 2]).values(
+                "id", "nombre_front", "comunidad_autonoma", "pais"
+            )
+
+            # Crear un diccionario para almacenar las comunidades y sus provincias
+            comunidad_dict = {comunidad["nombre_front"]: {"provincias": []} for comunidad in comunidades}
+
+            # Asociar las provincias a sus respectivas comunidades autónomas
+            for provincia in provincias:
+                if provincia["pais"] == 1:  # Si la provincia pertenece a España
+                    for comunidad in comunidades:
+                        if comunidad["id"] == provincia["comunidad_autonoma"]:
+                            comunidad_dict[comunidad["nombre_front"]]["provincias"].append(
+                                {"id": provincia["id"], "nombre_front": provincia["nombre_front"]}
+                            )
+                elif provincia["pais"] == 2:  # Si la provincia pertenece a Andorra
+                    if "Andorra" not in comunidad_dict:
+                        comunidad_dict["Andorra"] = {"provincias": []}
+                    comunidad_dict["Andorra"]["provincias"].append(
+                        {"id": provincia["id"], "nombre_front": provincia["nombre_front"]}
+                    )
+
+            return get_success_response("Provincias extraidas correctamente.", data=comunidad_dict)
+
+        except Exception as e:
+            return get_error_response(
+                message=f"Ha ocurrido un error al obtener las provincias: {str(e)}", error_code=500
+            )
 
 
 class ChangeStateAPIView(APIView):

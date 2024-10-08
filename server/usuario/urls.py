@@ -17,7 +17,7 @@ Including another URLconf
 
 from django.urls import path
 
-from .views import ProfileView, UsuarioLoginView, UsuarioRegisterView
+from usuario.views import ProfileView, UsuarioLoginView, UsuarioRegisterView
 
 urlpatterns = [
     # Register a new user
