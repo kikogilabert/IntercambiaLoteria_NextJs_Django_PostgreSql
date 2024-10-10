@@ -1,6 +1,7 @@
 from django.db import models, transaction
+from simple_history.models import HistoricalRecords
 
-from .constants import (
+from intercambios.constants import (
     ESTADO_ABIERTA,
     ESTADO_ACEPTADA,
     ESTADO_CANCELADA,
@@ -13,7 +14,6 @@ from .constants import (
 )
 
 from core.models import Sorteo, StateManager
-from simple_history.models import HistoricalRecords
 from usuario.models import Administracion
 
 

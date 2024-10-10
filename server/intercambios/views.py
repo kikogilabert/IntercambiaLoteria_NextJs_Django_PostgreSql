@@ -3,10 +3,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
 from intercambios.constants import ESTADOS_RESPUESTA, ESTADOS_SOLICITUD
+from intercambios.models import Respuesta, Solicitud
 from intercambios.permissions import IsOwnerOrRelated
-
-from .models import Respuesta, Solicitud
-from .serializers import IntercambioSerializer, RespuestaSerializer, SolicitudSerializer
+from intercambios.serializers import IntercambioSerializer, RespuestaSerializer, SolicitudSerializer
 
 from core.utils import get_error_response, get_success_response
 from core.views import ChangeStateAPIView

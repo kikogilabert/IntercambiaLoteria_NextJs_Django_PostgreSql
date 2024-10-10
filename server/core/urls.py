@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from .views import (
+from core.views import (
                     ComunidadAutonomaDetailView,
                     ComunidadAutonomaListView,
                     PaisDetailView,

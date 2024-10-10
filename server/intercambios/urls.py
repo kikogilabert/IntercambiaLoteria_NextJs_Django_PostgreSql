@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import (
+from intercambios.views import (
                     ChangeRespuestaStateAPIView,
                     ChangeSolicitudStateAPIView,
                     IntercambioAPIView,

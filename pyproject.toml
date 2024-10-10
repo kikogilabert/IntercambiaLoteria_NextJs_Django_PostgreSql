@@ -40,7 +40,7 @@ select = ["I", "B", "Q", "E", "F", "W"] # select = ["E", "F", "W", "I", "B", "C"
 ignore = ["E501"]
 
 [tool.ruff.lint.isort]
-known-third-party = ["django", "rest_framework"]  # Customize third-party packages as needed
+known-third-party = ["django", "rest_framework", "simple_history", "rest_framework_simplejwt"]  # Customize third-party packages as needed
 default-section = "THIRDPARTY"
 combine-as-imports = true
 force-sort-within-sections = true

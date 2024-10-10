@@ -5,10 +5,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 
 from core.exceptions import InvalidStateTransition
-from core.utils import ResponseStruct, get_error_response, get_success_response
-
-from .models import ComunidadAutonoma, Pais, Provincia
-from .serializers import (
+from core.models import ComunidadAutonoma, Pais, Provincia
+from core.serializers import (
     ComunidadAutonomaSerializer,
     ComunidadAutonomaSimpleSerializer,
     PaisSerializer,
@@ -16,6 +14,7 @@ from .serializers import (
     ProvinciaSerializer,
     ProvinciaSimpleSerializer,
 )
+from core.utils import ResponseStruct, get_error_response, get_success_response
 
 
 # Pais views

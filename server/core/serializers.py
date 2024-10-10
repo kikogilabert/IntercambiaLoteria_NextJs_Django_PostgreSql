@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 
-from .models import ComunidadAutonoma, Pais, Provincia
+from core.models import ComunidadAutonoma, Pais, Provincia
 
 
 class ProvinciaSimpleSerializer(serializers.ModelSerializer):

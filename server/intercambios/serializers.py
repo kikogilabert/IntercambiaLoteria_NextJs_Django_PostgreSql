@@ -1,8 +1,8 @@
 from django.db import transaction
 from rest_framework import serializers
 
-from .constants import ESTADO_ABIERTA, ESTADO_ACEPTADA, TiposCondicion, TiposSolicitud
-from .models import Intercambio, LoteriaIntercambio, Respuesta, Solicitud, Sorteo
+from intercambios.constants import ESTADO_ABIERTA, ESTADO_ACEPTADA, TiposCondicion, TiposSolicitud
+from intercambios.models import Intercambio, LoteriaIntercambio, Respuesta, Solicitud, Sorteo
 
 from usuario.models import Administracion
 

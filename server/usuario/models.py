@@ -2,11 +2,11 @@ from typing import Any, Optional
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 from usuario.constants import TIPOS_PERSONA
 
 from core.models import Provincia
-from simple_history.models import HistoricalRecords
 
 
 class UsuarioManager(BaseUserManager):
