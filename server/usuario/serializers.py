@@ -1,57 +1,78 @@
 import re
 from typing import Any, Dict
 
-from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth import authenticate
+from django.contrib.auth.hashers import check_password
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from .constants import PROVINCIAS_CHOICES
-from .models import Administracion  # Assuming your models are in models.py
-from .models import Usuario
+from usuario.models import (
+    Administracion,  # Assuming your models are in models.py
+    Usuario,
+)
 
+from core.constants import PROVINCIAS_CHOICES
 
-class ProfileGetSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Usuario
-        fields = [
-            "tipo",
-            "dni",
-            "nombre",
-            "apellidos",
-            "telefono",
-            "email",
-            "administracion",
-        ]
-
-
-class ProfileUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Usuario
-        fields = [
-            "tipo",
-            "dni",
-            "nombre",
-            "apellidos",
-            "telefono",
-            "email",
-            "password",
-        ]
+########################################
+############### PROFILE  ###############
+########################################
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
+        fields = ["tipo", "dni", "nombre", "apellidos", "telefono", "email"]
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    current_password = serializers.CharField(write_only=True, required=True)
+    new_password1 = serializers.CharField(write_only=True, required=True)
+    new_password2 = serializers.CharField(write_only=True, required=True)
+
+    def validate_current_password(self, value):
+        user = self.context["request"].user
+        if not check_password(value, user.password):
+            raise serializers.ValidationError("Current password is incorrect.")
+        return value
+
+    def validate(self, data):
+        # Validate new passwords match
+        new_password1 = data.get("new_password1")
+        new_password2 = data.get("new_password2")
+        if new_password1 != new_password2:
+            raise serializers.ValidationError({"new_password": "New passwords do not match."})
+
+        # Validate new password length
+        if len(new_password1) < 8:
+            raise serializers.ValidationError({"new_password": "New password must be at least 8 characters long."})
+
+        return data
+
+    def save(self, **kwargs):
+        user = self.context["request"].user
+        new_password = self.validated_data["new_password1"]
+        user.set_password(new_password)
+        user.save()
+        return user
+
+
+class AdministracionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Administracion
         fields = [
-            "id",
-            "tipo",
-            "dni",
-            "nombre",
-            "apellidos",
-            "telefono",
-            "email",
-            "administracion",
-            "password",
+            "nombre_comercial",
+            "numero_receptor",
+            "direccion",
+            "provincia",
+            "localidad",
+            "codigo_postal",
+            "numero_administracion",
         ]
+
+
+########################################
+############### REGISTER ###############
+########################################
 
 
 class UsuarioRegisterSerializer(serializers.ModelSerializer):
@@ -100,9 +121,7 @@ class UsuarioRegisterSerializer(serializers.ModelSerializer):
         Custom validation for phone number format.
         """
         if not re.match(r"^\+?\d{8,12}$", value):
-            raise serializers.ValidationError(
-                "Phone number must be between 8 and 12 digits."
-            )
+            raise serializers.ValidationError("Phone number must be between 8 and 12 digits.")
         return value
 
     # Validate that passwords match
@@ -112,9 +131,7 @@ class UsuarioRegisterSerializer(serializers.ModelSerializer):
         """
         # Validate apellidos based on tipo
         if data.get("tipo") == "PF" and not data.get("apellidos"):
-            raise serializers.ValidationError(
-                {"apellidos": "Apellidos is required for Persona Física."}
-            )
+            raise serializers.ValidationError({"apellidos": "Apellidos is required for Persona Física."})
 
         if data.get("tipo") == "PJ":
             data["apellidos"] = ""
@@ -126,9 +143,7 @@ class UsuarioRegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"password": "Passwords do not match."})
 
         if len(password1) < 8:
-            raise serializers.ValidationError(
-                {"password": "Password must be at least 8 characters long."}
-            )
+            raise serializers.ValidationError({"password": "Password must be at least 8 characters long."})
 
         # Extract the password from the validated data
         data["password"] = password1
@@ -146,24 +161,9 @@ class UsuarioRegisterSerializer(serializers.ModelSerializer):
         email = validated_data.pop("email", None)
 
         # Use the manager to create the user with the hashed password
-        user = Usuario.objects.create_usuario(
-            email=email, password=password, **validated_data
-        )
+        user = Usuario.objects.create_usuario(email=email, password=password, **validated_data)
 
         return user
-
-
-class AdministracionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Administracion
-        fields = [
-            "nombre_comercial",
-            "numero_receptor",
-            "direccion",
-            "provincia",
-            "localidad",
-            "numero_administracion",
-        ]
 
 
 class AdministracionRegisterSerializer(serializers.ModelSerializer):
@@ -175,19 +175,16 @@ class AdministracionRegisterSerializer(serializers.ModelSerializer):
             "direccion",
             "provincia",
             "localidad",
+            "codigo_postal",
             "numero_administracion",
         ]
 
     # Field-level validation for numero_receptor (should be unique)
     def validate_numero_receptor(self, value):
         if not value.isdigit():
-            raise serializers.ValidationError(
-                "The numero_receptor must contain only digits."
-            )
+            raise serializers.ValidationError("The numero_receptor must contain only digits.")
         if len(value) != 5:
-            raise serializers.ValidationError(
-                "The numero_receptor must be exactly 5 digits long."
-            )
+            raise serializers.ValidationError("The numero_receptor must be exactly 5 digits long.")
         if Administracion.objects.filter(numero_receptor=value).exists():
             raise serializers.ValidationError("This numero_receptor is already in use.")
         return value
@@ -195,44 +192,47 @@ class AdministracionRegisterSerializer(serializers.ModelSerializer):
     # Field-level validation for numero_administracion (custom length or pattern validation)
     def validate_numero_administracion(self, value):
         if not value.isdigit():
-            raise serializers.ValidationError(
-                "El numero_administracion debe contener solo dígitos."
-            )
+            raise serializers.ValidationError("El numero_administracion debe contener solo dígitos.")
         if len(value) > 5:
-            raise serializers.ValidationError(
-                "El numero_administracion debe tener como maximo 5 dígitos."
-            )
+            raise serializers.ValidationError("El numero_administracion debe tener como maximo 5 dígitos.")
+        return value
 
+    # Field-level validation for provincia
+    def validate_provincia(self, value):
+        if not value:
+            raise serializers.ValidationError("Provincia is a required field.")
+
+        # Comprobar si la provincia es válida según PROVINCIAS_CHOICES
+        provincias_keys = [choice[0] for choice in PROVINCIAS_CHOICES]
+        if value.id not in provincias_keys:
+            raise serializers.ValidationError("Provincia is not a valid value from the select form.")
+
+        return value
+
+    # Field-level validation for localidad
+    def validate_localidad(self, value):
+        if not value:
+            raise serializers.ValidationError("Localidad is a required field.")
+        return value
+
+    # Field-level validation for numero_administracion (custom length or pattern validation)
+    def validate_codigo_postal(self, value):
+        if not value.isdigit():
+            raise serializers.ValidationError("El codigo_postal debe contener solo dígitos.")
+        if len(value) != 5:
+            raise serializers.ValidationError("El codigo_postal debe tener como maximo 5 dígitos.")
+
+        return value
+
+    # Field-level validation for direccion
+    def validate_direccion(self, value):
+        if not value:
+            raise serializers.ValidationError("Dirección is a required field.")
         return value
 
     # Cross-field validation
     def validate(self, data):
-        # Example of validating a combination of fields
-        provincia = data.get("provincia")
-        localidad = data.get("localidad")
-        direccion = data.get("direccion")
-
-        if not provincia:
-            raise serializers.ValidationError(
-                {"provincia": " Provincia is a required field."}
-            )
-
-        provincias_keys = [choice[0] for choice in PROVINCIAS_CHOICES]
-        if provincia not in provincias_keys:
-            raise serializers.ValidationError(
-                {"provincia": " Provincia is not a valid value from select form."}
-            )
-
-        if not localidad:
-            raise serializers.ValidationError(
-                {"localidad": " Localidad is required field."}
-            )
-
-        if not direccion:
-            raise serializers.ValidationError(
-                {"direccion": " Dirección is required field."}
-            )
-
+        # Aquí puedes añadir validaciones que dependen de múltiples campos si es necesario
         return data
 
     # Overriding the create method to ensure saving logic
@@ -240,13 +240,9 @@ class AdministracionRegisterSerializer(serializers.ModelSerializer):
         return Administracion.objects.create(**validated_data)
 
 
-
-# from django.contrib.auth.models import User
-
-# Get the custom user model
-User = get_user_model()
-
-
+########################################
+###############  LOGIN   ###############
+########################################
 class UsuarioLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
@@ -258,7 +254,7 @@ class UsuarioLoginSerializer(serializers.Serializer):
         # Authenticate user using email
         user = authenticate(username=email, password=password)
 
-        if not user: #This could also be if user IS NOT ACTIVE
+        if not user:  # This could also be if user IS NOT ACTIVE
             raise serializers.ValidationError(detail="Invalid form credentials.", code="AUTH_INVALID_CREDENTIALS")
         return user
 

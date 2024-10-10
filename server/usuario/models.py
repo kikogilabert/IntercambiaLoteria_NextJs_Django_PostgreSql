@@ -1,18 +1,18 @@
 from typing import Any, Optional
 
-from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
-                                        PermissionsMixin)
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
+from simple_history.models import HistoricalRecords
 
-from .constants import PROVINCIAS_CHOICES, TIPOS_PERSONA
+from usuario.constants import TIPOS_PERSONA
+
+from core.models import Provincia
 
 
 class UsuarioManager(BaseUserManager):
     """Manager for Usuario model to handle user creation and retrieval."""
 
-    def create_usuario(
-        self, email: str, password: str, **extra_fields: Any
-    ) -> "Usuario":
+    def create_usuario(self, email: str, password: str, **extra_fields: Any) -> "Usuario":
         """
         Create and return a new Usuario with an email and password.
 
@@ -30,9 +30,7 @@ class UsuarioManager(BaseUserManager):
         usuario.save(using=self._db)  # Save the user
         return usuario
 
-    def create_superuser(
-        self, email: str, password: Optional[str] = None, **extra_fields: Any
-    ) -> "Usuario":
+    def create_superuser(self, email: str, password: Optional[str] = None, **extra_fields: Any) -> "Usuario":
         """
         Create and return a new superuser.
 
@@ -55,26 +53,21 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 
     id = models.AutoField(primary_key=True)
     # Tipo de usuario -> PF: Persona Fisica, PJ: Persona Juridica.
-    tipo = models.CharField(
-        max_length=2, choices=TIPOS_PERSONA, default="PF"
-    )  # SELECT FROM LIST
+    tipo = models.CharField(max_length=2, choices=TIPOS_PERSONA, default="PF")  # SELECT FROM LIST
     dni = models.CharField(max_length=10, unique=True)
     nombre = models.CharField(max_length=50)
-    apellidos = models.CharField(
-        max_length=50, blank=True, null=True
-    )  # EMPTY IF TIPO=PJ
+    apellidos = models.CharField(max_length=50, blank=True, null=True)  # EMPTY IF TIPO=PJ
     telefono = models.CharField(max_length=12)
     email = models.EmailField(max_length=254, unique=True)
     administracion = models.OneToOneField(
-        "Administracion",
-        on_delete=models.CASCADE,
-        related_name="propietario",
-        null=False,
+        "Administracion", on_delete=models.CASCADE, related_name="propietario", null=False
     )
 
-    # ADITIONAL ADMON STATUS FIELDS
+    # Add historical record of changes.
+    history = HistoricalRecords()
+    # Datatime of creation or update.
     created_at = models.DateTimeField(auto_now_add=True)
-    # updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)  # Permite acceso al admin panel
 
@@ -82,12 +75,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 
     # Required for Django user model
     USERNAME_FIELD: str = "email"  # Field used for authentication
-    REQUIRED_FIELDS: list[str] = [
-        "tipo",
-        "dni",
-        "nombre",
-        "telefono",
-    ]  # Fields required when creating a user
+    REQUIRED_FIELDS: list[str] = ["tipo", "dni", "nombre", "telefono"]  # Fields required when creating a user
 
     def __str__(self) -> str:
         """Return a string representation of the user (DNI)."""
@@ -101,9 +89,16 @@ class Administracion(models.Model):
     nombre_comercial = models.CharField(max_length=100)
     numero_receptor = models.CharField(max_length=5, unique=True)
     direccion = models.CharField(max_length=255)
-    provincia = models.CharField(max_length=100, choices=PROVINCIAS_CHOICES)
+    provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE)
     localidad = models.CharField(max_length=100)
+    codigo_postal = models.CharField(max_length=5)
     numero_administracion = models.CharField(max_length=5)
+
+    # Add historical record of changes.
+    history = HistoricalRecords()
+    # Datatime of creation or update.
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         """Return a string representation of the administration (nombre_comercial)."""

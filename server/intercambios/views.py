@@ -1,14 +1,14 @@
-from core.utils import get_error_response, get_success_response
-from core.views import ChangeStateAPIView
 from django.shortcuts import get_object_or_404
-from intercambios.constants import ESTADOS_RESPUESTA, ESTADOS_SOLICITUD
-from intercambios.permissions import IsOwnerOrRelated
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
-from .models import Respuesta, Solicitud
-from .serializers import (IntercambioSerializer, RespuestaSerializer,
-                          SolicitudSerializer)
+from intercambios.constants import ESTADOS_RESPUESTA, ESTADOS_SOLICITUD
+from intercambios.models import Respuesta, Solicitud
+from intercambios.permissions import IsOwnerOrRelated
+from intercambios.serializers import IntercambioSerializer, RespuestaSerializer, SolicitudSerializer
+
+from core.utils import get_error_response, get_success_response
+from core.views import ChangeStateAPIView
 
 
 class SolicitudAPIView(APIView):
@@ -69,7 +69,7 @@ class ChangeSolicitudStateAPIView(ChangeStateAPIView):
     Vista para cambiar el estado de una Solicitud.
     """
 
-    permission_classes = [IsAuthenticated, IsOwnerOrRelated] 
+    permission_classes = [IsAuthenticated, IsOwnerOrRelated]
 
     def get_model_class(self):
         return Solicitud
@@ -84,7 +84,7 @@ class ChangeRespuestaStateAPIView(ChangeStateAPIView):
     Vista para cambiar el estado de una Respuesta.
     """
 
-    permission_classes = [IsAuthenticated, IsOwnerOrRelated] 
+    permission_classes = [IsAuthenticated, IsOwnerOrRelated]
 
     def get_model_class(self):
         return Respuesta

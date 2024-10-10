@@ -1,10 +1,20 @@
-from core.models import Sorteo, StateManager
 from django.db import models, transaction
-from usuario.models import Administracion
+from simple_history.models import HistoricalRecords
 
-from .constants import (ESTADO_ABIERTA, ESTADO_ACEPTADA, ESTADO_CANCELADA,
-                        ESTADO_COMPLETADA, ESTADO_RECHAZADA, ESTADOS_RESPUESTA,
-                        ESTADOS_SOLICITUD, TIPOS_CONDICION, TIPOS_SOLICITUD)
+from intercambios.constants import (
+    ESTADO_ABIERTA,
+    ESTADO_ACEPTADA,
+    ESTADO_CANCELADA,
+    ESTADO_COMPLETADA,
+    ESTADO_RECHAZADA,
+    ESTADOS_RESPUESTA,
+    ESTADOS_SOLICITUD,
+    TIPOS_CONDICION,
+    TIPOS_SOLICITUD,
+)
+
+from core.models import Sorteo, StateManager
+from usuario.models import Administracion
 
 from usuario.models import Administracion
 
@@ -41,7 +51,9 @@ class Solicitud(StateManager):
         max_length=20, default=ESTADO_ABIERTA, choices=ESTADOS_SOLICITUD
     )
 
-    # ADITIONAL ADMON STATUS FIELDS
+    # Add historical record of changes.
+    history = HistoricalRecords()
+    # Datatime of creation or update.
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -70,6 +82,9 @@ class Respuesta(StateManager):
         max_length=20, default=ESTADO_ABIERTA, choices=ESTADOS_RESPUESTA
     )
 
+    # Add historical record of changes.
+    history = HistoricalRecords()
+    # Datatime of creation or update.
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -97,7 +112,9 @@ class Intercambio(models.Model):
         related_name="recibidas_en_intercambio",
     )
 
-    # Date
+    # Add historical record of changes.
+    history = HistoricalRecords()
+    # Datatime of creation or update.
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
