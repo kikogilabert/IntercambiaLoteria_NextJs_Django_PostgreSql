@@ -22,6 +22,7 @@ export type administracionRegisterType = {
     direccion: string;
     provincia: string;
     localidad: string;
+    codigo_postal: string;
     numero_administracion: string;
     ServerError?: any;
 }
@@ -45,8 +46,8 @@ export type userLoginResponse = {
 }
 
 
-export type UserProfileData = {
-    tipo: UsuarioTypeEnum
+export interface UserProfileData {
+    tipo: UsuarioTypeEnum | null;
     nombre: string;
     apellidos: string;
     email: string;

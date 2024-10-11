@@ -17,17 +17,8 @@ export default function HeaderComponent() {
   const router = useRouter();
 
 
-  useEffect(() => {
-    if(auth.user === null) setIsLogged(false);
-    if (auth.user){ 
-      setIsLogged(true);
-      setUserData(auth.user);
-    }
-  
-  }, [auth.user]);
-
   const [isLogged, setIsLogged] = useState(false);
-  const [userData, setUserData] = useState<UserProfileData>();
+  const [userData, setUserData] = useState<UserProfileData | null>(null);
   const { isMobile } = useScreenDetector();
 
   const handleLogout = () => {
@@ -35,6 +26,21 @@ export default function HeaderComponent() {
     setIsLogged(false);
     router.push('/iniciar-sesion');
   }
+
+  useEffect(() => {
+    if (auth.user && auth.token){ 
+      console.log('user is LOGGED', auth.user);
+      setUserData(auth.user);
+      setIsLogged(true);
+    }
+  
+  }, [auth.user, auth.token]);
+
+  useEffect(() => {
+    if (userData) {
+      setIsLogged(true);
+    }
+  }, [userData]);
 
   const menuItems = [
     "Profile",
@@ -79,14 +85,14 @@ export default function HeaderComponent() {
 
       <NavbarContent className="sm:hidden pr-3" justify="center">
         <NavbarBrand className='gap-2'>
-          <Image src="/favicon.ico" alt="favicon for now" width={32} height={32} />
+          <Image src="/favicon.ico" alt="favicon for now" className='cursor-pointer' onClick={() => router.push('/')} width={32} height={32} />
           {/* <p className="font-bold text-inherit">ConectaLoteria</p> */}
         </NavbarBrand>
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarBrand>
-          <Image src="/favicon.ico" alt="favicon for now" width={32} height={32} />
+          <Image src="/favicon.ico" alt="favicon for now"  className='cursor-pointer' onClick={() => router.push('/')} width={32} height={32} />
           {/* <p className="font-bold text-inherit">ConectaLoteria</p> */}
         </NavbarBrand>
         <NavbarContent className='hidden sm:flex gap-6' justify="center">
@@ -115,7 +121,6 @@ export default function HeaderComponent() {
                       </Link>
                   </NavbarItem> */}
         </NavbarContent>
-
       </NavbarContent>
 
       <NavbarContent as="div" justify="end">
@@ -126,21 +131,21 @@ export default function HeaderComponent() {
                 name={userData?.nombre}
                 description={userData?.email}
                 avatarProps={{
-                  src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                  src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
+                  showFallback : true
                 }}
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="profile" className="h-14 gap-2">
                 <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">{userData?.email}</p>
+                <p className="font-bold">{userData?.email}</p>
               </DropdownItem>
-              <DropdownItem key="settings">My Settings</DropdownItem>
-              <DropdownItem key="team_settings">Team Settings</DropdownItem>
-              <DropdownItem key="analytics">Analytics</DropdownItem>
-              <DropdownItem key="system">System</DropdownItem>
-              <DropdownItem key="configurations">Configurations</DropdownItem>
-              <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+              <DropdownItem key="user_profile" href='/profile'>Mi Perfil</DropdownItem>
+              <DropdownItem key="administracion">Mi administracion</DropdownItem>
+              <DropdownItem key="intercambios">Mis intercambios</DropdownItem>
+              <DropdownItem key="configurations">Ajustes</DropdownItem>
+              <DropdownItem key="help_and_feedback">Ayuda & Atencion al Cliente</DropdownItem>
               <DropdownItem key="logout" color="danger" onClick={ () => handleLogout()}>
                 Cerrar Sesión
               </DropdownItem>

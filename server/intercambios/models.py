@@ -16,6 +16,7 @@ from intercambios.constants import (
 from core.models import Sorteo, StateManager
 from usuario.models import Administracion
 
+from usuario.models import Administracion
 
 class Solicitud(StateManager):
     """Custom model representing a Solicitud in the system."""

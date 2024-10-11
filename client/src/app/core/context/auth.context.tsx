@@ -33,7 +33,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     const [token, setToken] = useState<string | null>(CustomStorage.getItem(StorageVariables.UserToken) as string | null );
 
     useEffect(() => {
-        const jwt: string | undefined = CustomStorage.getItem(StorageVariables.UserToken);
+        const jwt: string | null = CustomStorage.getItem(StorageVariables.UserToken);
         if (user && jwt) {
             const expired = isTokenExpired(jwt);
             if (!expired) {
