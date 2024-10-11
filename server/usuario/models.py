@@ -97,7 +97,7 @@ class Administracion(models.Model):
     # Add historical record of changes.
     history = HistoricalRecords()
     # Datatime of creation or update.
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False, null=False)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:

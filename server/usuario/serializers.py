@@ -199,6 +199,7 @@ class AdministracionRegisterSerializer(serializers.ModelSerializer):
 
     # Field-level validation for provincia
     def validate_provincia(self, value):
+        print(value)
         if not value:
             raise serializers.ValidationError("Provincia is a required field.")
 
@@ -220,7 +221,7 @@ class AdministracionRegisterSerializer(serializers.ModelSerializer):
         if not value.isdigit():
             raise serializers.ValidationError("El codigo_postal debe contener solo dígitos.")
         if len(value) != 5:
-            raise serializers.ValidationError("El codigo_postal debe tener como maximo 5 dígitos.")
+            raise serializers.ValidationError("El codigo_postal 5 dígitos.")
 
         return value
 

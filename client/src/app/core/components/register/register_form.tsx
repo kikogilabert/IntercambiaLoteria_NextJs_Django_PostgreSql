@@ -3,7 +3,7 @@
 import { Button, Input, Select, SelectItem, SelectSection } from '@nextui-org/react';
 import { Eye, EyeOff } from 'lucide-react';
 
-
+import { Autocomplete, AutocompleteItem, AutocompleteSection } from "@nextui-org/react";
 import { useState } from 'react';
 import { PROVINCIAS_POR_COMUNIDAD, TIPO_PROPIETARIO } from '@core/constants/index';
 
@@ -15,14 +15,28 @@ import { registerUser } from '@/core/api/auth';
 import { RegisterUserFormData, userRegisterType, administracionRegisterType } from '@core/interfaces/user.interface';
 import { adminSchema, userSchema } from '@core/components/register/registerSchema';
 import { useRouter } from 'next/navigation';
-export default function RegisterComponent() {
 
+type registerComponentProps = {
+    lista_comunidades: registerComunidades[]
 
+}
+type registerProvincias = {
+    id: number,
+    nombre: string
+}
+type registerComunidades = {
+    nombre: string,
+    provincias: registerProvincias[]
+}
+
+export default function RegisterComponent(props: registerComponentProps) {
+
+    console.log(props.lista_comunidades);
     //////////////////////////////// VARIABLES////////////////////////////////
     const router = useRouter();
     const [usuario, setUsuario] = useState<userRegisterType | null>();
     const [administracion, setAdministracion] = useState<administracionRegisterType | null>(null);
-    
+
     const [step, setStep] = useState(0);
     const [showPassword, setShowPassword] = useState(false);
     const [showPassword2, setShowPassword2] = useState(false);
@@ -38,17 +52,17 @@ export default function RegisterComponent() {
         useForm({
             resolver: zodResolver(step === 0 ? adminSchema : userSchema),
             mode: 'onSubmit',
-            defaultValues: step === 0 ? { nombre_comercial: '', numero_receptor: '', direccion: '', provincia: '', localidad: '', numero_administracion: '' }
+            defaultValues: step === 0 ? { nombre_comercial: '', numero_receptor: '', direccion: '', provincia: 0, localidad: '', codigo_postal: '', numero_administracion: '' }
                 : { tipo: '', dni: '', nombre: '', apellidos: '', password1: '', password2: '', telefono: '', email: '' }
         });
     console.log(errors);
 
     //submit form function
     const onSubmit = (data: any) => {
-        setIsButtonLoading(true);
-        console.log(data);
-
+        setIsButtonLoading(true);        
         if (step === 0) {
+            data.provincia = selectedProvinciaID;
+            console.log('administracion', data);
             setAdministracion(data);
             setStep(1);
             setIsButtonLoading(false);
@@ -73,7 +87,14 @@ export default function RegisterComponent() {
         }
     };
 
+    const [selectedProvinciaID, setSelectedProvinciaID] = useState(""); // El valor seleccionado (ID de la provincia)
 
+    // Controlar la selección del usuario
+    const onSelectionChange = (key: any) => {
+        console.log('key', key);
+        setSelectedProvinciaID(key); // Actualiza el valor seleccionado (ID de la provincia)
+      setValue('provincia', key); // Almacena el ID de la provincia en react-hook-form
+    };
     return (
 
         <div className='w-full flex justify-center items-center'>
@@ -110,29 +131,33 @@ export default function RegisterComponent() {
                             isInvalid={errors.direccion ? true : false}
                             errorMessage={errors.direccion?.message ? errors.direccion?.message : null}
                         />
-                        <Select
+
+                        <Autocomplete
                             {...register('provincia')}
-                            onChange={(e) => setValue('provincia', e.target.value)}
-                            isInvalid={errors.provincia ? true : false}
-                            errorMessage={errors.provincia?.message ? errors.provincia?.message : null}
+                            selectedKey={selectedProvinciaID}
+                            onSelectionChange={onSelectionChange} 
+                            isInvalid={!!errors.provincia} 
+                            errorMessage={errors.provincia?.message || null}
                             label="Provincia"
                             placeholder="Selecciona una provincia"
                             size='sm'
-                            scrollShadowProps={{
-                                isEnabled: false
-                            }}
+                            isRequired
+                            scrollShadowProps={{ isEnabled: false }}
                         >
-                            {PROVINCIAS_POR_COMUNIDAD.map((comunidad) => (
-                                <SelectSection title={comunidad.comunidad} key={comunidad.comunidad}>
+                            {props.lista_comunidades.map((comunidad, index) => (
+                                <AutocompleteSection
+                                    title={comunidad.nombre}
+                                    key={comunidad.nombre}
+                                    showDivider={index + 1 === props.lista_comunidades.length ? false : true}
+                                >
                                     {comunidad.provincias.map((provincia) => (
-                                        <SelectItem key={provincia.value}>
-                                            {provincia.name}
-                                        </SelectItem>
+                                        <AutocompleteItem key={provincia.id} value={provincia.id} textValue={provincia.nombre}>
+                                            {provincia.nombre}
+                                        </AutocompleteItem>
                                     ))}
-                                </SelectSection>
+                                </AutocompleteSection>
                             ))}
-                        </Select>
-
+                        </Autocomplete>
                         <Input
                             {...register('localidad')}
                             onChange={(e) => setValue('localidad', e.target.value)}
@@ -140,6 +165,15 @@ export default function RegisterComponent() {
                             errorMessage={errors.localidad?.message ? errors.localidad?.message : null}
                             isRequired type="text"
                             label="Localidad" placeholder=''
+                            size='sm'
+                        />
+                        <Input
+                            {...register('codigo_postal')}
+                            onChange={(e) => setValue('codigo_postal', e.target.value)}
+                            isInvalid={errors.codigo_postal ? true : false}
+                            errorMessage={errors.codigo_postal?.message ? errors.codigo_postal?.message : null}
+                            isRequired type="text"
+                            label="Codigo postal" placeholder=''
                             size='sm'
                         />
                         <Input
@@ -187,7 +221,7 @@ export default function RegisterComponent() {
                             isInvalid={errors.dni ? true : false}
                             errorMessage={errors.dni?.message ? errors.dni?.message : null}
                             isRequired size='sm'
-                            type="text" label="DNI"
+                            type="text" label="DNI/NIF/NIE"
                             placeholder=''
                         />
                         <div className='flex flex-row gap-[8px] max-w-full'>
@@ -230,23 +264,23 @@ export default function RegisterComponent() {
                             onChange={(e) => setValue('password1', e.target.value)}
                             isInvalid={errors.password1 ? true : false}
                             errorMessage={errors.password1?.message ? errors.password1?.message : null}
-                            endContent={ 
-                                showPassword ? 
-                                <EyeOff onClick={() => setShowPassword(false)} className="cursor-pointer" /> : 
-                                <Eye onClick={() => setShowPassword(true)} className="cursor-pointer" />
+                            endContent={
+                                showPassword ?
+                                    <EyeOff onClick={() => setShowPassword(false)} className="cursor-pointer" /> :
+                                    <Eye onClick={() => setShowPassword(true)} className="cursor-pointer" />
                             }
                         />
                         <Input
-                            isRequired size='sm' type={showPassword ? 'text' : 'password'}
+                            isRequired size='sm' type={showPassword2 ? 'text' : 'password'}
                             label="Confirmar contraseña" placeholder=''
                             {...register('password2')}
                             onChange={(e) => setValue('password2', e.target.value)}
                             isInvalid={errors.password2 ? true : false}
                             errorMessage={errors.password2?.message ? errors.password2?.message : null}
-                            endContent={ 
-                                showPassword2 ? 
-                                <EyeOff onClick={() => setShowPassword2(false)} className="cursor-pointer" /> : 
-                                <Eye onClick={() => setShowPassword2(true)} className="cursor-pointer" />
+                            endContent={
+                                showPassword2 ?
+                                    <EyeOff onClick={() => setShowPassword2(false)} className="cursor-pointer" /> :
+                                    <Eye onClick={() => setShowPassword2(true)} className="cursor-pointer" />
                             }
                         />
                     </div>

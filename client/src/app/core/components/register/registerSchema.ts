@@ -5,7 +5,8 @@ export  const adminSchema = z.object({
         numero_receptor: z.string({ message: 'El numero de receptor es requerido' }).length(5, { message: 'Número receptor debe tener 5 caracteres' }),
         direccion: z.string({ message: 'Dirección es requerida' }).min(5, { message: 'Dirección debe tener al menos 5 caracteres' }).max(50, { message: 'Dirección debe tener menos de 50 caracteres' }),
         provincia: z.string({ message: 'Provincia es requerida' }),
-        localidad: z.string({ message: 'Localidad es requerida' }).min(5, { message: 'Localidad debe tener al menos 5 caracteres' }).max(50, { message: 'Localidad debe tener menos de 50 caracteres' }),
+        localidad: z.string({ message: 'Localidad es requerida' }),
+        codigo_postal: z.string().length(5, { message: 'Código postal debe tener 5 caracteres' }),
         numero_administracion: z.string().min(1, { message: 'Número administracion es requerido.' }).max(3, { message: 'Número de administración debe tener menos de 3 caracteres' }),
     });
 

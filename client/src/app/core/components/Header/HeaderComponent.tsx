@@ -85,14 +85,14 @@ export default function HeaderComponent() {
 
       <NavbarContent className="sm:hidden pr-3" justify="center">
         <NavbarBrand className='gap-2'>
-          <Image src="/favicon.ico" alt="favicon for now" width={32} height={32} />
+          <Image src="/favicon.ico" alt="favicon for now" className='cursor-pointer' onClick={() => router.push('/')} width={32} height={32} />
           {/* <p className="font-bold text-inherit">ConectaLoteria</p> */}
         </NavbarBrand>
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarBrand>
-          <Image src="/favicon.ico" alt="favicon for now" width={32} height={32} />
+          <Image src="/favicon.ico" alt="favicon for now"  className='cursor-pointer' onClick={() => router.push('/')} width={32} height={32} />
           {/* <p className="font-bold text-inherit">ConectaLoteria</p> */}
         </NavbarBrand>
         <NavbarContent className='hidden sm:flex gap-6' justify="center">

@@ -125,24 +125,13 @@ class ProvinciasRegister(APIView):
             )
 
             # Crear un diccionario para almacenar las comunidades y sus provincias
-            comunidad_dict = {comunidad["nombre_front"]: {"provincias": []} for comunidad in comunidades}
+            output_comunidades = []
 
-            # Asociar las provincias a sus respectivas comunidades autónomas
-            for provincia in provincias:
-                if provincia["pais"] == 1:  # Si la provincia pertenece a España
-                    for comunidad in comunidades:
-                        if comunidad["id"] == provincia["comunidad_autonoma"]:
-                            comunidad_dict[comunidad["nombre_front"]]["provincias"].append(
-                                {"id": provincia["id"], "nombre_front": provincia["nombre_front"]}
-                            )
-                elif provincia["pais"] == 2:  # Si la provincia pertenece a Andorra
-                    if "Andorra" not in comunidad_dict:
-                        comunidad_dict["Andorra"] = {"provincias": []}
-                    comunidad_dict["Andorra"]["provincias"].append(
-                        {"id": provincia["id"], "nombre_front": provincia["nombre_front"]}
-                    )
+            for com in comunidades:
+                output_comunidades.append({"nombre": com["nombre_front"], "provincias": [{"id": prov["id"], "nombre": prov["nombre_front"]} for prov in provincias if prov["comunidad_autonoma"] == com["id"]]})
+            output_comunidades.append({"nombre": "Andorra", "provincias": [{"id": prov["id"], "nombre": prov["nombre_front"]} for prov in provincias if prov["pais"] == 2]})
 
-            return get_success_response("Provincias extraidas correctamente.", data=comunidad_dict)
+            return get_success_response("Provincias extraidas correctamente.", data=output_comunidades)
 
         except Exception as e:
             return get_error_response(

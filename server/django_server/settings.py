@@ -35,7 +35,7 @@ SIGNING_KEY = os.getenv("JWT_SIGNING_KEY", get_random_secret_key())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 CORS_ORIGIN_ALLOW_ALL = True
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "http://localhost:3000"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition

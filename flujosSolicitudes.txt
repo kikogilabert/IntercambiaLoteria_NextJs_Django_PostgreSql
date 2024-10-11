@@ -1,0 +1,44 @@
+0. Que tipo de solicitud quieres crear? 
+   
+2 tabs con las opciones:
+ 
+----- 1.Enviar -----
+Informacion de que es lo que va a dar:
+
+1.0.5 Para que sorteo seria el intercambio ?
+  -Selecionar desde un select con todos los sorteos disponibles. 
+1.1. Que número quieres intercambiar?
+  - 5 casillas para seleccionar un numero entero de 5 cifras.
+1.2. Cuantas series tienes disponibles?
+	- Un select con numeros del 1 al 193 
+
+Informacion de lo que quiere a cambio (si es que quiere algo).
+
+2. Que tipo de envio quieres hacer?
+	- Quiero ceder mi loteria
+	- Quiero intercambiar mi loteria
+		- Indiferente el numero
+		2.5  Explicita / condicion -> 5 CASILLAS CON HUECOS para poner t
+					    erminaciones o un numero entero si desea
+			2.5.1 Cuantas series quieres a cambio?
+				Checkboxes:
+					- Indiferente
+					- Quiero las mismas series que voy a entregar (XX).
+-----------------------------------------------
+
+----- 2.Recibir ------
+Informacion de que es lo que necesita:
+	2.0.5 Para que sorteo seria el intercambio?
+ 		 -Selecionar desde un select con todos los sorteos disponibles. 
+	2.1. Que número quieres recibir?
+ 		 - 5 casillas para seleccionar un numero entero de 5 cifras / terminaciones / XXXXX.
+	2.2. Cuantas series necesitas?
+		- Un select con numeros del 1 al 193
+
+	2.3 Que tipo de intercambio quieres realizar? 
+		- Cesion (No quiero dar nada a cambio).
+		- Explicita (Tengo para intercambiar el numero XXXXX (Tiene que ser un numero entero
+			      ya que el propietario conoce que numero puede intercambiar)) 
+
+
+ -------------------------------------------------
