@@ -1,7 +1,5 @@
 from django.db import transaction
-from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from usuario.serializers import (
@@ -13,6 +11,8 @@ from usuario.serializers import (
     UsuarioSerializer,
 )
 
+from core.utils import get_error_response, get_success_response
+
 
 # User Registration View
 class UsuarioRegisterView(APIView):
@@ -22,12 +22,12 @@ class UsuarioRegisterView(APIView):
         # Check if administracion data exist.
         administracion_data = request.data.get("administracion")
         if not administracion_data:
-            return Response({"error": "Datos de administracion son requeridos."}, status=status.HTTP_400_BAD_REQUEST)
+            return get_error_response("Datos de administracion son requeridos.")
 
         # Check if usuarios data exist.
         usuario_data = request.data.get("usuario")
         if not administracion_data:
-            return Response({"error": "Datos de usuario son requeridos."}, status=status.HTTP_400_BAD_REQUEST)
+            return get_error_response("Datos de usuario son requeridos.")
 
         # Begin the transaction to ensure atomicity
         with transaction.atomic():
@@ -39,19 +39,21 @@ class UsuarioRegisterView(APIView):
                 # Now we have administracion.id, add it to usuario_data
                 usuario_data["administracion"] = administracion.id
             else:
-                return Response(administracion_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return get_error_response(
+                    "Error en la validacion de los datos de administración.", data=administracion_serializer.errors
+                )
 
             # Validate and create the Usuario object
             usuario_serializer = UsuarioRegisterSerializer(data=usuario_data)
             if usuario_serializer.is_valid():
                 usuario_serializer.save()  # Save the usuario
                 correct_data = {"administracion": administracion_serializer.data, "usuario": usuario_serializer.data}
-                return Response(
-                    {"message": "User created successfully", "data": correct_data}, status=status.HTTP_201_CREATED
-                )
+                return get_success_response("User created successfully", data=correct_data)
             else:
                 # If usuario data is invalid, raise an error
-                return Response(usuario_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return get_error_response(
+                    "Error en la validacion de los datos de Usuario.", data=usuario_serializer.errors
+                )
 
 
 # User Login View using JWT
@@ -65,22 +67,12 @@ class UsuarioLoginView(APIView):
             user = serializer.validated_data
             tokens = serializer.get_tokens(user)
 
-            return Response(
-                {
-                    "status": "success",
-                    "message": "User logged in successfully",
-                    "data": {"access_token": tokens["access"], "refresh_token": tokens["refresh"]},
-                },
-                status=status.HTTP_200_OK,
+            return get_success_response(
+                "Sesion correctamente iniciada con el usuario.",
+                data={"access_token": tokens["access"], "refresh_token": tokens["refresh"]},
             )
 
-        error_field = list(serializer.errors.keys())[0]
-        error_detail = serializer.errors[error_field][0]
-        error_message = str(error_detail)
-        error_code = error_detail.code
-        return Response(
-            {"status": "error", "error_code": error_code, "message": error_message}, status=status.HTTP_400_BAD_REQUEST
-        )
+        return get_error_response("Error en la validacion de email y/o contraseña.", data=serializer.errors)
 
 
 # User Profile Update View
@@ -91,23 +83,23 @@ class UsuarioView(APIView):
     def get(self, request):
         user = request.user
         serializer = UsuarioSerializer(user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return get_success_response(data=serializer.data)
 
     # PUT method to fully update the user
     def put(self, request):
         serializer = UsuarioSerializer(request.user, data=request.data, partial=False)  # Allow partial updates
         if serializer.is_valid():
             serializer.save()
-            return Response({"message": "User updated successfully"}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return get_success_response(message="Usuario actualizado correctamente.")
+        return get_error_response(message="Error en la actualización del usuario.", data=serializer.errors)
 
     # PATCH method for partial updates on the user
     def patch(self, request):
         serializer = UsuarioSerializer(request.user, data=request.data, partial=True)  # Allow partial updates
         if serializer.is_valid():
             serializer.save()
-            return Response({"message": "User updated successfully"}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return get_success_response(message="Usuario actualizado correctamente.")
+        return get_error_response(message="Error en la actualización del usuario.", data=serializer.errors)
 
     # New function to deactivate the user
     def delete(self, request):
@@ -115,7 +107,7 @@ class UsuarioView(APIView):
         user.is_active = False  # Deactivate the user
         user.save()
 
-        return Response({"message": "User deactivated successfully"}, status=status.HTTP_200_OK)
+        return get_success_response(message="Usuario desactivado.")
 
 
 class ChangePasswordView(APIView):
@@ -125,8 +117,8 @@ class ChangePasswordView(APIView):
         serializer = ChangePasswordSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
-            return Response({"message": "Password updated successfully"}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return get_success_response(message="Contraseña actualizada correctamente.")
+        return get_error_response(message="Error en la actualización de la contraseña.", data=serializer.errors)
 
 
 # Administracion Update View
@@ -137,23 +129,23 @@ class AdministracionView(APIView):
     def get(self, request):
         user = request.user
         serializer = AdministracionSerializer(user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return get_success_response(data=serializer.data)
 
     # PUT method to fully update the user
     def put(self, request):
         serializer = AdministracionSerializer(request.user, data=request.data, partial=False)  # Allow partial updates
         if serializer.is_valid():
             serializer.save()
-            return Response({"message": "User updated successfully"}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return get_success_response(message="Administración actualizada correctamente.")
+        return get_error_response(message="Error en la actualización de la administración.", data=serializer.errors)
 
     # PATCH method for partial updates on the user
     def patch(self, request):
         serializer = AdministracionSerializer(request.user, data=request.data, partial=True)  # Allow partial updates
         if serializer.is_valid():
             serializer.save()
-            return Response({"message": "User updated successfully"}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return get_success_response(message="Administración actualizada correctamente.")
+        return get_error_response(message="Error en la actualización de la administración.", data=serializer.errors)
 
     # New function to deactivate the user
     # def delete(self, request):

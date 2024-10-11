@@ -2,8 +2,8 @@ from enum import IntEnum
 
 
 class TiposSolicitud(IntEnum):
-    ENVIAR = 0
-    RECIBIR = 1
+    OFERTA = 0
+    BUSQUEDA = 1
 
 class TiposCondicion(IntEnum):
     CESION = 0

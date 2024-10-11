@@ -16,7 +16,6 @@ from intercambios.constants import (
 from core.models import Sorteo, StateManager
 from usuario.models import Administracion
 
-from usuario.models import Administracion
 
 class Solicitud(StateManager):
     """Custom model representing a Solicitud in the system."""
@@ -28,7 +27,7 @@ class Solicitud(StateManager):
     )
     numero = models.CharField(
         max_length=5
-    )  # tipo='enviar': Numero exacto | tipo='recibir': numero exacto o condicion.
+    )  # tipo='oferta': Numero exacto | tipo='busqueda': numero exacto o condicion.
     num_series = models.IntegerField()
     sorteo = models.ForeignKey(
         Sorteo, on_delete=models.CASCADE, related_name="solicitudes"
