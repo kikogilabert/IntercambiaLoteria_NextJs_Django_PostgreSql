@@ -41,6 +41,7 @@ export async function registerUser(formData: RegisterUserFormData) {
 export async function loginUser(formData: userLoginType) {
     const loginUrl: string = `http://localhost:8888/api/usuario/login/`;
     const profileUrl: string = `http://localhost:8888/api/usuario/profile/`;
+    const admonUrl: string = `http://localhost:8888/api/usuario/admon/`;
 
     try {
         // Primera petición para obtener el token
@@ -57,15 +58,21 @@ export async function loginUser(formData: userLoginType) {
             const profileResponse = await axios.get(profileUrl, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-            console.log('profileResponse', profileResponse.data);
-                
-            if(profileResponse !== null) {
-                let userData = profileResponse.data;
+
+            const admonResponse = await axios.get(`${admonUrl}${profileResponse.data.data.administracion}/`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if(profileResponse !== null && admonResponse !== null) {
+                let userData = profileResponse.data.data;
                 CustomStorage.setItem(StorageVariables.UserData, userData);
-                return userData;
+                let admonData = admonResponse.data.data;
+                CustomStorage.setItem(StorageVariables.AdmonData, admonData);
+                return {userData, admonData};
             } else {
                 throw new Error('Failed to fetch user profile');
             }
+
         } else {
             throw new Error('Something went wrong at login');
         }
@@ -93,3 +100,22 @@ export async function updateUserData(userData: UserProfileData, token: string) {
         }
     }
 }
+
+// export async function updateAdmonData(userData: UserProfileData, token: string) {
+//     const url: string = `http://localhost:8888/api/usuario/profile/update/`;
+//     console.log('userData dentro de la funcion', userData);
+    
+//     try {
+//         const response = await axios.patch(url, userData, {
+//             headers: { 'Authorization': `Bearer ${token}` }
+//         });
+//         console.log('response updateUserData', response.data);
+//         return response.data;
+//     } catch (error: any ) {
+//         if(error.response.status === 400){
+//             throw error.response;
+//         } else {
+//             throw `Error en la solicitud: ${error.message}`;
+//         }
+//     }
+// }

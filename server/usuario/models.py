@@ -88,11 +88,11 @@ class Administracion(models.Model):
     id = models.AutoField(primary_key=True)
     nombre_comercial = models.CharField(max_length=100)
     numero_receptor = models.CharField(max_length=5, unique=True)
+    numero_administracion = models.CharField(max_length=5)
     direccion = models.CharField(max_length=255)
-    provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE)
     localidad = models.CharField(max_length=100)
     codigo_postal = models.CharField(max_length=5)
-    numero_administracion = models.CharField(max_length=5)
+    provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE)
 
     # Add historical record of changes.
     history = HistoricalRecords()

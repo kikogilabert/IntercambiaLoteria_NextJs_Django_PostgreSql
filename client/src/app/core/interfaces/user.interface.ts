@@ -47,11 +47,22 @@ export type userLoginResponse = {
 
 
 export interface UserProfileData {
-    tipo: UsuarioTypeEnum | null;
+    tipo: UsuarioTypeEnum;
     nombre: string;
     apellidos: string;
     email: string;
     telefono: string;
     dni: string;
     id_administracion: Number;
+}
+
+
+export interface AdministracionProfileData {
+    nombre_comercial: string;
+    numero_receptor: string;
+    direccion: string;
+    localidad: string;
+    codigo_postal: string;
+    provincia: string;
+    numero_administracion: string;
 }

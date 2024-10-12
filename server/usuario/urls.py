@@ -35,5 +35,5 @@ urlpatterns = [
     # Profile update (PUT for full, PATCH for partial)
     path("admon/update/", AdministracionView.as_view(), name="admon-update"),
     # Get profile data (GET)
-    path("admon/", AdministracionView.as_view(), name="admon-get"),
+    path("admon/<int:id_administracion>/", AdministracionView.as_view(), name="admon-get"),
 ]

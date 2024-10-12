@@ -2,6 +2,7 @@ from django.db import transaction
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 
+from usuario.models import Administracion
 from usuario.serializers import (
     AdministracionRegisterSerializer,
     AdministracionSerializer,
@@ -83,7 +84,7 @@ class UsuarioView(APIView):
     def get(self, request):
         user = request.user
         serializer = UsuarioSerializer(user)
-        return get_success_response(data=serializer.data)
+        return get_success_response(message="Usuario retornado correctamente.", data=serializer.data)
 
     # PUT method to fully update the user
     def put(self, request):
@@ -123,25 +124,41 @@ class ChangePasswordView(APIView):
 
 # Administracion Update View
 class AdministracionView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
+
+    def get_object(self, id_administracion):
+        try:
+            return Administracion.objects.get(id=id_administracion)
+        except Administracion.DoesNotExist:
+            return None
 
     # Get the user profile
-    def get(self, request):
-        user = request.user
-        serializer = AdministracionSerializer(user)
-        return get_success_response(data=serializer.data)
+    def get(self, request, id_administracion):
+        print(id_administracion)
+        administracion = self.get_object(id_administracion)
+        if not administracion:
+            return get_error_response(message="Administración no encontrada.", data=None)
+        print(administracion)
+        serializer = AdministracionSerializer(administracion)
+        return get_success_response(message="Administracion retornada correctamente.", data=serializer.data)
 
     # PUT method to fully update the user
-    def put(self, request):
-        serializer = AdministracionSerializer(request.user, data=request.data, partial=False)  # Allow partial updates
+    def put(self, request,id_administracion):
+        administracion = self.get_object(id_administracion)
+        if not administracion:
+            return get_error_response(message="Administración no encontrada.", data=None)
+        serializer = AdministracionSerializer(administracion, data=request.data, partial=False)  # Allow partial updates
         if serializer.is_valid():
             serializer.save()
             return get_success_response(message="Administración actualizada correctamente.")
         return get_error_response(message="Error en la actualización de la administración.", data=serializer.errors)
 
     # PATCH method for partial updates on the user
-    def patch(self, request):
-        serializer = AdministracionSerializer(request.user, data=request.data, partial=True)  # Allow partial updates
+    def patch(self, request, id_administracion):
+        administracion = self.get_object(id_administracion)
+        if not administracion:
+            return get_error_response(message="Administración no encontrada.", data=None)
+        serializer = AdministracionSerializer(administracion, data=request.data, partial=True)  # Allow partial updates
         if serializer.is_valid():
             serializer.save()
             return get_success_response(message="Administración actualizada correctamente.")

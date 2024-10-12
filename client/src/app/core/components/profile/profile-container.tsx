@@ -1,13 +1,14 @@
 "use client"
 import { useAuth } from "@/core/context/auth.context"
-import { UserProfileData } from "@/core/interfaces/user.interface";
+import { UserProfileData, AdministracionProfileData } from "@/core/interfaces/user.interface";
 import { Avatar, Button, Checkbox, CircularProgress, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure, Tabs, Tab } from "@nextui-org/react";
 import { CreditCard, Link, LockIcon, MailIcon, Pencil, Phone, PhoneCallIcon, Underline, User, UserRoundPenIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { UsuarioTypeEnum } from "@/core/interfaces/user.interface";
 import { updateUserData } from "@/core/api/auth";
 import useScreenDetector from "@/core/hooks/useScreenDetector";
+import { CustomStorage } from "@/core/common/local-storage";
+import { StorageVariables } from "@/core/constants";
 
 export default function ProfileContainer() {
 
@@ -15,6 +16,7 @@ export default function ProfileContainer() {
     const { isDesktop } = useScreenDetector();
     const [userToken, setUserToken] = useState<string>("");
     const [userData, setUserData] = useState<UserProfileData>();
+    const [admonData, setAdmonData] = useState<AdministracionProfileData>();
     const [updatedUserData, setupdatedUserData] = useState<any>({
     });
 
@@ -23,10 +25,12 @@ export default function ProfileContainer() {
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
     useEffect(() => {
-        if (auth.user && auth.token) {
+        if (auth.user && auth.token && auth.admon) {
             setUserToken(auth.token);
-            console.log('user is LOGGED', auth.user);
+            setAdmonData(auth.admon)
+            console.log('user is LOGGED', auth.user , ' and' , auth.admon);
             setUserData(auth.user);
+
             setupdatedUserData({
                 nombre: auth.user.nombre,
                 apellidos: auth.user.apellidos,
@@ -44,6 +48,10 @@ export default function ProfileContainer() {
         if (updatedUserData !== userData) {
             setUserData(prevUserData => ({ ...prevUserData, ...updatedUserData }));
             const response = await updateUserData(updatedUserData, userToken);
+            console.log(response, updatedUserData);
+            if(response.status === 'success'){
+                CustomStorage.setItem(StorageVariables.UserData, updatedUserData)
+            }
             console.log('response', response);
         } else {
             return;
@@ -65,6 +73,7 @@ export default function ProfileContainer() {
                                 <div className="w-full max-w-[375px] h-full flex flex-col gap-[18px] p-2 items-center justify-center">
                                     <h1>Datos personales</h1>
                                     <div className="w-full  h-full rounded border-1 p-3 flex flex-col gap-[8px]">
+                                        <Input label="Tipo" isDisabled value={userData?.tipo}></Input>
                                         <Input label="Nombre" isDisabled value={userData?.nombre}></Input>
                                         <Input label="Apellidos" isDisabled value={userData?.apellidos}> </Input>
                                         <Input label="DNI" startContent={
@@ -110,6 +119,7 @@ export default function ProfileContainer() {
                                         <Tab key="personales" title="Datos Personales" className="w-full px-2">
                                             <div className="w-full h-full flex flex-col gap-[18px] p-2 items-center justify-center">
                                                 <div className="w-full  h-full rounded border-1 p-3 flex flex-col gap-[8px]">
+                                                    <Input label="Tipo" isDisabled value={userData?.tipo}></Input>
                                                     <Input label="Nombre" isDisabled value={userData?.nombre}></Input>
                                                     <Input label="Apellidos" isDisabled value={userData?.apellidos}> </Input>
                                                     <Input label="DNI" startContent={

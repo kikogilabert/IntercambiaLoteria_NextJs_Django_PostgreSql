@@ -21,7 +21,7 @@ from core.constants import PROVINCIAS_CHOICES
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ["tipo", "dni", "nombre", "apellidos", "telefono", "email"]
+        fields = ["tipo", "dni", "nombre", "apellidos", "telefono", "email", "administracion"]
 
 
 class ChangePasswordSerializer(serializers.Serializer):
