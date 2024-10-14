@@ -53,7 +53,7 @@ export interface UserProfileData {
     email: string;
     telefono: string;
     dni: string;
-    id_administracion: Number;
+    administracion: Number;
 }
 
 

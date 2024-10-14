@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {  RegisterUserFormData, userLoginType, UserProfileData} from '@core/interfaces/user.interface';
+import {  AdministracionProfileData, RegisterUserFormData, userLoginType, UserProfileData} from '@core/interfaces/user.interface';
 import { CustomStorage } from '../common/local-storage';
 import { StorageVariables } from '../constants';
 
@@ -59,7 +59,7 @@ export async function loginUser(formData: userLoginType) {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
-            const admonResponse = await axios.get(`${admonUrl}${profileResponse.data.data.administracion}/`, {
+            const admonResponse = await axios.get(`${admonUrl}${profileResponse.data.data.administracion}/get/`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
@@ -101,21 +101,22 @@ export async function updateUserData(userData: UserProfileData, token: string) {
     }
 }
 
-// export async function updateAdmonData(userData: UserProfileData, token: string) {
-//     const url: string = `http://localhost:8888/api/usuario/profile/update/`;
-//     console.log('userData dentro de la funcion', userData);
+export async function updateAdmonData(admonData: AdministracionProfileData, id_admon: Number, token: string) {
+    // Add if to url
+    const url: string = `http://localhost:8888/api/usuario/admon/${id_admon}/update/`;
+    console.log('admonData dentro de la funcion', admonData);
     
-//     try {
-//         const response = await axios.patch(url, userData, {
-//             headers: { 'Authorization': `Bearer ${token}` }
-//         });
-//         console.log('response updateUserData', response.data);
-//         return response.data;
-//     } catch (error: any ) {
-//         if(error.response.status === 400){
-//             throw error.response;
-//         } else {
-//             throw `Error en la solicitud: ${error.message}`;
-//         }
-//     }
-// }
+    try {
+        const response = await axios.patch(url, admonData, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        console.log('response updateAdmonData', response.data);
+        return response.data;
+    } catch (error: any ) {
+        if(error.response.status === 400){
+            throw error.response;
+        } else {
+            throw `Error en la solicitud: ${error.message}`;
+        }
+    }
+}

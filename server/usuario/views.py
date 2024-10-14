@@ -124,7 +124,7 @@ class ChangePasswordView(APIView):
 
 # Administracion Update View
 class AdministracionView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get_object(self, id_administracion):
         try:
@@ -143,7 +143,7 @@ class AdministracionView(APIView):
         return get_success_response(message="Administracion retornada correctamente.", data=serializer.data)
 
     # PUT method to fully update the user
-    def put(self, request,id_administracion):
+    def put(self, request, id_administracion):
         administracion = self.get_object(id_administracion)
         if not administracion:
             return get_error_response(message="Administración no encontrada.", data=None)
