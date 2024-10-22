@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "corsheaders",
     "simple_history",
+    "django_filters",
 
     # My local apps
     "core",
@@ -165,6 +166,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     #'DATETIME_FORMAT': '%Y-%m-%dT%H:%M:%S%z',  # Formato ISO 8601
 }
 

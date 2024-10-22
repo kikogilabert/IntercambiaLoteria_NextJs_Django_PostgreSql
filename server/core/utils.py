@@ -31,7 +31,7 @@ class ResponseStruct:
         An HTTP status code (e.g., 200, 404), typically used for error handling, default is None.
     """
 
-    message: str  # A descriptive message
+    message: str | None  # A descriptive message
     status: str = "success"  # Either "success" or "error"
     data: Optional[Any] = None  # Data payload
     error_code: Optional[int] = None  # Error code, typically HTTP status codes
@@ -106,13 +106,8 @@ class ResponseStruct:
         return Response(self.to_dict(), status=self.error_code)
 
 
-def get_env_variable(var_name, default_value=None):
-    """Get the environment variable or return a default value."""
-    return os.getenv(var_name, default_value)
-
-
 def get_error_response(message, data = None, error_code=st.HTTP_400_BAD_REQUEST):
-    print(error_code)
+    """Get error response using ResponseStruct."""
     return ResponseStruct(
         status="error",
         message=message,
@@ -121,10 +116,16 @@ def get_error_response(message, data = None, error_code=st.HTTP_400_BAD_REQUEST)
     ).to_response()
 
 
-def get_success_response(message, data = None, error_code=st.HTTP_200_OK):
+def get_success_response(message=None, data = None, error_code=st.HTTP_200_OK):
+    """Get success response using ResponseStruct."""
     return ResponseStruct(
         status="success",
         message=message,
         error_code=error_code,
         data=data,
     ).to_response()
+
+
+def get_env_variable(var_name, default_value=None):
+    """Get the environment variable or return a default value."""
+    return os.getenv(var_name, default_value)
